@@ -1928,7 +1928,6 @@
             <li><a href="#home" data-route="home">Beranda</a></li>
             <li><a href="#galeri" data-route="galeri">Galeri</a></li>
             <li><a href="#profil" data-route="profil">Profil Pribadi</a></li>
-        
             <li><button class="nav-logout-btn" id="nav-logout-btn" title="Logout">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                 <span>Keluar</span>
@@ -1946,7 +1945,7 @@
         <a href="#home" data-route="home" onclick="closeMobileNav()">Beranda</a>
         <a href="#galeri" data-route="galeri" onclick="closeMobileNav()">Galeri</a>
         <a href="#profil" data-route="profil" onclick="closeMobileNav()">Profil Pribadi</a>
-    
+    <a href="#" id="mobile-upload-btn" onclick="closeMobileNav();document.getElementById('nav-upload-btn').click();return false;">Upload Foto</a>
     </div>
 
     <!-- Home Page -->
@@ -2315,6 +2314,58 @@
         </div>
     </div>
 
+    <!-- Upload Modal -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-box" style="max-width:480px">
+            <button class="modal-close-btn" onclick="closeModal('upload-modal')">&times;</button>
+            <h3>Upload Foto Baru</h3>
+            <p class="modal-desc">Tambahkan foto baru ke galeri</p>
+
+            <div class="upload-dropzone" id="upload-dropzone">
+                <input type="file" id="upload-file-input" accept="image/*" multiple>
+                <span class="upload-dropzone-icon">&#128247;</span>
+                <div class="upload-dropzone-text"><strong>Klik atau seret</strong> foto ke sini<br><span style="font-size:0.72rem;color:var(--text-muted)">JPG, PNG, WEBP &bull; Maks 10MB per foto</span></div>
+            </div>
+
+            <div class="upload-preview-list" id="upload-preview-list"></div>
+
+            <div class="form-group">
+                <label>Nama Foto</label>
+                <input type="text" class="form-input" id="upload-name" placeholder="Contoh: Foto Jalan-jalan">
+            </div>
+
+            <div class="form-group">
+                <label>Kategori</label>
+                <select class="form-select" id="upload-category">
+                    <option value="Bersama">Bersama</option>
+                    <option value="Saskia">Saskia</option>
+                    <option value="Dika">Dika</option>
+                    <option value="Teman">Teman</option>
+                    <option value="Keluarga">Keluarga</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Lokasi</label>
+                <input type="text" class="form-input" id="upload-location" placeholder="Contoh: Cafe Chaka Eung">
+            </div>
+
+            <button class="btn-form btn-upload-submit" id="upload-submit-btn" onclick="handleUpload()" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload Foto
+            </button>
+
+            <div class="upload-progress" id="upload-progress">
+                <div class="upload-progress-bar"><div class="upload-progress-fill" id="upload-progress-fill"></div></div>
+                <div class="upload-progress-text" id="upload-progress-text">Mengupload...</div>
+            </div>
+
+            <div class="uploaded-manage" id="uploaded-manage">
+                <h4>Foto yang Diupload (<span id="uploaded-count">0</span>)</h4>
+                <div class="uploaded-list" id="uploaded-list"></div>
+            </div>
+        </div>
+    </div>
     <!-- Back to Top -->
     <button class="back-to-top" id="back-to-top" aria-label="Kembali ke atas">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
