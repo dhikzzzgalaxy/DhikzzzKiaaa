@@ -92,9 +92,9 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
-        .navbar { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
 
-        .logo { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+        .logo { display: flex; align-items: center; gap: 12px; }
 
         .profile-img {
             width: 45px; height: 45px; border-radius: 50%; overflow: hidden;
@@ -107,7 +107,7 @@
         .logo h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; }
         .logo h1 span { color: var(--primary); }
 
-        .menu-toggle { cursor: pointer; color: var(--text-white); margin-left: auto; }
+        .menu-toggle { cursor: pointer; color: var(--text-white); }
 
         /* Sidebar */
         #sidebar {
@@ -315,13 +315,12 @@
             display: flex; align-items: center; gap: 16px; margin-bottom: 36px;
         }
         .profile-badge-avatar {
-            width: 52px;
-            height: 52px; border-radius: 50%; overflow: hidden;
+            width: 64px; height: 64px; border-radius: 50%; overflow: hidden;
             border: 2px solid var(--blue-primary);
             box-shadow: 0 8px 24px var(--blue-glow);
         }
         .profile-badge-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-badge-name { font-size: 1rem; font-weight: 700; color: var(--text-white); line-height: 1.2; }
+        .profile-badge-name { font-size: 1.15rem; font-weight: 700; color: var(--text-white); line-height: 1.2; }
         .profile-badge-role { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
         .info-grid {
@@ -330,7 +329,7 @@
         }
         .info-card {
             background: var(--glass-bg); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px); border-radius: 18px; padding: 18px 18px;
+            backdrop-filter: blur(10px); border-radius: 18px; padding: 26px 24px;
             display: flex; align-items: center; gap: 18px; transition: var(--transition);
             position: relative; overflow: hidden;
         }
@@ -342,16 +341,14 @@
         .info-card:hover { transform: translateY(-4px); border-color: rgba(59, 130, 246, 0.35); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); }
         
         .info-icon {
-            width: 42px;
-            height: 42px;
-            min-width: 42px; border-radius: 14px;
+            width: 52px; height: 52px; min-width: 52px; border-radius: 14px;
             background: var(--blue-soft); color: var(--blue-primary);
             display: flex; align-items: center; justify-content: center;
             border: 1px solid rgba(59, 130, 246, 0.25);
         }
         .info-content { display: flex; flex-direction: column; gap: 4px; }
         .info-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 600; }
-        .info-value { font-size: .92rem; font-weight: 600; color: var(--text-white); }
+        .info-value { font-size: 1.05rem; font-weight: 600; color: var(--text-white); }
         .info-link { color: var(--blue-primary); text-decoration: none; font-weight: 600; }
 
         .personal-info--pink .profile-badge-avatar { border-color: #ec4899; box-shadow: 0 8px 24px rgba(236, 72, 153, 0.4); }
@@ -417,8 +414,7 @@
         </div>
         <ul class="sidebar-links">
             <li><a href="#" id="menu-home" class="active">Home</a></li>
-            <li><a href="#" id="menu-album">Album</a></li>
-            <li><a href="#" id="menu-profile">Profile Pribadi</a></li>
+                        <li><a href="#" id="menu-profile">Profile Pribadi</a></li>
         </ul>
     </aside>
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -578,18 +574,20 @@
         }
 
         /* ===== NAVIGATION ===== */
-        .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            padding: 16px 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(10, 10, 15, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
+        .navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 1000;
         }
 
         .nav-brand {
@@ -657,8 +655,7 @@
         }
 
         .profile-badge-avatar {
-            width: 52px;
-            height: 52px; border-radius: 50%;
+            width: 64px; height: 64px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.4rem; font-weight: 800;
             background: linear-gradient(135deg, var(--blue-primary), #2563eb);
@@ -666,7 +663,7 @@
             box-shadow: 0 8px 24px var(--blue-glow), inset 0 0 0 2px rgba(255,255,255,0.1);
         }
 
-        .profile-badge-name { font-size: 1rem; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+        .profile-badge-name { font-size: 1.15rem; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
         .profile-badge-role { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.1em; }
 
         .info-grid {
@@ -679,7 +676,7 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border-radius: 18px; padding: 18px 18px;
+            border-radius: 18px; padding: 26px 24px;
             display: flex; align-items: center; gap: 18px;
             transition: var(--transition-smooth);
             position: relative; overflow: hidden;
@@ -708,9 +705,7 @@
         .info-card:hover::before { opacity: 1; width: 5px; }
 
         .info-icon {
-            width: 42px;
-            height: 42px;
-            min-width: 42px;
+            width: 52px; height: 52px; min-width: 52px;
             border-radius: 14px;
             background: var(--blue-soft); color: var(--blue-primary);
             display: flex; align-items: center; justify-content: center;
@@ -724,7 +719,7 @@
 
         .info-content { display: flex; flex-direction: column; gap: 4px; }
         .info-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 600; }
-        .info-value { font-size: .92rem; font-weight: 600; color: var(--text-primary); }
+        .info-value { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
         .info-value.umur-value { color: var(--blue-primary); font-size: 1.15rem;}
 
         /* ===== PINK THEME VARIANT (Saskia's Section) ===== */
@@ -764,19 +759,23 @@
 </head>
 <body>
 
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Memuat Profil...</div>
+    </div>
+
     <!-- Particle Canvas -->
     <canvas id="particles-canvas"></canvas>
     <div class="bg-gradient-overlay"></div>
 
-    <!-- Navigation (Simplified) -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-brand">
-            <div class="nav-brand-icon">
-    <img src="https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/IconKiaaa.jpg" alt="Logo">
-</div>
-            <div class="nav-brand-text">Dhikzzz<span>Kiaaa</span></div>
+    <!-- Main Content -->
+    <div class="page-profil">
+        
+        <div class="section-header">
+            <h1 class="section-title">Profile Pribadi</h1>
+            <p class="section-desc">Mengenal lebih dekat tentang kami berdua</p>
         </div>
-    </nav>
 
         <section class="personal-info" id="info-dika">
             <div class="section-header">
@@ -1267,7 +1266,6 @@ document.addEventListener('DOMContentLoaded',()=>{
             const homeSection = document.getElementById('home-section');
             const profileSection = document.getElementById('profile-section');
             const menuHome = document.getElementById('menu-home');
-            const menuAlbum = document.getElementById('menu-album');
             const menuProfile = document.getElementById('menu-profile');
             const sidebar = document.getElementById('sidebar');
             const sidebarOverlay = document.getElementById('sidebar-overlay');
