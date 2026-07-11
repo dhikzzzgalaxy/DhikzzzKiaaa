@@ -109,41 +109,89 @@
 
         .menu-toggle { cursor: pointer; color: var(--text-white); }
 
-        /* Sidebar */
-        #sidebar {
-            position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
-            background: rgba(10, 12, 16, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 2000;
-            transition: var(--transition);
-            padding: 40px;
-            border-left: 1px solid var(--glass-border);
-        }
+/* Sidebar dropdown dari atas kanan */
+#sidebar {
+    position: fixed;
+    top: -300px;
+    right: 20px;
+    left: auto;
 
-        #sidebar.active { right: 0; }
+    width: max-content;
+    min-width: 180px;
+    height: auto;
 
-        .sidebar-header { display: flex; justify-content: flex-end; margin-bottom: 50px; }
-        .close-sidebar { cursor: pointer; }
+    background: rgba(15, 23, 42, 0.35);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
 
-        .sidebar-links { list-style: none; }
-        .sidebar-links li { margin-bottom: 25px; }
-        .sidebar-links a {
-            text-decoration: none; color: var(--text-white);
-            font-size: 1.2rem; font-weight: 500;
-            transition: var(--transition); display: block;
-        }
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
 
-        .sidebar-links a:hover, .sidebar-links a.active {
-            color: var(--primary); transform: translateX(10px);
-        }
+    /* Atur padding */
+    padding: 12px 20px;
 
-        .sidebar-overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5);
-            z-index: 1500; display: none;
-        }
+    z-index: 2000;
+    transition: top .35s ease, opacity .35s ease;
 
-        .sidebar-overlay.active { display: block; }
+    opacity: 0;
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+}
 
+/* Saat dibuka */
+#sidebar.active {
+    top: 70px;
+    opacity: 1;
+}
+
+/* Hilangkan header dan tombol X */
+.sidebar-header,
+.close-sidebar {
+    display: none !important;
+}
+
+/* Menu */
+.sidebar-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-links li {
+    margin: 0;
+}
+
+.sidebar-links li + li {
+    margin-top: 16px;
+}
+
+.sidebar-links a {
+    display: block;
+    padding: 4px 0;
+    text-decoration: none;
+    color: var(--text-white);
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.sidebar-links a:hover,
+.sidebar-links a.active {
+    color: var(--primary);
+    transform: translateX(-5px);
+}
+
+/* Overlay */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: transparent; /* Tidak menggelapkan halaman */
+    z-index: 1500;
+    display: none;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
         /* Hero Section */
         .hero {
             min-height: 100vh; display: flex; align-items: center; position: relative;
@@ -394,7 +442,7 @@
             <nav class="navbar">
                 <div class="logo">
                     <div class="profile-img">
-                        <img src="https://i.pravatar.cc/150?u=dhikzzzkiaaa" alt="DhikzzzKiaaa Profile">
+                        <img src="https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/IconKiaaa.jpg" alt="DhikzzzKiaaa">
                     </div>
                     <h1>DhikzzzKiaaa<span>Gallery</span></h1>
                 </div>
@@ -414,7 +462,8 @@
         </div>
         <ul class="sidebar-links">
             <li><a href="#" id="menu-home" class="active">Home</a></li>
-                        <li><a href="#" id="menu-profile">Profile Pribadi</a></li>
+            <li><a href="#" id="menu-album">Album</a></li>
+            <li><a href="#" id="menu-profile">Profile Pribadi</a></li>
         </ul>
     </aside>
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -443,26 +492,6 @@
                         </div>
                     </div>
 
-                    <!-- Stats Section -->
-                    <div class="stats-container scroll-reveal">
-                        <div class="stat-item">
-                            <h3 class="counter" data-target="70">0</h3>
-                            <p>TOTAL FOTO</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3 class="counter" data-target="6">0</h3>
-                            <p>KATEGORI</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3 class="counter" data-target="5">0</h3>
-                            <p>LOKASI</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3 class="counter" data-target="12">0</h3>
-                            <p>ALBUM</p>
-                        </div>
-                    </div>
-                </div>
                 <div class="floating-blur blur-1"></div>
                 <div class="floating-blur blur-2"></div>
             </section>
@@ -503,21 +532,44 @@
         <!-- Profile Section (Hidden by Default) -->
         <div id="profile-section" class="container">
             <div class="section-header">
-                <h2 class="section-title">Profile Pribadi</h2>
-                <p class="section-desc">Mengenal lebih dekat tentang kami berdua</p>
-            </div>
-
-            <!-- Dika's Info -->
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DhikzzzKiaaa Profile Pribadi</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+                <h2 class="section-title">Dhikzzz Kiaaa</h2>
     
     <style>
+.profile-section,
+.profile-card,
+.profile-content,
+.profile-info,
+.profile-details,
+.info-card,
+.info-content {
+    text-align: left !important;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: center;
+    flex: 1;
+}
+
+.info-label,
+.info-value,
+.profile-name,
+.profile-title,
+.profile-description,
+.profile-text,
+.profile-card h1,
+.profile-card h2,
+.profile-card h3,
+.profile-card h4,
+.profile-card h5,
+.profile-card h6,
+.profile-card p,
+.profile-card span {
+    width: 100%;
+    text-align: left !important;
+}
         /* ===== RESET & BASE ===== */
         *, *::before, *::after {
             margin: 0;
@@ -771,11 +823,6 @@
 
     <!-- Main Content -->
     <div class="page-profil">
-        
-        <div class="section-header">
-            <h1 class="section-title">Profile Pribadi</h1>
-            <p class="section-desc">Mengenal lebih dekat tentang kami berdua</p>
-        </div>
 
         <section class="personal-info" id="info-dika">
             <div class="section-header">
@@ -1248,14 +1295,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     <script>
         const galleryData = [
-            { "id": 1, "category": "Bersama", "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000", "title": "Pantai" },
-            { "id": 2, "category": "Saskia", "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000", "title": "Saskia" },
-            { "id": 3, "category": "Dika", "image": "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=1000", "title": "Dika" },
-            { "id": 4, "category": "Keluarga", "image": "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1000", "title": "Keluarga" },
-            { "id": 5, "category": "Teman", "image": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1000", "title": "Teman" },
-            { "id": 6, "category": "Bersama", "image": "https://images.unsplash.com/photo-1516589174184-c68526614488?q=80&w=1000", "title": "Berdua" },
-            { "id": 7, "category": "Saskia", "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000", "title": "Saskia Smile" },
-            { "id": 8, "category": "Dika", "image": "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000", "title": "Dika Style" }
+            { "id": 1, "category": "Bersama", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-1.jpg", "title": "Album 1" },
+            { "id": 2, "category": "Bersama", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-2.jpg", "title": "Album 2" },
+            { "id": 3, "category": "Bersama", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-3.jpg", "title": "Album 3" },
+            { "id": 4, "category": "Bersama", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-4.jpg", "title": "Album 4" },
+            { "id": 5, "category": "Bersama", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-5.jpg", "title": "Album 5" },
+            { "id": 6, "category": "Bersama", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-6.jpg", "title": "Album 6" },
+            { "id": 7, "category": "Bersama", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-7.jpg", "title": "Album 7" },
+            { "id": 8, "category": "Saskia", "image": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-8.jpg", "title": "Album 8" }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1266,6 +1313,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             const homeSection = document.getElementById('home-section');
             const profileSection = document.getElementById('profile-section');
             const menuHome = document.getElementById('menu-home');
+            const menuAlbum = document.getElementById('menu-album');
             const menuProfile = document.getElementById('menu-profile');
             const sidebar = document.getElementById('sidebar');
             const sidebarOverlay = document.getElementById('sidebar-overlay');
@@ -1416,8 +1464,8 @@ document.addEventListener('DOMContentLoaded',()=>{
                 let days = now.getDate() - birthDate.getDate();
                 if (days < 0) { months--; const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0); days += lastMonth.getDate(); }
                 if (months < 0) { years--; months += 12; }
-                let result = `${years} Thn ${months} Bln`;
-                if (days > 0) result += ` ${days} Hr`;
+                let result = `${years} Tahun ${months} Bulan`;
+                if (days > 0) result += ` ${days} Hari`;
                 return result;
             }
             function calculateDaysSince(dateString) {
