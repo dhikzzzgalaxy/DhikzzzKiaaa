@@ -278,13 +278,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             { "id": 1, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-1.mp3" },
             { "id": 2, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-2.mp3" },
             { "id": 3, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-3.mp3" },
-            { "id": 4, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-4.mp3" },
-            { "id": 5, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-5.mp3" },
-            { "id": 6, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-6.mp3" },
-            { "id": 7, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-7.mp3" },
-            { "id": 8, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-8.mp3" },
-            { "id": 9, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-9.mp3" },
-            { "id": 10, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-10.mp3" }
+            { "id": 4, "url": "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Audio/Audio-4.mp3" }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
