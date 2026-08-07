@@ -80,12 +80,6 @@ const Scissors = (p) => <Icon name="Scissors" {...p} />;
 const Folder = (p) => <Icon name="Folder" {...p} />;
 const X = (p) => <Icon name="X" {...p} />;
 
-// --- HELPER SLUG GENERATOR ---
-const getSlug = (app) => {
-    if (app.slug) return app.slug;
-    return app.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-};
-
 // --- COMPONENTS ---
 const Badge = ({ children, variant = "primary" }) => {
     const styles = {
@@ -485,14 +479,14 @@ function App() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // Parse route and match app using robust slug matching
+    // Parse route and match app using ID (/app/{id})
     const processRoute = (jsonData) => {
         const path = window.location.pathname;
         const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
         
         if (matchApp) {
-            const slug = matchApp[1].toLowerCase();
-            const found = jsonData.apps.find(a => getSlug(a) === slug || a.id === slug);
+            const appId = matchApp[1];
+            const found = jsonData.apps.find(a => String(a.id) === String(appId));
             if (found) {
                 setSelectedApp(found);
                 setCurrentView('detail');
@@ -506,7 +500,7 @@ function App() {
             const params = new URLSearchParams(window.location.search);
             const appId = params.get('app');
             if (appId) {
-                const found = jsonData.apps.find(a => getSlug(a) === appId.toLowerCase() || a.id === appId);
+                const found = jsonData.apps.find(a => String(a.id) === String(appId));
                 if (found) {
                     setSelectedApp(found);
                     setCurrentView('detail');
@@ -547,11 +541,10 @@ function App() {
     }, [data.apps]);
 
     const navigateToDetail = (app) => {
-        const slug = getSlug(app);
         setSelectedApp(app);
         setCurrentView('detail');
-        const url = `/app/${slug}`;
-        window.history.pushState({ view: 'detail', slug: slug }, '', url);
+        const url = `/app/${app.id}`;
+        window.history.pushState({ view: 'detail', id: app.id }, '', url);
         window.scrollTo(0, 0);
     };
 
