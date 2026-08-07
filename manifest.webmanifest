@@ -1,0 +1,36 @@
+{
+  "name": "Dhikzzz Galaxy",
+  "short_name": "Dhikzzz",
+  "description": "Download Aplikasi Mod Terbaik dari Dhikzzz Galaxy",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#05050a",
+  "theme_color": "#06b6d4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
