@@ -487,34 +487,39 @@ function App() {
 
     // Parse route and match app using robust slug matching
     const processRoute = (jsonData) => {
-        const path = window.location.pathname;
-        const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
-        
-        if (matchApp) {
-            const slug = matchApp[1].toLowerCase();
-            const found = jsonData.apps.find(a => getSlug(a) === slug || a.id === slug);
-            if (found) {
-                setSelectedApp(found);
-                setCurrentView('detail');
-            } else {
-                setCurrentView('home');
-            }
-        } else if (path === '/all-apps' || path === '/all') {
-            setCurrentView('allapps');
+    const path = window.location.pathname;
+
+    // Reset state
+    setSelectedApp(null);
+    setSearchQuery("");
+
+    const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
+
+    if (matchApp) {
+        const slug = decodeURIComponent(matchApp[1]).toLowerCase();
+
+        const found = jsonData.apps.find(app =>
+            getSlug(app).toLowerCase() === slug ||
+            String(app.id).toLowerCase() === slug
+        );
+
+        if (found) {
+            setSelectedApp(found);
+            setCurrentView("detail");
         } else {
-            // Check query param fallback
-            const params = new URLSearchParams(window.location.search);
-            const appId = params.get('app');
-            if (appId) {
-                const found = jsonData.apps.find(a => getSlug(a) === appId.toLowerCase() || a.id === appId);
-                if (found) {
-                    setSelectedApp(found);
-                    setCurrentView('detail');
-                } else {
-                    setCurrentView('home');
-                }
-            } else {
-                setCurrentView('home');
+            setCurrentView("home");
+        }
+
+        return;
+    }
+
+    if (path === "/all-apps" || path === "/all") {
+        setCurrentView("allapps");
+        return;
+    }
+
+    setCurrentView("home");
+};
             }
         }
         setIsLoaded(true);
@@ -551,7 +556,11 @@ function App() {
         setSelectedApp(app);
         setCurrentView('detail');
         const url = `/app/${slug}`;
-        window.history.pushState({ view: 'detail', slug: slug }, '', url);
+        window.history.pushState(
+    { view: "detail", slug },
+    "",
+    new URL(`/app/${slug}`, window.location.origin)
+);
         window.scrollTo(0, 0);
     };
 
