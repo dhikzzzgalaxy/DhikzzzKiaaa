@@ -1,0 +1,19 @@
+body { 
+    background-color: #0B0F19; 
+    color: #e2e8f0; 
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+/* Sembunyikan Scrollbar Horizontal tapi tetap bisa di-scroll */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Animasi standar Tailwind */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slideInRight { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.fade-in { animation: fadeIn 0.7s ease-out forwards; }
+.slide-in-from-bottom-4 { animation: slideInUp 0.7s ease-out forwards; }
+.slide-in-from-right-8 { animation: slideInRight 0.5s ease-out forwards; }
