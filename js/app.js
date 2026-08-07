@@ -80,6 +80,12 @@ const Scissors = (p) => <Icon name="Scissors" {...p} />;
 const Folder = (p) => <Icon name="Folder" {...p} />;
 const X = (p) => <Icon name="X" {...p} />;
 
+// --- HELPER SLUG GENERATOR ---
+const getSlug = (app) => {
+    if (app.slug) return app.slug;
+    return app.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+};
+
 // --- COMPONENTS ---
 const Badge = ({ children, variant = "primary" }) => {
     const styles = {
@@ -131,20 +137,18 @@ const RecentAppCard = ({ app, onClick }) => (
 );
 
 // --- HOME VIEW ---
-const HomeView = ({ apps, categories, materialCategories, onAppSelect, searchQuery, setSearchQuery, onShowAll }) => {
-    const [activeCategory, setActiveCategory] = useState('All');
-
-    const filteredApps = useMemo(() => {
-        return apps.filter(app => {
-            const matchesCategory = activeCategory === 'All' || app.category === activeCategory;
-            const matchesSearch = app.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                  app.developer.toLowerCase().includes(searchQuery.toLowerCase());
-            return matchesCategory && matchesSearch;
-        });
-    }, [apps, activeCategory, searchQuery]);
-
+const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearchQuery, onShowAll }) => {
     const trendingApps = useMemo(() => apps.filter(app => app.isTrending), [apps]);
     const recentApps = useMemo(() => apps.slice(0, 10), [apps]);
+    const homepageApps = useMemo(() => {
+        if (searchQuery) {
+            return apps.filter(app => 
+                app.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                app.developer.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+        return apps.slice(0, 10);
+    }, [apps, searchQuery]);
 
     return (
         <div className="fade-in pb-24">
@@ -182,6 +186,22 @@ const HomeView = ({ apps, categories, materialCategories, onAppSelect, searchQue
                 </div>
             </section>
 
+            {/* Rilis Terbaru Horizontal Scroll */}
+            {!searchQuery && (
+                <section className="max-w-7xl mx-auto px-4 md:px-8 mb-16">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
+                            <Clock className="text-blue-400" size={24} /> Rilis Terbaru
+                        </h2>
+                    </div>
+                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+                        {recentApps.map(app => (
+                            <RecentAppCard key={app.id} app={app} onClick={onAppSelect} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {/* Trending Section */}
             {!searchQuery && trendingApps.length > 0 && (
                 <section className="max-w-7xl mx-auto px-4 md:px-8 mb-16">
@@ -198,23 +218,7 @@ const HomeView = ({ apps, categories, materialCategories, onAppSelect, searchQue
                 </section>
             )}
 
-            {/* Terbaru Horizontal Scroll */}
-            {!searchQuery && (
-                <section className="max-w-7xl mx-auto px-4 md:px-8 mb-16">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
-                            <Clock className="text-blue-400" size={24} /> Rilis Terbaru
-                        </h2>
-                    </div>
-                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
-                        {recentApps.map(app => (
-                            <RecentAppCard key={app.id} app={app} onClick={onAppSelect} />
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* Main Apps & Categories */}
+            {/* Main Apps */}
             <section className="max-w-7xl mx-auto px-4 md:px-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <h2 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
@@ -227,26 +231,7 @@ const HomeView = ({ apps, categories, materialCategories, onAppSelect, searchQue
                     )}
                 </div>
 
-                {/* Category Filter Pills */}
-                {!searchQuery && (
-                    <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 mb-8">
-                        {categories.map((cat, i) => (
-                            <button 
-                                key={i} 
-                                onClick={() => setActiveCategory(cat)} 
-                                className={`whitespace-nowrap px-5 py-2.5 rounded-xl border transition-all font-medium ${
-                                    activeCategory === cat 
-                                    ? "bg-blue-500/20 border-blue-500 text-blue-400" 
-                                    : "bg-white/[0.03] border-white/[0.05] text-slate-300 hover:bg-white/[0.08] hover:border-blue-500/30 hover:text-blue-400"
-                                }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-                )}
-
-                {filteredApps.length === 0 ? (
+                {homepageApps.length === 0 ? (
                     <div className="text-center py-20 bg-white/[0.02] border border-white/5 rounded-3xl">
                         <Info size={48} className="mx-auto text-slate-500 mb-4" />
                         <h3 className="text-lg font-bold text-slate-200 mb-2">Aplikasi tidak ditemukan</h3>
@@ -254,7 +239,7 @@ const HomeView = ({ apps, categories, materialCategories, onAppSelect, searchQue
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredApps.map(app => (
+                        {homepageApps.map(app => (
                             <AppCard key={app.id} app={app} onClick={onAppSelect} />
                         ))}
                     </div>
@@ -262,7 +247,7 @@ const HomeView = ({ apps, categories, materialCategories, onAppSelect, searchQue
             </section>
 
             {/* Material Categories Grid Section */}
-            {!searchQuery && (
+            {!searchQuery && materialCategories && materialCategories.length > 0 && (
                 <section className="max-w-7xl mx-auto px-4 md:px-8 mt-20">
                     <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 md:p-8">
                         <h2 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
@@ -274,10 +259,7 @@ const HomeView = ({ apps, categories, materialCategories, onAppSelect, searchQue
                                 return (
                                     <div 
                                         key={cat.id}
-                                        onClick={() => {
-                                            setActiveCategory(cat.id);
-                                            window.scrollTo({ top: 600, behavior: 'smooth' });
-                                        }}
+                                        onClick={onShowAll}
                                         className="group bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.05] hover:border-blue-500/40 rounded-2xl p-3 md:p-4 flex flex-col items-center gap-2 md:gap-3 cursor-pointer transition-all duration-300"
                                     >
                                         <div className="w-[36px] h-[36px] md:w-[48px] md:h-[48px] rounded-lg md:rounded-xl bg-gradient-to-br from-[#4F7CFF] to-[#8B5CF6] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -318,21 +300,23 @@ const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
                 <h1 className="text-4xl font-bold text-slate-100 mb-4 mt-8">Semua Aplikasi</h1>
                 <p className="text-slate-400 mb-8">Jelajahi seluruh koleksi aplikasi mod terbaik kami.</p>
 
-                <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 w-full justify-start md:justify-center relative z-20">
-                    {categories.map((cat, i) => (
-                        <button 
-                            key={i} 
-                            onClick={() => setSelectedCategory(cat)} 
-                            className={`whitespace-nowrap px-5 py-2.5 rounded-xl border transition-all font-medium ${
-                                selectedCategory === cat 
-                                ? "bg-blue-500/20 border-blue-500 text-blue-400" 
-                                : "bg-white/[0.03] border-white/[0.05] text-slate-300 hover:bg-white/[0.08] hover:border-blue-500/30 hover:text-blue-400"
-                            }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
+                {categories && categories.length > 0 && (
+                    <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 w-full justify-start md:justify-center relative z-20">
+                        {categories.map((cat, i) => (
+                            <button 
+                                key={i} 
+                                onClick={() => setSelectedCategory(cat)} 
+                                className={`whitespace-nowrap px-5 py-2.5 rounded-xl border transition-all font-medium ${
+                                    selectedCategory === cat 
+                                    ? "bg-blue-500/20 border-blue-500 text-blue-400" 
+                                    : "bg-white/[0.03] border-white/[0.05] text-slate-300 hover:bg-white/[0.08] hover:border-blue-500/30 hover:text-blue-400"
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </section>
 
             <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -350,6 +334,8 @@ const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
 const AppDetailView = ({ app, onBack }) => {
     const [showInfo, setShowInfo] = useState(false);
     useEffect(() => { window.scrollTo(0, 0); }, []);
+
+    if (!app) return null;
 
     return (
         <div className="fade-in slide-in-from-right-8 duration-500 pb-24 min-h-screen">
@@ -404,7 +390,7 @@ const AppDetailView = ({ app, onBack }) => {
                     </div>
 
                     <div className="space-y-6">
-                        {/* 1. Download Card (ONLY Info & Download buttons) */}
+                        {/* 1. Download Card */}
                         <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[50px]" />
                             <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2"><Download className="text-blue-400" /> Download</h3>
@@ -453,7 +439,7 @@ const AppDetailView = ({ app, onBack }) => {
                             </div>
                         </div>
 
-                        {/* 2. Shield Section (SEPARATED into its own distinct section below Download Card!) */}
+                        {/* 2. Shield Section */}
                         <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
                             <h3 className="text-xl font-bold text-slate-100 mb-4 flex items-center gap-2"><ShieldAlert className="text-orange-400" /> Keamanan & Privasi</h3>
                             <div className="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl flex gap-3 text-orange-200/80 text-xs">
@@ -491,72 +477,69 @@ const AppDetailView = ({ app, onBack }) => {
     );
 };
 
-// --- MAIN APP WITH FRIENDLY URL ROUTING ---
+// --- MAIN APP COMPONENT ---
 function App() {
     const [data, setData] = useState({ apps: [], categories: [], materialCategories: [] });
-    const [loading, setLoading] = useState(true);
     const [currentView, setCurrentView] = useState('home'); // 'home' | 'allapps' | 'detail'
     const [selectedApp, setSelectedApp] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isLoaded, setIsLoaded] = useState(false);
 
-    // Load data from apps.json
+    // Parse route and match app using robust slug matching
+    const processRoute = (jsonData) => {
+        const path = window.location.pathname;
+        const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
+        
+        if (matchApp) {
+            const slug = matchApp[1].toLowerCase();
+            const found = jsonData.apps.find(a => getSlug(a) === slug || a.id === slug);
+            if (found) {
+                setSelectedApp(found);
+                setCurrentView('detail');
+            } else {
+                setCurrentView('home');
+            }
+        } else if (path === '/all-apps' || path === '/all') {
+            setCurrentView('allapps');
+        } else {
+            // Check query param fallback
+            const params = new URLSearchParams(window.location.search);
+            const appId = params.get('app');
+            if (appId) {
+                const found = jsonData.apps.find(a => getSlug(a) === appId.toLowerCase() || a.id === appId);
+                if (found) {
+                    setSelectedApp(found);
+                    setCurrentView('detail');
+                } else {
+                    setCurrentView('home');
+                }
+            } else {
+                setCurrentView('home');
+            }
+        }
+        setIsLoaded(true);
+    };
+
+    // Load data from apps.json on mount
     useEffect(() => {
         fetch('./data/apps.json')
             .then(res => res.json())
             .then(jsonData => {
                 setData(jsonData);
-                setLoading(false);
-
-                // Parse initial URL path /app/{slug} or query params
-                const path = window.location.pathname;
-                const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
-                if (matchApp) {
-                    const slug = matchApp[1];
-                    const found = jsonData.apps.find(a => a.slug === slug || a.id === slug);
-                    if (found) {
-                        setSelectedApp(found);
-                        setCurrentView('detail');
-                    }
-                } else {
-                    // Fallback to query param ?app=id for legacy support
-                    const params = new URLSearchParams(window.location.search);
-                    const appId = params.get('app');
-                    if (appId) {
-                        const found = jsonData.apps.find(a => a.id === appId || a.slug === appId);
-                        if (found) {
-                            setSelectedApp(found);
-                            setCurrentView('detail');
-                        }
-                    }
-                }
+                processRoute(jsonData);
             })
             .catch(err => {
                 console.error("Failed to load apps.json", err);
-                setLoading(false);
+                setIsLoaded(true);
             });
     }, []);
 
-    // Sync state with browser History API (popstate)
+    // Handle browser back/forward buttons
     useEffect(() => {
         const handlePopState = () => {
-            const path = window.location.pathname;
-            const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
-            if (matchApp) {
-                const slug = matchApp[1];
-                const found = data.apps.find(a => a.slug === slug || a.id === slug);
-                if (found) {
-                    setSelectedApp(found);
-                    setCurrentView('detail');
-                    return;
-                }
+            if (data.apps.length > 0) {
+                processRoute(data);
             }
-            if (path === '/all-apps' || path === '/all') {
-                setSelectedApp(null);
-                setCurrentView('allapps');
-                return;
-            }
-            setSelectedApp(null);
-            setCurrentView('home');
         };
 
         window.addEventListener('popstate', handlePopState);
@@ -564,10 +547,11 @@ function App() {
     }, [data.apps]);
 
     const navigateToDetail = (app) => {
+        const slug = getSlug(app);
         setSelectedApp(app);
         setCurrentView('detail');
-        const url = `/app/${app.slug}`;
-        window.history.pushState({ view: 'detail', slug: app.slug }, '', url);
+        const url = `/app/${slug}`;
+        window.history.pushState({ view: 'detail', slug: slug }, '', url);
         window.scrollTo(0, 0);
     };
 
@@ -583,17 +567,6 @@ function App() {
         window.history.pushState({ view: 'home' }, '', '/');
         window.scrollTo(0, 0);
     };
-
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-[#05050a] flex items-center justify-center text-slate-400">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                    <p className="text-sm font-medium">Memuat Dhikzzz Galaxy...</p>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen bg-[#05050a] text-slate-200 font-sans selection:bg-blue-500/30 overflow-x-hidden">
@@ -619,7 +592,6 @@ function App() {
                 {currentView === 'home' && (
                     <HomeView 
                         apps={data.apps}
-                        categories={data.categories}
                         materialCategories={data.materialCategories}
                         onAppSelect={navigateToDetail} 
                         searchQuery={searchQuery} 
@@ -635,7 +607,7 @@ function App() {
                         onBack={navigateToHome}
                     />
                 )}
-                {currentView === 'detail' && selectedApp && (
+                {currentView === 'detail' && (
                     <AppDetailView 
                         app={selectedApp} 
                         onBack={navigateToHome}
