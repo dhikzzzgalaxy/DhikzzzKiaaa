@@ -47,7 +47,7 @@ const Icon = ({ name, size = 24, className = "" }) => (
 
 const Search = (p) => <Icon name="Search" {...p} />;
 const Download = (p) => <Icon name="Download" {...p} />;
-const Star = (p> <Icon name="Star" {...p} />;
+const Star = (p) => <Icon name="Star" {...p} />;
 const ShieldCheck = (p) => <Icon name="ShieldCheck" {...p} />;
 const ChevronLeft = (p) => <Icon name="ChevronLeft" {...p} />;
 const Menu = (p) => <Icon name="Menu" {...p} />;
@@ -241,7 +241,7 @@ const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearc
             </section>
 
             {/* Material Categories Grid Section */}
-            {!searchQuery && (
+            {!searchQuery && materialCategories && materialCategories.length > 0 && (
                 <section className="max-w-7xl mx-auto px-4 md:px-8 mt-20">
                     <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 md:p-8">
                         <h2 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
@@ -294,21 +294,23 @@ const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
                 <h1 className="text-4xl font-bold text-slate-100 mb-4 mt-8">Semua Aplikasi</h1>
                 <p className="text-slate-400 mb-8">Jelajahi seluruh koleksi aplikasi mod terbaik kami.</p>
 
-                <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 w-full justify-start md:justify-center relative z-20">
-                    {categories.map((cat, i) => (
-                        <button 
-                            key={i} 
-                            onClick={() => setSelectedCategory(cat)} 
-                            className={`whitespace-nowrap px-5 py-2.5 rounded-xl border transition-all font-medium ${
-                                selectedCategory === cat 
-                                ? "bg-blue-500/20 border-blue-500 text-blue-400" 
-                                : "bg-white/[0.03] border-white/[0.05] text-slate-300 hover:bg-white/[0.08] hover:border-blue-500/30 hover:text-blue-400"
-                            }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
+                {categories && categories.length > 0 && (
+                    <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 w-full justify-start md:justify-center relative z-20">
+                        {categories.map((cat, i) => (
+                            <button 
+                                key={i} 
+                                onClick={() => setSelectedCategory(cat)} 
+                                className={`whitespace-nowrap px-5 py-2.5 rounded-xl border transition-all font-medium ${
+                                    selectedCategory === cat 
+                                    ? "bg-blue-500/20 border-blue-500 text-blue-400" 
+                                    : "bg-white/[0.03] border-white/[0.05] text-slate-300 hover:bg-white/[0.08] hover:border-blue-500/30 hover:text-blue-400"
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </section>
 
             <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -326,6 +328,8 @@ const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
 const AppDetailView = ({ app, onBack }) => {
     const [showInfo, setShowInfo] = useState(false);
     useEffect(() => { window.scrollTo(0, 0); }, []);
+
+    if (!app) return null;
 
     return (
         <div className="fade-in slide-in-from-right-8 duration-500 pb-24 min-h-screen">
@@ -467,76 +471,69 @@ const AppDetailView = ({ app, onBack }) => {
     );
 };
 
-// --- MAIN APP WITH INSTANT & SYNCHRONOUS INITIAL ROUTE PARSING ---
+// --- MAIN APP COMPONENT ---
 function App() {
-    // Initialize state immediately from window.location so it doesn't wait for fetch to render detail view
-    const getInitialRouteState = () => {
-        const path = window.location.pathname;
-        const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
-        if (matchApp) {
-            return { view: 'detail', slug: matchApp[1] };
-        }
-        if (path === '/all-apps' || path === '/all') {
-            return { view: 'allapps', slug: null };
-        }
-        const params = new URLSearchParams(window.location.search);
-        const appId = params.get('app');
-        if (appId) {
-            return { view: 'detail', slug: appId };
-        }
-        return { view: 'home', slug: null };
-    };
-
-    const initState = getInitialRouteState();
-
     const [data, setData] = useState({ apps: [], categories: [], materialCategories: [] });
-    const [currentView, setCurrentView] = useState(initState.view);
+    const [currentView, setCurrentView] = useState('home'); // 'home' | 'allapps' | 'detail'
     const [selectedApp, setSelectedApp] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isLoaded, setIsLoaded] = useState(false);
 
-    // Load data from apps.json and match app if needed
+    // Parse route and match app
+    const processRoute = (jsonData) => {
+        const path = window.location.pathname;
+        const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
+        
+        if (matchApp) {
+            const slug = matchApp[1];
+            const found = jsonData.apps.find(a => a.slug === slug || a.id === slug);
+            if (found) {
+                setSelectedApp(found);
+                setCurrentView('detail');
+            } else {
+                setCurrentView('home');
+            }
+        } else if (path === '/all-apps' || path === '/all') {
+            setCurrentView('allapps');
+        } else {
+            // Check query param fallback
+            const params = new URLSearchParams(window.location.search);
+            const appId = params.get('app');
+            if (appId) {
+                const found = jsonData.apps.find(a => a.id === appId || a.slug === appId);
+                if (found) {
+                    setSelectedApp(found);
+                    setCurrentView('detail');
+                } else {
+                    setCurrentView('home');
+                }
+            } else {
+                setCurrentView('home');
+            }
+        }
+        setIsLoaded(true);
+    };
+
+    // Load data from apps.json on mount
     useEffect(() => {
         fetch('./data/apps.json')
             .then(res => res.json())
             .then(jsonData => {
                 setData(jsonData);
-
-                // If initial state was detail, find and set the app
-                if (initState.view === 'detail' && initState.slug) {
-                    const found = jsonData.apps.find(a => a.slug === initState.slug || a.id === initState.slug);
-                    if (found) {
-                        setSelectedApp(found);
-                    } else {
-                        setCurrentView('home');
-                    }
-                }
+                processRoute(jsonData);
             })
             .catch(err => {
                 console.error("Failed to load apps.json", err);
+                setIsLoaded(true);
             });
     }, []);
 
-    // Sync state with browser History API (popstate)
+    // Handle browser back/forward buttons
     useEffect(() => {
         const handlePopState = () => {
-            const path = window.location.pathname;
-            const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
-            if (matchApp) {
-                const slug = matchApp[1];
-                const found = data.apps.find(a => a.slug === slug || a.id === slug);
-                if (found) {
-                    setSelectedApp(found);
-                    setCurrentView('detail');
-                    return;
-                }
+            if (data.apps.length > 0) {
+                processRoute(data);
             }
-            if (path === '/all-apps' || path === '/all') {
-                setSelectedApp(null);
-                setCurrentView('allapps');
-                return;
-            }
-            setSelectedApp(null);
-            setCurrentView('home');
         };
 
         window.addEventListener('popstate', handlePopState);
@@ -604,20 +601,10 @@ function App() {
                     />
                 )}
                 {currentView === 'detail' && (
-                    selectedApp ? (
-                        <AppDetailView 
-                            app={selectedApp} 
-                            onBack={navigateToHome}
-                        />
-                    ) : (
-                        // Fallback while apps.json is fetching for direct deep link
-                        <div className="min-h-screen pt-40 flex items-center justify-center text-slate-400">
-                            <div className="flex flex-col items-center gap-4">
-                                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                                <p className="text-sm font-medium">Memuat detail aplikasi...</p>
-                            </div>
-                        </div>
-                    )
+                    <AppDetailView 
+                        app={selectedApp} 
+                        onBack={navigateToHome}
+                    />
                 )}
             </main>
 
