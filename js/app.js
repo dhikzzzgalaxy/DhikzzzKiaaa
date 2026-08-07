@@ -47,7 +47,7 @@ const Icon = ({ name, size = 24, className = "" }) => (
 
 const Search = (p) => <Icon name="Search" {...p} />;
 const Download = (p) => <Icon name="Download" {...p} />;
-const Star = (p) => <Icon name="Star" {...p} />;
+const Star = (p> <Icon name="Star" {...p} />;
 const ShieldCheck = (p) => <Icon name="ShieldCheck" {...p} />;
 const ChevronLeft = (p) => <Icon name="ChevronLeft" {...p} />;
 const Menu = (p) => <Icon name="Menu" {...p} />;
@@ -180,7 +180,7 @@ const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearc
                 </div>
             </section>
 
-            {/* Rilis Terbaru Horizontal Scroll (Ditempatkan di atas Trending Minggu Ini) */}
+            {/* Rilis Terbaru Horizontal Scroll */}
             {!searchQuery && (
                 <section className="max-w-7xl mx-auto px-4 md:px-8 mb-16">
                     <div className="flex items-center justify-between mb-6">
@@ -212,7 +212,7 @@ const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearc
                 </section>
             )}
 
-            {/* Main Apps (Hanya 10 aplikasi di beranda jika tidak search) */}
+            {/* Main Apps */}
             <section className="max-w-7xl mx-auto px-4 md:px-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <h2 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
@@ -274,7 +274,7 @@ const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearc
     );
 };
 
-// --- ALL APPS VIEW (Kategori Geser hanya tampil di sini) ---
+// --- ALL APPS VIEW ---
 const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -294,7 +294,6 @@ const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
                 <h1 className="text-4xl font-bold text-slate-100 mb-4 mt-8">Semua Aplikasi</h1>
                 <p className="text-slate-400 mb-8">Jelajahi seluruh koleksi aplikasi mod terbaik kami.</p>
 
-                {/* Kategori Geser (Hanya tampil di dalam Semua Aplikasi) */}
                 <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 w-full justify-start md:justify-center relative z-20">
                     {categories.map((cat, i) => (
                         <button 
@@ -381,7 +380,7 @@ const AppDetailView = ({ app, onBack }) => {
                     </div>
 
                     <div className="space-y-6">
-                        {/* 1. Download Card (ONLY Info & Download buttons) */}
+                        {/* 1. Download Card */}
                         <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[50px]" />
                             <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2"><Download className="text-blue-400" /> Download</h3>
@@ -430,7 +429,7 @@ const AppDetailView = ({ app, onBack }) => {
                             </div>
                         </div>
 
-                        {/* 2. Shield Section (SEPARATED into its own distinct section below Download Card!) */}
+                        {/* 2. Shield Section */}
                         <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
                             <h3 className="text-xl font-bold text-slate-100 mb-4 flex items-center gap-2"><ShieldAlert className="text-orange-400" /> Keamanan & Privasi</h3>
                             <div className="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl flex gap-3 text-orange-200/80 text-xs">
@@ -468,50 +467,49 @@ const AppDetailView = ({ app, onBack }) => {
     );
 };
 
-// --- MAIN APP WITH ROBUST FRIENDLY URL ROUTING & NO INITIAL LOADING ---
+// --- MAIN APP WITH INSTANT & SYNCHRONOUS INITIAL ROUTE PARSING ---
 function App() {
-    const [data, setData] = useState({ apps: [], categories: [], materialCategories: [] });
-    const [currentView, setCurrentView] = useState('home'); // 'home' | 'allapps' | 'detail'
-    const [selectedApp, setSelectedApp] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
-
-    // Helper to resolve view based on pathname /app/{slug}
-    const resolveInitialRoute = (jsonData) => {
+    // Initialize state immediately from window.location so it doesn't wait for fetch to render detail view
+    const getInitialRouteState = () => {
         const path = window.location.pathname;
         const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
         if (matchApp) {
-            const slug = matchApp[1];
-            const found = jsonData.apps.find(a => a.slug === slug || a.id === slug);
-            if (found) {
-                setSelectedApp(found);
-                setCurrentView('detail');
-                return;
-            }
+            return { view: 'detail', slug: matchApp[1] };
         }
         if (path === '/all-apps' || path === '/all') {
-            setCurrentView('allapps');
-            return;
+            return { view: 'allapps', slug: null };
         }
-        // Fallback to query param ?app=id for legacy support
         const params = new URLSearchParams(window.location.search);
         const appId = params.get('app');
         if (appId) {
-            const found = jsonData.apps.find(a => a.id === appId || a.slug === appId);
-            if (found) {
-                setSelectedApp(found);
-                setCurrentView('detail');
-                return;
-            }
+            return { view: 'detail', slug: appId };
         }
+        return { view: 'home', slug: null };
     };
 
-    // Load data synchronously or immediately
+    const initState = getInitialRouteState();
+
+    const [data, setData] = useState({ apps: [], categories: [], materialCategories: [] });
+    const [currentView, setCurrentView] = useState(initState.view);
+    const [selectedApp, setSelectedApp] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // Load data from apps.json and match app if needed
     useEffect(() => {
         fetch('./data/apps.json')
             .then(res => res.json())
             .then(jsonData => {
                 setData(jsonData);
-                resolveInitialRoute(jsonData);
+
+                // If initial state was detail, find and set the app
+                if (initState.view === 'detail' && initState.slug) {
+                    const found = jsonData.apps.find(a => a.slug === initState.slug || a.id === initState.slug);
+                    if (found) {
+                        setSelectedApp(found);
+                    } else {
+                        setCurrentView('home');
+                    }
+                }
             })
             .catch(err => {
                 console.error("Failed to load apps.json", err);
@@ -605,11 +603,21 @@ function App() {
                         onBack={navigateToHome}
                     />
                 )}
-                {currentView === 'detail' && selectedApp && (
-                    <AppDetailView 
-                        app={selectedApp} 
-                        onBack={navigateToHome}
-                    />
+                {currentView === 'detail' && (
+                    selectedApp ? (
+                        <AppDetailView 
+                            app={selectedApp} 
+                            onBack={navigateToHome}
+                        />
+                    ) : (
+                        // Fallback while apps.json is fetching for direct deep link
+                        <div className="min-h-screen pt-40 flex items-center justify-center text-slate-400">
+                            <div className="flex flex-col items-center gap-4">
+                                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                                <p className="text-sm font-medium">Memuat detail aplikasi...</p>
+                            </div>
+                        </div>
+                    )
                 )}
             </main>
 
