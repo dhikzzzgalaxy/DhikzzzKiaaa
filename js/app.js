@@ -253,7 +253,7 @@ const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearc
                                 return (
                                     <div 
                                         key={cat.id}
-                                        onClick={onShowAll}
+                                        onClick={() => onShowAll(cat.id)}
                                         className="group bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.05] hover:border-blue-500/40 rounded-2xl p-3 md:p-4 flex flex-col items-center gap-2 md:gap-3 cursor-pointer transition-all duration-300"
                                     >
                                         <div className="w-[36px] h-[36px] md:w-[48px] md:h-[48px] rounded-lg md:rounded-xl bg-gradient-to-br from-[#4F7CFF] to-[#8B5CF6] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -275,8 +275,7 @@ const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearc
 };
 
 // --- ALL APPS VIEW ---
-const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
-    const [selectedCategory, setSelectedCategory] = useState("All");
+const AllAppsView = ({ apps, categories, onAppSelect, onBack, selectedCategory, setSelectedCategory }) => {
     useEffect(() => { window.scrollTo(0, 0); }, []);
 
     const filteredAllApps = useMemo(() => {
@@ -325,9 +324,16 @@ const AllAppsView = ({ apps, categories, onAppSelect, onBack }) => {
 };
 
 // --- APP DETAIL VIEW WITH SEPARATED SHIELD SECTION ---
-const AppDetailView = ({ app, onBack }) => {
+const AppDetailView = ({ app, allApps, onAppSelect, onBack }) => {
     const [showInfo, setShowInfo] = useState(false);
     useEffect(() => { window.scrollTo(0, 0); }, []);
+
+    const relatedApps = useMemo(() => {
+        if (!allApps || !app) return [];
+        return allApps
+            .filter(a => a.category === app.category && a.id !== app.id)
+            .slice(0, 5);
+    }, [allApps, app]);
 
     if (!app) return null;
 
@@ -445,25 +451,30 @@ const AppDetailView = ({ app, onBack }) => {
                             </div>
                         </div>
 
-                        {/* Share Button */}
-                        <button
-                            onClick={() => {
-                                const shareUrl = window.location.href;
-                                if (navigator.share) {
-                                    navigator.share({
-                                        title: app.title,
-                                        text: `Download ${app.title} dari Dhikzzz Galaxy`,
-                                        url: shareUrl
-                                    }).catch(() => {});
-                                } else {
-                                    navigator.clipboard.writeText(shareUrl);
-                                    alert("Link aplikasi berhasil disalin!");
-                                }
-                            }}
-                            className="w-full py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-slate-300 font-semibold flex items-center justify-center gap-2 hover:bg-white/[0.08] transition-colors"
-                        >
-                            <Share2 size={18} /> Bagikan Aplikasi
-                        </button>
+                        {/* Related Apps Section */}
+                        {relatedApps.length > 0 && (
+                            <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
+                                <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
+                                    <Layers className="text-blue-400" size={20} /> Related Apps
+                                </h3>
+                                <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+                                    {relatedApps.map((relatedApp) => (
+                                        <div 
+                                            key={relatedApp.id} 
+                                            onClick={() => onAppSelect(relatedApp)}
+                                            className="group cursor-pointer flex flex-col items-center gap-2"
+                                        >
+                                            <div className="w-full aspect-square rounded-2xl overflow-hidden border border-white/10 group-hover:border-blue-500/50 transition-all duration-300 shadow-lg">
+                                                <img src={relatedApp.icon} alt={relatedApp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                            </div>
+                                            <span className="text-[10px] md:text-xs font-bold text-slate-300 text-center line-clamp-2 group-hover:text-blue-400 transition-colors">
+                                                {relatedApp.title}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -477,6 +488,7 @@ function App() {
     const [currentView, setCurrentView] = useState('home'); // 'home' | 'allapps' | 'detail'
     const [selectedApp, setSelectedApp] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('All');
 
     // Sync URL with state
     const updateHistory = (view, app = null, replace = false) => {
@@ -552,7 +564,8 @@ function App() {
         updateHistory('detail', app);
     };
 
-    const navigateToAllApps = () => {
+    const navigateToAllApps = (category = 'All') => {
+        setSelectedCategory(category);
         setCurrentView('allapps');
         window.scrollTo(0, 0);
         updateHistory('allapps');
@@ -610,11 +623,15 @@ function App() {
                         categories={data.categories}
                         onAppSelect={navigateToDetail} 
                         onBack={handleBack}
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
                     />
                 )}
                 {currentView === 'detail' && (
                     <AppDetailView 
                         app={selectedApp} 
+                        allApps={data.apps}
+                        onAppSelect={navigateToDetail}
                         onBack={handleBack}
                     />
                 )}
