@@ -445,7 +445,25 @@ const AppDetailView = ({ app, onBack }) => {
                             </div>
                         </div>
 
-
+                        {/* Share Button */}
+                        <button
+                            onClick={() => {
+                                const shareUrl = window.location.href;
+                                if (navigator.share) {
+                                    navigator.share({
+                                        title: app.title,
+                                        text: `Download ${app.title} dari Dhikzzz Galaxy`,
+                                        url: shareUrl
+                                    }).catch(() => {});
+                                } else {
+                                    navigator.clipboard.writeText(shareUrl);
+                                    alert("Link aplikasi berhasil disalin!");
+                                }
+                            }}
+                            className="w-full py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-slate-300 font-semibold flex items-center justify-center gap-2 hover:bg-white/[0.08] transition-colors"
+                        >
+                            <Share2 size={18} /> Bagikan Aplikasi
+                        </button>
                     </div>
                 </div>
             </div>
@@ -461,9 +479,38 @@ function App() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // Default to home view on load
+    // Parse route and match app using ID (/app/{id})
     const processRoute = (jsonData) => {
-        setCurrentView('home');
+        const path = window.location.pathname;
+        const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
+        
+        if (matchApp) {
+            const appId = matchApp[1];
+            const found = jsonData.apps.find(a => String(a.id) === String(appId));
+            if (found) {
+                setSelectedApp(found);
+                setCurrentView('detail');
+            } else {
+                setCurrentView('home');
+            }
+        } else if (path === '/all-apps' || path === '/all') {
+            setCurrentView('allapps');
+        } else {
+            // Check query param fallback
+            const params = new URLSearchParams(window.location.search);
+            const appId = params.get('app');
+            if (appId) {
+                const found = jsonData.apps.find(a => String(a.id) === String(appId));
+                if (found) {
+                    setSelectedApp(found);
+                    setCurrentView('detail');
+                } else {
+                    setCurrentView('home');
+                }
+            } else {
+                setCurrentView('home');
+            }
+        }
         setIsLoaded(true);
     };
 
@@ -481,22 +528,36 @@ function App() {
             });
     }, []);
 
+    // Handle browser back/forward buttons
+    useEffect(() => {
+        const handlePopState = () => {
+            if (data.apps.length > 0) {
+                processRoute(data);
+            }
+        };
 
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [data.apps]);
 
     const navigateToDetail = (app) => {
         setSelectedApp(app);
         setCurrentView('detail');
+        const url = `/app/${app.id}`;
+        window.history.pushState({ view: 'detail', id: app.id }, '', url);
         window.scrollTo(0, 0);
     };
 
     const navigateToAllApps = () => {
         setCurrentView('allapps');
+        window.history.pushState({ view: 'allapps' }, '', '/all-apps');
         window.scrollTo(0, 0);
     };
 
     const navigateToHome = () => {
         setSelectedApp(null);
         setCurrentView('home');
+        window.history.pushState({ view: 'home' }, '', '/');
         window.scrollTo(0, 0);
     };
 
