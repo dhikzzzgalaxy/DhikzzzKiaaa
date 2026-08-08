@@ -332,7 +332,7 @@ const AppDetailView = ({ app, allApps, onAppSelect, onBack }) => {
         if (!allApps || !app) return [];
         return allApps
             .filter(a => a.category === app.category && a.id !== app.id)
-            .slice(0, 5);
+            .slice(0, 6);
     }, [allApps, app]);
 
     if (!app) return null;
@@ -445,7 +445,7 @@ const AppDetailView = ({ app, allApps, onAppSelect, onBack }) => {
                                 <h3 className="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
                                     <Layers className="text-blue-400" size={20} /> Related Apps
                                 </h3>
-                                <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+                                <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
                                     {relatedApps.map((relatedApp) => (
                                         <div 
                                             key={relatedApp.id} 
