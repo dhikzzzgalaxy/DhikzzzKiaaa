@@ -2,14 +2,6 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/app/:slug",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/all-apps",
-      "destination": "/index.html"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
