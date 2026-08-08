@@ -478,12 +478,67 @@ function App() {
     const [selectedApp, setSelectedApp] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Load data from apps.json on mount
+    // Sync URL with state
+    const updateHistory = (view, app = null, replace = false) => {
+        let path = '/';
+        if (view === 'allapps') path = '/all-apps';
+        if (view === 'detail' && app) path = `/app/${app.id}`;
+        
+        const state = { view, appId: app ? app.id : null };
+        if (replace) {
+            window.history.replaceState(state, '', path);
+        } else if (window.location.pathname !== path) {
+            window.history.pushState(state, '', path);
+        }
+    };
+
+    // Handle browser back/forward buttons
+    useEffect(() => {
+        const handlePopState = (event) => {
+            const state = event.state;
+            if (state) {
+                setCurrentView(state.view);
+                if (state.view === 'detail' && state.appId) {
+                    const app = data.apps.find(a => String(a.id) === String(state.appId));
+                    setSelectedApp(app || null);
+                } else {
+                    setSelectedApp(null);
+                }
+            } else {
+                setCurrentView('home');
+                setSelectedApp(null);
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [data.apps]);
+
+    // Load data and handle initial routing
     useEffect(() => {
         fetch('./data/apps.json')
             .then(res => res.json())
             .then(jsonData => {
                 setData(jsonData);
+                
+                const path = window.location.pathname;
+                if (path === '/all-apps') {
+                    setCurrentView('allapps');
+                    updateHistory('allapps', null, true);
+                } else if (path.startsWith('/app/')) {
+                    const appId = path.split('/app/')[1];
+                    const app = jsonData.apps.find(a => String(a.id) === String(appId));
+                    if (app) {
+                        setSelectedApp(app);
+                        setCurrentView('detail');
+                        updateHistory('detail', app, true);
+                    } else {
+                        setCurrentView('home');
+                        updateHistory('home', null, true);
+                    }
+                } else {
+                    updateHistory('home', null, true);
+                }
             })
             .catch(err => {
                 console.error("Failed to load apps.json", err);
@@ -494,17 +549,28 @@ function App() {
         setSelectedApp(app);
         setCurrentView('detail');
         window.scrollTo(0, 0);
+        updateHistory('detail', app);
     };
 
     const navigateToAllApps = () => {
         setCurrentView('allapps');
         window.scrollTo(0, 0);
+        updateHistory('allapps');
     };
 
     const navigateToHome = () => {
         setSelectedApp(null);
         setCurrentView('home');
         window.scrollTo(0, 0);
+        updateHistory('home');
+    };
+
+    const handleBack = () => {
+        if (window.history.length > 1 && window.history.state && window.history.state.view !== 'home') {
+            window.history.back();
+        } else {
+            navigateToHome();
+        }
     };
 
     return (
@@ -543,13 +609,13 @@ function App() {
                         apps={data.apps}
                         categories={data.categories}
                         onAppSelect={navigateToDetail} 
-                        onBack={navigateToHome}
+                        onBack={handleBack}
                     />
                 )}
                 {currentView === 'detail' && (
                     <AppDetailView 
                         app={selectedApp} 
-                        onBack={navigateToHome}
+                        onBack={handleBack}
                     />
                 )}
             </main>
