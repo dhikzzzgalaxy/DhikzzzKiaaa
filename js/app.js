@@ -439,18 +439,6 @@ const AppDetailView = ({ app, allApps, onAppSelect, onBack }) => {
                             </div>
                         </div>
 
-                        {/* 2. Shield Section */}
-                        <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
-                            <h3 className="text-xl font-bold text-slate-100 mb-4 flex items-center gap-2"><ShieldAlert className="text-orange-400" /> Keamanan & Privasi</h3>
-                            <div className="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl flex gap-3 text-orange-200/80 text-xs">
-                                <ShieldAlert size={24} className="shrink-0 text-orange-400" />
-                                <div className="flex flex-col space-y-2">
-                                    <p>Aplikasi ini dirilis oleh Dhikzzz Galaxy dan telah saya pastikan aman untuk digunakan. Aplikasi tidak mengandung virus, malware, maupun kode berbahaya.</p>
-                                    <p>Jika muncul peringatan seperti "Aplikasi Berbahaya" atau "Aplikasi Berisiko", hal tersebut biasanya karena aplikasi diunduh dari luar Google Play Store, bukan karena mengandung virus. Apabila instalasi diblokir, Anda dapat menonaktifkan Google Play Protect sementara, lalu mengaktifkannya kembali setelah proses instalasi selesai.</p>
-                                </div>
-                            </div>
-                        </div>
-
                         {/* Related Apps Section */}
                         {relatedApps.length > 0 && (
                             <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
@@ -464,10 +452,10 @@ const AppDetailView = ({ app, allApps, onAppSelect, onBack }) => {
                                             onClick={() => onAppSelect(relatedApp)}
                                             className="group cursor-pointer flex flex-col items-center gap-2"
                                         >
-                                            <div className="w-full aspect-square rounded-2xl overflow-hidden border border-white/10 group-hover:border-blue-500/50 transition-all duration-300 shadow-lg">
+                                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden border border-white/10 group-hover:border-blue-500/50 transition-all duration-300 shadow-lg">
                                                 <img src={relatedApp.icon} alt={relatedApp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                             </div>
-                                            <span className="text-[10px] md:text-xs font-bold text-slate-300 text-center line-clamp-2 group-hover:text-blue-400 transition-colors">
+                                            <span className="text-[9px] md:text-[10px] font-bold text-slate-300 text-center line-clamp-2 group-hover:text-blue-400 transition-colors">
                                                 {relatedApp.title}
                                             </span>
                                         </div>
@@ -475,6 +463,18 @@ const AppDetailView = ({ app, allApps, onAppSelect, onBack }) => {
                                 </div>
                             </div>
                         )}
+
+                        {/* 2. Shield Section */}
+                        <div className="bg-gradient-to-b from-white/[0.05] to-transparent border border-white/10 rounded-3xl p-6 relative overflow-hidden">
+                            <h3 className="text-xl font-bold text-slate-100 mb-4 flex items-center gap-2"><ShieldAlert className="text-orange-400" /> Keamanan & Privasi</h3>
+                            <div className="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl flex gap-3 text-orange-200/80 text-xs">
+                                <ShieldAlert size={24} className="shrink-0 text-orange-400" />
+                                <div className="flex flex-col space-y-2">
+                                    <p>Aplikasi ini dirilis oleh Dhikzzz Galaxy dan telah saya pastikan aman untuk digunakan. Aplikasi tidak mengandung virus, malware, maupun kode berbahaya.</p>
+                                    <p>Jika muncul peringatan seperti "Aplikasi Berbahaya" atau "Aplikasi Berisiko", hal tersebut biasanya karena aplikasi diunduh dari luar Google Play Store, bukan karena mengandung virus. Apabila instalasi diblokir, Anda dapat menonaktifkan Google Play Protect sementara, lalu mengaktifkannya kembali setelah proses instalasi selesai.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
