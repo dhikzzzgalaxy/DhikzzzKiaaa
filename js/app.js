@@ -477,41 +477,6 @@ function App() {
     const [currentView, setCurrentView] = useState('home'); // 'home' | 'allapps' | 'detail'
     const [selectedApp, setSelectedApp] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    // Process path and extract slug
-    const processRoute = (jsonData) => {
-        const path = window.location.pathname;
-        const appMatch = path.match(/^\/app\/([a-zA-Z0-9_-]+)\/?$/);
-
-        if (appMatch) {
-            const slug = appMatch[1];
-            const found = jsonData.apps.find(a => String(a.id) === String(slug));
-            if (found) {
-                setSelectedApp(found);
-                setCurrentView('detail');
-            } else {
-                setCurrentView('home');
-            }
-        } else if (path === '/all-apps' || path === '/all') {
-            setCurrentView('allapps');
-        } else {
-            const params = new URLSearchParams(window.location.search);
-            const appId = params.get('app');
-            if (appId) {
-                const found = jsonData.apps.find(a => String(a.id) === String(appId));
-                if (found) {
-                    setSelectedApp(found);
-                    setCurrentView('detail');
-                } else {
-                    setCurrentView('home');
-                }
-            } else {
-                setCurrentView('home');
-            }
-        }
-        setIsLoaded(true);
-    };
 
     // Load data from apps.json on mount
     useEffect(() => {
@@ -519,44 +484,26 @@ function App() {
             .then(res => res.json())
             .then(jsonData => {
                 setData(jsonData);
-                processRoute(jsonData);
             })
             .catch(err => {
                 console.error("Failed to load apps.json", err);
-                setIsLoaded(true);
             });
     }, []);
-
-    // Handle browser back/forward buttons
-    useEffect(() => {
-        const handlePopState = () => {
-            if (data.apps.length > 0) {
-                processRoute(data);
-            }
-        };
-
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-    }, [data.apps]);
 
     const navigateToDetail = (app) => {
         setSelectedApp(app);
         setCurrentView('detail');
-        const url = `/app/${app.id}`;
-        window.history.pushState({ view: 'detail', id: app.id }, '', url);
         window.scrollTo(0, 0);
     };
 
     const navigateToAllApps = () => {
         setCurrentView('allapps');
-        window.history.pushState({ view: 'allapps' }, '', '/all-apps');
         window.scrollTo(0, 0);
     };
 
     const navigateToHome = () => {
         setSelectedApp(null);
         setCurrentView('home');
-        window.history.pushState({ view: 'home' }, '', '/');
         window.scrollTo(0, 0);
     };
 
