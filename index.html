@@ -2,920 +2,522 @@
 <html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Chat Screenshot Editor</title>
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elysian tools - Platform All Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        wa: {
-                            dark: '#0B141A',
-                            darker: '#000000',
-                            header: '#1f2c34',
-                            chatBg: '#0B141A',
-                            msgOut: '#005c4b',
-                            msgIn: '#202c33',
-                            text: '#e9edef',
-                            textMuted: '#8696a0',
-                            green: '#00a884',
-                            blueTick: '#53bdeb'
+                        elysian: {
+                            bg: '#0f1115',       // Very dark background
+                            card: '#1a1d24',     // Slightly lighter for cards
+                            border: '#2a2e37',   // Subtle borders
+                            accent: '#3b82f6',   // Blue accent
+                            text: '#e2e8f0',     // Light gray text
+                            muted: '#94a3b8'     // Muted text
                         }
                     },
-                    backgroundImage: {
-                        'wa-pattern': "url('data:image/svg+xml;utf8,<svg width=\"600\" height=\"600\" xmlns=\"http://www.w3.org/2000/svg\"><g fill=\"none\" fill-rule=\"evenodd\"><g fill=\"%231b262d\" fill-opacity=\"0.4\"><path d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/></g></g></svg>')"
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-up': 'slideUp 0.4s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- html2canvas for exporting -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* Custom scrollbar for editor panel */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1f2c34;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 4px;
+        body {
+            background-color: #0f1115;
+            color: #e2e8f0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        /* Device frame */
-        .device-mockup {
-            width: 375px;
-            height: 812px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            background-color: #000;
-            border: 8px solid #333;
-            border-radius: 36px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 
-        /* Status bar */
-        .status-bar {
-            padding: 4px 16px;
-            font-size: 12px;
-            font-weight: 500;
-            z-index: 50;
+        .glass-panel {
+            background: rgba(26, 29, 36, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 25px;
-            background-color: #333;
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            z-index: 60;
+        .tool-card {
+            transition: all 0.2s ease;
+        }
+        .tool-card:active {
+            transform: scale(0.98);
+        }
+        @media (min-width: 768px) {
+            .tool-card:hover {
+                transform: translateY(-2px);
+                border-color: rgba(59, 130, 246, 0.5);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            }
         }
 
-        /* Chat area pattern */
-        .chat-background {
-            background-color: #0B141A;
-            background-image: url('data:image/svg+xml;utf8,<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" opacity="0.04"><path d="M... (very long path omitted for brevity) ... Z" fill="%23ffffff"/></svg>');
-            /* Using a simpler pattern for the background to avoid huge SVG string */
-            background: radial-gradient(circle, #1a2328 10%, transparent 11%),radial-gradient(circle at bottom left, #1a2328 5%, transparent 6%),radial-gradient(circle at bottom right, #1a2328 5%, transparent 6%),radial-gradient(circle at top left, #1a2328 5%, transparent 6%),radial-gradient(circle at top right, #1a2328 5%, transparent 6%);
-            background-size: 3em 3em;
-            background-color: #0B141A;
-            position: relative;
-        }
-        .chat-background::before {
-             content: "";
-             position: absolute;
-             top: 0; left: 0; right: 0; bottom: 0;
-             background-color: rgba(11, 20, 26, 0.6); /* Slightly dim */
-             pointer-events: none;
-        }
-
-        /* Bubble tails */
-        .tail-in::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -8px;
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle at 0 100%, transparent 8px, #202c33 9px);
-        }
-        .tail-out::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -8px;
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle at 100% 100%, transparent 8px, #005c4b 9px);
-        }
-
-        /* Context Menu animations */
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .context-menu-anim {
-            animation: fadeInScale 0.15s ease-out forwards;
-        }
-        
-        .selected-message {
-            background-color: rgba(0, 168, 132, 0.2);
-        }
-        
-        /* Blur overlay for context menu */
-        .blur-overlay {
-            backdrop-filter: blur(2px);
-            background-color: rgba(0,0,0,0.3);
+        #loader {
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white h-screen flex flex-col md:flex-row overflow-hidden font-sans">
+<body class="antialiased overflow-x-hidden selection:bg-elysian-accent selection:text-white">
 
-    <!-- Mobile View / Preview Area -->
-    <div class="flex-1 flex flex-col items-center justify-center p-4 h-[60vh] md:h-screen overflow-hidden bg-gray-800 relative z-10">
-        
-        <div class="mb-4 flex gap-4 w-full max-w-[375px] justify-between">
-            <h1 class="text-xl font-bold text-wa-green">WA Mockup</h1>
-            <button onclick="exportImage()" class="bg-wa-green hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center transition-colors">
-                <i class="fas fa-download mr-2"></i> Export PNG
-            </button>
+    <div id="loader" class="fixed inset-0 z-[100] bg-elysian-bg flex flex-col items-center justify-center">
+        <div class="relative flex justify-center items-center mb-4">
+            <div class="absolute w-16 h-16 border-4 border-elysian-card rounded-full"></div>
+            <div class="absolute w-16 h-16 border-4 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
+            <i class="fas fa-bolt text-blue-500 text-xl animate-pulse"></i>
         </div>
-
-        <!-- The Device -->
-        <div id="capture-area" class="device-mockup shadow-2xl shrink-0">
-            <!-- Hardware Notch -->
-            <div class="notch hidden md:block"></div>
-
-            <!-- Status Bar -->
-            <div class="status-bar flex justify-between items-center text-white bg-wa-dark w-full pt-1">
-                <span id="sys-time" class="ml-4 font-semibold">12:30</span>
-                <div class="flex items-center gap-1.5 mr-4">
-                    <i class="fas fa-signal text-xs"></i>
-                    <i class="fas fa-wifi text-xs"></i>
-                    <i class="fas fa-battery-full text-xs"></i>
-                </div>
-            </div>
-
-            <!-- WhatsApp Header -->
-            <div class="bg-wa-header px-2 py-2 flex items-center justify-between shadow-sm z-10 text-white border-b border-gray-700/50 relative">
-                <div class="flex items-center gap-2 cursor-pointer w-full">
-                    <button class="px-2 py-1 text-wa-textMuted hover:text-white transition">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <div class="relative group cursor-pointer" onclick="openContactSettings()">
-                        <img id="preview-avatar" src="https://placehold.co/100x100/374151/e9edef?text=U" alt="Profile" class="w-10 h-10 rounded-full object-cover">
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center ml-1" onclick="openContactSettings()">
-                        <span id="preview-name" class="font-semibold text-[17px] leading-tight truncate w-[180px]">Nama Kontak</span>
-                        <span id="preview-status" class="text-wa-textMuted text-[13px] leading-tight">online</span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4 text-wa-textMuted px-2">
-                    <i class="fas fa-video text-lg"></i>
-                    <i class="fas fa-phone text-lg"></i>
-                    <i class="fas fa-ellipsis-v text-lg ml-1"></i>
-                </div>
-            </div>
-
-            <!-- Chat Area -->
-            <div id="chat-container" class="flex-1 overflow-y-auto chat-background flex flex-col p-4 space-y-2 relative" onclick="handleChatClick(event)">
-                
-                <!-- Date Label -->
-                <div class="flex justify-center my-2">
-                    <span class="bg-[#182229] text-wa-textMuted text-xs px-3 py-1 rounded-lg uppercase shadow-sm">Hari Ini</span>
-                </div>
-
-                <!-- Messages will be injected here -->
-                <div id="messages-list" class="flex flex-col space-y-1 pb-16">
-                    <!-- Default messages generated via JS -->
-                </div>
-
-                <!-- Context Menu Overlay (Hidden by default) -->
-                <div id="context-overlay" class="absolute inset-0 blur-overlay z-40 hidden flex-col justify-center items-center p-4">
-                    <!-- Dynamic Context Menu Container -->
-                    <div id="dynamic-context-menu" class="w-full max-w-[280px] context-menu-anim hidden relative">
-                        <!-- Reaction Bar -->
-                        <div class="bg-wa-header rounded-full shadow-lg flex justify-between px-4 py-2 mb-2">
-                            <span class="text-2xl cursor-pointer hover:scale-125 transition-transform" onclick="addReaction('👍')">👍</span>
-                            <span class="text-2xl cursor-pointer hover:scale-125 transition-transform" onclick="addReaction('❤️')">❤️</span>
-                            <span class="text-2xl cursor-pointer hover:scale-125 transition-transform" onclick="addReaction('😂')">😂</span>
-                            <span class="text-2xl cursor-pointer hover:scale-125 transition-transform" onclick="addReaction('😮')">😮</span>
-                            <span class="text-2xl cursor-pointer hover:scale-125 transition-transform" onclick="addReaction('😢')">😢</span>
-                            <span class="text-2xl cursor-pointer hover:scale-125 transition-transform" onclick="addReaction('🙏')">🙏</span>
-                            <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center text-sm cursor-pointer hover:bg-gray-600 transition-colors">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                        </div>
-
-                        <!-- Options Menu -->
-                        <div class="bg-wa-header rounded-2xl shadow-xl overflow-hidden flex flex-col w-full text-white text-[15px]">
-                            <button class="flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition text-left" onclick="menuAction('reply')">
-                                <span>Balas</span>
-                                <i class="fas fa-reply text-wa-textMuted"></i>
-                            </button>
-                            <button class="flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition text-left" onclick="menuAction('forward')">
-                                <span>Teruskan</span>
-                                <i class="fas fa-share text-wa-textMuted"></i>
-                            </button>
-                            <button class="flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition text-left" onclick="menuAction('copy')">
-                                <span>Salin</span>
-                                <i class="far fa-copy text-wa-textMuted"></i>
-                            </button>
-                            <button class="flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition text-left" onclick="menuAction('star')">
-                                <span>Beri Bintang</span>
-                                <i class="far fa-star text-wa-textMuted"></i>
-                            </button>
-                            <button class="flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition text-left" onclick="menuAction('pin')">
-                                <span>Sematkan</span>
-                                <i class="fas fa-thumbtack text-wa-textMuted"></i>
-                            </button>
-                            <button class="flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition text-left text-red-500" onclick="menuAction('report')">
-                                <span>Laporkan</span>
-                                <i class="fas fa-flag text-red-500/80"></i>
-                            </button>
-                            <button class="flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition text-left text-red-500" onclick="menuAction('delete')">
-                                <span>Hapus</span>
-                                <i class="fas fa-trash-alt text-red-500/80"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chat Input Area -->
-            <div class="bg-[#1f2c34] px-2 py-2 flex items-end gap-2 w-full z-20 pb-6 relative">
-                <div class="flex-1 bg-[#2a3942] rounded-3xl flex items-center px-2 py-2 min-h-[44px]">
-                    <i class="far fa-smile text-wa-textMuted text-2xl mx-2 cursor-not-allowed"></i>
-                    <input type="text" placeholder="Ketik pesan" class="bg-transparent flex-1 text-white outline-none text-[17px] mx-1 placeholder-wa-textMuted cursor-not-allowed" disabled>
-                    <i class="fas fa-paperclip text-wa-textMuted text-xl mx-2 cursor-not-allowed"></i>
-                    <i class="fas fa-camera text-wa-textMuted text-xl mx-2 mr-3 cursor-not-allowed"></i>
-                </div>
-                <div class="w-12 h-12 bg-wa-green rounded-full flex items-center justify-center text-white shrink-0 shadow-md cursor-not-allowed">
-                    <i class="fas fa-microphone text-xl"></i>
-                </div>
-                
-                <!-- Home Indicator -->
-                <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1/3 h-1 bg-white rounded-full opacity-80"></div>
-            </div>
-        </div>
+        <h1 class="text-xl font-bold tracking-wider text-white flex items-center gap-2">
+            Elysian tools
+        </h1>
+        <p class="text-elysian-muted text-sm mt-2 animate-pulse">System Initializing...</p>
     </div>
 
-    <!-- Editor Panel (Right Side Desktop / Bottom Sheet Mobile) -->
-    <div id="editor-panel" class="w-full md:w-[450px] bg-gray-900 border-t md:border-t-0 md:border-l border-gray-700 flex flex-col h-[40vh] md:h-screen transition-all duration-300 z-50">
+    <div id="app" class="min-h-screen flex flex-col hidden opacity-0 transition-opacity duration-500 pb-20 md:pb-0">
         
-        <!-- Tabs -->
-        <div class="flex border-b border-gray-700 bg-gray-800 shrink-0">
-            <button onclick="switchTab('messages')" id="tab-messages" class="flex-1 py-3 font-semibold text-wa-green border-b-2 border-wa-green focus:outline-none">Pesan</button>
-            <button onclick="switchTab('contact')" id="tab-contact" class="flex-1 py-3 font-semibold text-gray-400 border-b-2 border-transparent hover:text-gray-200 focus:outline-none">Kontak & Header</button>
-        </div>
-
-        <!-- Scrollable Content Area -->
-        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 relative">
-            
-            <!-- Messages Editor Tab -->
-            <div id="panel-messages" class="space-y-4 pb-20">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold">Daftar Pesan</h2>
-                    <button onclick="addNewMessage()" class="bg-wa-green hover:bg-green-600 text-white px-3 py-1.5 rounded-md text-sm font-medium transition flex items-center gap-2">
-                        <i class="fas fa-plus"></i> Pesan Baru
-                    </button>
+        <!-- Header / Navbar -->
+        <header class="sticky top-0 z-40 glass-panel border-b border-elysian-border px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="bg-blue-500/20 p-1.5 rounded-lg text-blue-400">
+                    <i class="fas fa-bolt text-sm"></i>
                 </div>
-                
-                <p class="text-sm text-gray-400 mb-2 italic">Tip: Klik pesan di preview (kiri) untuk memunculkan Context Menu ala WA.</p>
-                <p class="text-sm text-gray-400 mb-4 italic">Drag & drop gagang (☰) untuk mengubah urutan pesan.</p>
-
-                <div id="editor-messages-list" class="space-y-3">
-                    <!-- Editor items generated here -->
+                <div>
+                    <h1 class="font-bold text-white leading-tight">Elysian tools</h1>
+                    <p class="text-[10px] text-elysian-muted uppercase tracking-wider">by zizi</p>
                 </div>
             </div>
-
-            <!-- Contact & Header Editor Tab -->
-            <div id="panel-contact" class="hidden space-y-5 pb-20">
-                <h2 class="text-lg font-bold mb-4">Pengaturan Kontak & Header</h2>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Nama Kontak</label>
-                    <input type="text" id="edit-name" value="Rini Marketing" class="w-full bg-gray-800 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none" oninput="updateContact()">
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-1.5 bg-green-500/10 px-2 py-1 rounded-full border border-green-500/20">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse-slow"></div>
+                    <span class="text-[10px] font-medium text-green-400 uppercase">Online</span>
                 </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Status (Online/Terakhir dilihat)</label>
-                    <input type="text" id="edit-status" value="online" class="w-full bg-gray-800 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none" oninput="updateContact()">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">URL Foto Profil</label>
-                    <input type="text" id="edit-avatar" value="https://placehold.co/100x100/374151/e9edef?text=R" class="w-full bg-gray-800 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none" oninput="updateContact()">
-                    <p class="text-xs text-gray-500 mt-1">Kosongkan untuk default, atau masukkan URL gambar.</p>
-                </div>
-
-                <div class="pt-4 border-t border-gray-700 mt-6">
-                    <h3 class="text-md font-bold mb-3">Status Bar Smartphone</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Jam Sistem</label>
-                            <input type="time" id="edit-sys-time" value="12:30" class="w-full bg-gray-800 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none" oninput="updateSystemTime()">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mobile expand/collapse toggle for editor -->
-        <button id="mobile-editor-toggle" class="md:hidden absolute -top-10 right-4 bg-gray-800 border border-gray-600 p-2 rounded-t-lg text-gray-300" onclick="toggleMobileEditor()">
-            <i class="fas fa-chevron-up transition-transform" id="toggle-icon"></i> Editor
-        </button>
-    </div>
-
-    <!-- Message Edit Modal (Hidden by default) -->
-    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-70 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-gray-800 border border-gray-700 rounded-xl w-full max-w-md p-5 flex flex-col max-h-[90vh]">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-white">Edit Pesan</h3>
-                <button onclick="closeMessageModal()" class="text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
+                <button onclick="openModal('menuModal')" class="w-8 h-8 flex items-center justify-center rounded-full bg-elysian-card border border-elysian-border text-white hover:bg-gray-700 transition">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 max-w-5xl w-full mx-auto p-4 space-y-6">
             
-            <div class="overflow-y-auto custom-scrollbar flex-1 space-y-4 pr-2">
-                <input type="hidden" id="modal-msg-id">
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Teks Pesan</label>
-                    <textarea id="modal-msg-text" rows="4" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none resize-none"></textarea>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Tipe Pesan</label>
-                        <select id="modal-msg-type" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none">
-                            <option value="in">Masuk (Kiri)</option>
-                            <option value="out">Keluar (Kanan)</option>
-                        </select>
+            <section class="animate-slide-up" style="animation-delay: 0.1s;">
+                <div class="bg-gradient-to-br from-elysian-card to-[#12141a] border border-elysian-border rounded-2xl p-4 shadow-lg relative overflow-hidden">
+                    <!-- Background decoration -->
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://placehold.co/100x100/2a2e37/ffffff?text=U" alt="Profile" class="w-12 h-12 rounded-full border-2 border-elysian-border">
+                            <div>
+                                <h2 class="font-bold text-white">About Dev Profile</h2>
+                                <p class="text-xs text-elysian-muted">Toolkit · Playlist · 36 Project</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 text-[10px] font-bold bg-blue-500/20 text-blue-400 rounded border border-blue-500/30 uppercase tracking-wide">
+                            VVIP Member
+                        </span>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Jam</label>
-                        <input type="time" id="modal-msg-time" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none">
+                    
+                    <div class="grid grid-cols-4 gap-2 text-center mt-4 pt-4 border-t border-elysian-border/50">
+                        <div class="flex flex-col items-center">
+                            <span class="text-[10px] text-elysian-muted mb-1">Negara</span>
+                            <div class="flex items-center gap-1 text-xs font-medium text-white">
+                                <span>🇺🇸</span> US
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <span class="text-[10px] text-elysian-muted mb-1">Device</span>
+                            <span class="text-xs font-medium text-white"><i class="fab fa-android text-green-500 mr-1"></i> Android</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <span class="text-[10px] text-elysian-muted mb-1">Browser</span>
+                            <span class="text-xs font-medium text-white"><i class="fab fa-chrome text-blue-400 mr-1"></i> Chrome</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <span class="text-[10px] text-elysian-muted mb-1">Status</span>
+                            <span class="text-xs font-medium text-green-400">100%</span>
+                        </div>
                     </div>
                 </div>
+            </section>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Status Centang (Pesan Keluar)</label>
-                    <select id="modal-msg-status" class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none">
-                        <option value="none">Tidak Ada</option>
-                        <option value="sent">Centang 1 (Terkirim)</option>
-                        <option value="delivered">Centang 2 Abu (Tersampaikan)</option>
-                        <option value="read">Centang 2 Biru (Dibaca)</option>
-                    </select>
+            <section class="animate-slide-up" style="animation-delay: 0.2s;">
+                <div class="flex overflow-x-auto no-scrollbar gap-2 pb-1" id="category-tabs">
+                    <!-- Tabs generated by JS -->
                 </div>
+            </section>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">URL Gambar (Opsional)</label>
-                    <input type="text" id="modal-msg-image" placeholder="https://..." class="w-full bg-gray-900 border border-gray-600 rounded-md p-2 text-white focus:border-wa-green focus:outline-none">
-                    <p class="text-xs text-gray-500 mt-1">Isi jika pesan berupa gambar. Teks akan jadi caption.</p>
+            <section class="animate-slide-up" style="animation-delay: 0.3s;">
+                <div class="flex justify-between items-end mb-3 px-1">
+                    <h3 id="category-title" class="text-lg font-bold text-white">Semua Tools</h3>
+                    <span id="tools-count" class="text-xs text-elysian-muted bg-elysian-card px-2 py-1 rounded-md border border-elysian-border">0 tools</span>
                 </div>
+                
+                <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <!-- Tools injected by JS -->
+                </div>
+            </section>
+
+        </main>
+
+        <nav class="md:hidden fixed bottom-0 w-full glass-panel border-t border-elysian-border pb-safe z-40">
+            <div class="flex justify-around items-center p-3">
+                <button onclick="filterCategory('all')" class="nav-btn flex flex-col items-center gap-1 text-blue-400" data-target="all">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class="text-[10px] font-medium">Home</span>
+                </button>
+                <button onclick="filterCategory('downloader')" class="nav-btn flex flex-col items-center gap-1 text-elysian-muted hover:text-white transition" data-target="downloader">
+                    <i class="fas fa-download text-lg"></i>
+                    <span class="text-[10px] font-medium">Download</span>
+                </button>
+                <button onclick="filterCategory('maker')" class="nav-btn flex flex-col items-center gap-1 text-elysian-muted hover:text-white transition" data-target="maker">
+                    <i class="fas fa-magic text-lg"></i>
+                    <span class="text-[10px] font-medium">Maker</span>
+                </button>
+                <button onclick="openModal('vvipModal')" class="flex flex-col items-center gap-1 text-yellow-500 hover:text-yellow-400 transition">
+                    <i class="fas fa-crown text-lg"></i>
+                    <span class="text-[10px] font-medium">VVIP</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Overlay -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[150] hidden opacity-0 transition-opacity duration-300" onclick="closeAllModals()"></div>
+
+    <!-- VVIP Modal -->
+    <div id="vvipModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md bg-elysian-card border border-elysian-border rounded-2xl shadow-2xl z-[200] hidden flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0">
+        <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 p-4 text-center relative">
+            <i class="fas fa-crown text-4xl text-white mb-2 drop-shadow-md"></i>
+            <h2 class="text-xl font-bold text-white tracking-wide">VVIP ACCESS</h2>
+            <p class="text-yellow-100 text-sm">Elysian tools — FULL VERSION</p>
+            <button onclick="closeModal('vvipModal')" class="absolute top-3 right-3 w-8 h-8 bg-black/20 rounded-full flex items-center justify-center text-white hover:bg-black/40">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-5 space-y-4">
+            <p class="text-sm text-elysian-text text-center">Upgrade ke VVIP dan buka semua fitur premium. Full update permanen, dalam bentuk APK bukan web.</p>
+            
+            <div class="bg-elysian-bg rounded-lg p-3 border border-elysian-border">
+                <h3 class="text-sm font-bold text-yellow-500 mb-2 flex items-center gap-2"><i class="fas fa-star"></i> Keunggulan VVIP</h3>
+                <ul class="text-xs text-elysian-muted space-y-2">
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-0.5"></i> <span><b>18+ tools tambahan:</b> Bedanya tambah 18 tools dan lebih banyak fitur yang work.</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-0.5"></i> <span><b>Bonus Permanen:</b> Semua update fitur masa depan gratis selamanya.</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-0.5"></i> <span><b>APK Bukan Web:</b> Dikirim dalam bentuk APK siap pakai di Android.</span></li>
+                </ul>
             </div>
             
-            <div class="mt-6 flex justify-end gap-3 pt-4 border-t border-gray-700">
-                <button onclick="closeMessageModal()" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition">Batal</button>
-                <button onclick="saveMessageFromModal()" class="px-4 py-2 bg-wa-green hover:bg-green-600 text-white rounded-md transition">Simpan</button>
+            <div class="text-center pt-2">
+                <p class="text-sm text-elysian-muted mb-1">Harga promo khusus hari ini</p>
+                <p class="text-2xl font-bold text-white">Rp30.000</p>
             </div>
+            
+            <button onclick="handleVvipClick()" class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-bold py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] flex items-center justify-center gap-2">
+                <i class="fab fa-whatsapp text-xl"></i> BELI VIA WHATSAPP
+            </button>
+        </div>
+    </div>
+
+    <!-- Menu Modal -->
+    <div id="menuModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-elysian-card border border-elysian-border rounded-2xl shadow-2xl z-[200] hidden flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0">
+        <div class="flex justify-between items-center p-4 border-b border-elysian-border">
+            <h2 class="font-bold text-white">Menu Elysian</h2>
+            <button onclick="closeModal('menuModal')" class="text-elysian-muted hover:text-white p-1">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+        <div class="p-2 flex flex-col">
+            <button class="flex items-center gap-3 p-3 hover:bg-elysian-bg rounded-xl text-left transition w-full" onclick="showInfo('About Dev')">
+                <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center"><i class="fas fa-info"></i></div>
+                <div>
+                    <div class="text-sm font-bold text-white">Informasi About Dev</div>
+                    <div class="text-xs text-elysian-muted">Profile developer & project</div>
+                </div>
+            </button>
+            <button class="flex items-center gap-3 p-3 hover:bg-elysian-bg rounded-xl text-left transition w-full" onclick="showInfo('Report Bug')">
+                <div class="w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center"><i class="fas fa-bug"></i></div>
+                <div>
+                    <div class="text-sm font-bold text-white">Report Bug</div>
+                    <div class="text-xs text-elysian-muted">Laporkan error pada tools</div>
+                </div>
+            </button>
+            <button class="flex items-center gap-3 p-3 hover:bg-elysian-bg rounded-xl text-left transition w-full" onclick="showInfo('Saluran WhatsApp')">
+                <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center"><i class="fab fa-whatsapp"></i></div>
+                <div>
+                    <div class="text-sm font-bold text-white">Saluran WhatsApp</div>
+                    <div class="text-xs text-elysian-muted">Ikuti update fitur terbaru</div>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Generic Alert/Info Modal (replaces window.alert) -->
+    <div id="infoModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[85%] max-w-sm bg-elysian-card border border-elysian-border rounded-xl shadow-2xl z-[250] hidden flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0">
+        <div class="p-5 text-center">
+            <div id="infoIcon" class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 mx-auto flex items-center justify-center text-xl mb-3">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h3 id="infoTitle" class="text-lg font-bold text-white mb-2">Informasi</h3>
+            <p id="infoMessage" class="text-sm text-elysian-muted">Pesan akan tampil di sini.</p>
+        </div>
+        <div class="border-t border-elysian-border p-3">
+            <button onclick="closeModal('infoModal')" class="w-full py-2 bg-elysian-bg hover:bg-gray-800 text-white font-medium rounded-lg transition border border-elysian-border">Tutup</button>
         </div>
     </div>
 
     <script>
-        // State
-        let messages = [
-            { id: 'm1', text: 'Halo selamat siang ka 😊', type: 'in', time: '11:42', status: 'none', image: '', reactions: [] },
-            { id: 'm2', text: 'ini untuk list update produk terbaru yaa', type: 'in', time: '11:43', status: 'none', image: '', reactions: [] },
-            { id: 'm3', text: 'Siang bu Rini. Boleh dikirimkan PDF nya ya, dan tolong tandai yang diskon.', type: 'out', time: '11:45', status: 'read', image: '', reactions: [] },
-            { id: 'm4', text: 'Baik pak, segera disiapkan 🙏', type: 'in', time: '11:46', status: 'none', image: '', reactions: ['👍'] }
+        // Data Structure for all Tools exactly as requested from Elysian Tools
+        const toolsData = [
+            // DOWNLOADER
+            { id: 'dl1', name: 'Terabox Downloader', desc: 'Ambil file dari link share Terabox', category: 'downloader', badge: 'FILE', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-cloud-download-alt', iconColor: 'text-blue-500' },
+            { id: 'dl2', name: 'Instagram', desc: 'Download video & foto', category: 'downloader', badge: 'HD', badgeColor: 'bg-purple-500/20 text-purple-400', icon: 'fab fa-instagram', iconColor: 'text-purple-500' },
+            { id: 'dl3', name: 'TikTok', desc: 'Video, foto & audio', category: 'downloader', badge: 'MP4/MP3', badgeColor: 'bg-gray-700 text-white', icon: 'fab fa-tiktok', iconColor: 'text-white' },
+            { id: 'dl4', name: 'YouTube', desc: 'Video & audio', category: 'downloader', badge: 'MP4/MP3', badgeColor: 'bg-red-500/20 text-red-400', icon: 'fab fa-youtube', iconColor: 'text-red-500' },
+            { id: 'dl5', name: 'Spotify Downloader', desc: 'Cari lagu, preview audio dan unduh', category: 'downloader', badge: 'MP3', badgeColor: 'bg-green-500/20 text-green-400', icon: 'fab fa-spotify', iconColor: 'text-green-500' },
+            
+            // MAKER
+            { id: 'mk1', name: 'BRAT Generator', desc: 'Static + animated GIF', category: 'maker', badge: 'GIF', badgeColor: 'bg-green-500/20 text-green-400', icon: 'fa-font', iconColor: 'text-green-400' },
+            { id: 'mk2', name: 'IQC Generator', desc: 'Buat gambar IQC dengan style utama', category: 'maker', badge: '1 STYLE', badgeColor: 'bg-orange-500/20 text-orange-400', icon: 'fa-image', iconColor: 'text-orange-400' },
+            { id: 'mk3', name: 'Sertifikat Tolol', desc: 'Buat sertifikat parodi dari nama', category: 'maker', badge: 'API', badgeColor: 'bg-yellow-500/20 text-yellow-400', icon: 'fa-certificate', iconColor: 'text-yellow-400' },
+            { id: 'mk4', name: 'E-KTP Generator', desc: 'Full form demo', category: 'maker', badge: 'Full', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-id-card', iconColor: 'text-blue-500' },
+            { id: 'mk5', name: 'Fake Dana', desc: 'Generate saldo Dana palsu', category: 'maker', badge: 'Custom', badgeColor: 'bg-blue-600/20 text-blue-500', icon: 'fa-wallet', iconColor: 'text-blue-500' },
+            { id: 'mk6', name: 'FakeDev', desc: 'Buat profil developer dari nama & bio', category: 'maker', badge: 'API', badgeColor: 'bg-indigo-500/20 text-indigo-400', icon: 'fa-code', iconColor: 'text-indigo-400' },
+            { id: 'mk7', name: 'Fake Lobby', desc: 'FF & ML lobby palsu', category: 'maker', badge: 'Game', badgeColor: 'bg-red-500/20 text-red-400', icon: 'fa-gamepad', iconColor: 'text-red-500' },
+            { id: 'mk8', name: 'Windows Quotes', desc: 'Quote ala Windows dengan style', category: 'maker', badge: '1 STYLE', badgeColor: 'bg-blue-400/20 text-blue-300', icon: 'fab fa-windows', iconColor: 'text-blue-400' },
+            { id: 'mk9', name: 'Nokia Message', desc: 'Buat gambar SMS jadul Nokia', category: 'maker', badge: 'RETRO', badgeColor: 'bg-gray-500/20 text-gray-300', icon: 'fa-mobile-alt', iconColor: 'text-gray-400' },
+            { id: 'mk10', name: 'Tanya Ustadz', desc: 'Meme generator', category: 'maker', badge: 'Lucu', badgeColor: 'bg-teal-500/20 text-teal-400', icon: 'fa-comment-alt', iconColor: 'text-teal-400' },
+            
+            // TOOLS
+            { id: 'tl1', name: 'Prompt Generator', desc: 'Ubah gambar menjadi prompt deskriptif', category: 'tools', badge: 'LOCAL', badgeColor: 'bg-purple-500/20 text-purple-400', icon: 'fa-terminal', iconColor: 'text-purple-400' },
+            { id: 'tl2', name: 'Fake OVO', desc: 'Generator tampilan saldo OVO', category: 'tools', badge: 'CANVAS', badgeColor: 'bg-indigo-500/20 text-indigo-400', icon: 'fa-money-bill-wave', iconColor: 'text-indigo-500' },
+            { id: 'tl3', name: 'Quote Generator', desc: 'Buat gambar quote monokrom', category: 'tools', badge: 'JPG', badgeColor: 'bg-gray-500/20 text-gray-400', icon: 'fa-quote-right', iconColor: 'text-gray-300' },
+            { id: 'tl4', name: 'CariFakta', desc: 'Analisis klaim dan berita menggunakan AI', category: 'tools', badge: 'AI', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-search', iconColor: 'text-blue-400' },
+            { id: 'tl5', name: 'Virus Scan', desc: 'Scan URL, file, hash, domain & IP', category: 'tools', badge: 'SECURITY', badgeColor: 'bg-red-500/20 text-red-400', icon: 'fa-shield-virus', iconColor: 'text-red-500' },
+            { id: 'tl6', name: 'Calculator', desc: 'Hitung cepat', category: 'tools', badge: 'Math', badgeColor: 'bg-green-500/20 text-green-400', icon: 'fa-calculator', iconColor: 'text-green-500' },
+            { id: 'tl7', name: 'Password Gen', desc: 'Password aman', category: 'tools', badge: 'Secure', badgeColor: 'bg-yellow-500/20 text-yellow-400', icon: 'fa-key', iconColor: 'text-yellow-500' },
+            { id: 'tl8', name: 'Morse Code', desc: 'Konversi morse', category: 'tools', badge: 'Audio', badgeColor: 'bg-gray-500/20 text-gray-400', icon: 'fa-broadcast-tower', iconColor: 'text-gray-400' },
+            { id: 'tl9', name: 'Remove BG', desc: 'Hapus background', category: 'tools', badge: 'AI', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-eraser', iconColor: 'text-blue-400' },
+            { id: 'tl10', name: 'Image Enhancer', desc: 'Tingkatkan kualitas', category: 'tools', badge: 'HD', badgeColor: 'bg-purple-500/20 text-purple-400', icon: 'fa-image', iconColor: 'text-purple-400' },
+            { id: 'tl11', name: 'QR Generator', desc: 'Buat QR langsung di sini', category: 'tools', badge: 'QR', badgeColor: 'bg-black text-white border border-gray-600', icon: 'fa-qrcode', iconColor: 'text-white' },
+            
+            // VVIP
+            { id: 'vv1', name: 'Web Encryption', desc: 'ENKRIPSI & LINDUNGI SOURCE HTML', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fa-lock', iconColor: 'text-yellow-500', isVvip: true },
+            { id: 'vv2', name: 'Telegram Spammer', desc: 'SPAMMER BOT TELEGRAM', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fab fa-telegram', iconColor: 'text-yellow-500', isVvip: true },
+            { id: 'vv3', name: 'NGL Spammer', desc: 'SPAM PESAN ANONIM', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fa-paper-plane', iconColor: 'text-yellow-500', isVvip: true },
+            { id: 'vv4', name: 'Get Source Code', desc: 'AMBIL ALL SOURCE WEB', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fa-code-branch', iconColor: 'text-yellow-500', isVvip: true },
+            { id: 'vv5', name: 'Unban WhatsApp', desc: 'TOOLS & PANDUAN UNBAN WA', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fab fa-whatsapp', iconColor: 'text-yellow-500', isVvip: true }
         ];
 
-        let selectedMessageId = null;
-        let isMobileEditorExpanded = false;
+        const categories = [
+            { id: 'all', name: 'Semua Tools', icon: 'fa-border-all' },
+            { id: 'downloader', name: 'Downloader', icon: 'fa-download' },
+            { id: 'maker', name: 'Maker', icon: 'fa-magic' },
+            { id: 'tools', name: 'Tools', icon: 'fa-toolbox' },
+            { id: 'vvip', name: 'VVIP Tools', icon: 'fa-crown', color: 'text-yellow-500' }
+        ];
 
-        // Init
+        let currentCategory = 'all';
+
         document.addEventListener('DOMContentLoaded', () => {
-            renderMessagesPreview();
-            renderEditorMessages();
-            updateContact();
-            updateSystemTime();
-            
-            // Setup simple drag and drop for editor list
-            setupDragAndDrop();
+            // Simulate loading
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    const app = document.getElementById('app');
+                    app.classList.remove('hidden');
+                    // Small delay to trigger fade in transition
+                    setTimeout(() => {
+                        app.classList.remove('opacity-0');
+                    }, 50);
+                }, 500);
+            }, 1500);
+
+            renderTabs();
+            renderTools('all');
         });
 
-        // ==========================================
-        // RENDER PREVIEW (LEFT SIDE)
-        // ==========================================
-        function renderMessagesPreview() {
-            const container = document.getElementById('messages-list');
+        function renderTabs() {
+            const container = document.getElementById('category-tabs');
             container.innerHTML = '';
+            
+            categories.forEach(cat => {
+                const isActive = currentCategory === cat.id;
+                const activeClasses = isActive 
+                    ? 'bg-blue-600/20 border-blue-500 text-blue-400' 
+                    : 'bg-elysian-card border-elysian-border text-elysian-muted hover:bg-gray-800';
+                const iconColor = cat.color ? cat.color : (isActive ? 'text-blue-400' : 'text-elysian-muted');
+                
+                const btn = document.createElement('button');
+                btn.className = `flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${activeClasses}`;
+                btn.onclick = () => filterCategory(cat.id);
+                btn.innerHTML = `<i class="fas ${cat.icon} ${iconColor}"></i> ${cat.name}`;
+                container.appendChild(btn);
+            });
+        }
 
-            let lastType = null;
+        function renderTools(categoryId) {
+            const container = document.getElementById('tools-grid');
+            container.innerHTML = '';
+            
+            let filteredTools = toolsData;
+            if (categoryId !== 'all') {
+                filteredTools = toolsData.filter(t => t.category === categoryId);
+            }
 
-            messages.forEach((msg, index) => {
-                const isFirstOfType = msg.type !== lastType;
-                // Add tail class only if it's the first message in a group
-                const tailClass = isFirstOfType ? (msg.type === 'in' ? 'tail-in rounded-tl-sm' : 'tail-out rounded-tr-sm') : '';
-                const marginClass = isFirstOfType ? 'mt-2' : 'mt-[2px]';
-                
-                const wrapper = document.createElement('div');
-                wrapper.className = `flex w-full ${msg.type === 'in' ? 'justify-start' : 'justify-end'} ${marginClass} relative message-wrapper`;
-                wrapper.dataset.id = msg.id;
-                
-                // Content construction
-                let contentHTML = '';
-                
-                // Image
-                if (msg.image) {
-                    contentHTML += `<div class="p-1"><img src="${msg.image}" class="rounded-lg max-w-full h-auto max-h-[250px] object-cover" onerror="this.src='https://placehold.co/300x200/2a3942/8696a0?text=Image+Error'"></div>`;
-                }
-                
-                // Text
-                if (msg.text) {
-                    contentHTML += `<div class="text-[15.5px] px-2 pt-1 pb-1 text-wa-text" style="word-wrap: break-word;">${escapeHTML(msg.text)}</div>`;
-                }
+            // Update Title & Count
+            const catObj = categories.find(c => c.id === categoryId);
+            document.getElementById('category-title').innerText = catObj ? catObj.name : 'Semua Tools';
+            document.getElementById('tools-count').innerText = `${filteredTools.length} tools`;
 
-                // Time & Status
-                let statusIcon = '';
-                if (msg.type === 'out') {
-                    if (msg.status === 'sent') statusIcon = '<i class="fas fa-check text-[11px] ml-1"></i>';
-                    else if (msg.status === 'delivered') statusIcon = '<i class="fas fa-check-double text-[11px] ml-1 text-wa-textMuted"></i>';
-                    else if (msg.status === 'read') statusIcon = '<i class="fas fa-check-double text-[11px] ml-1 text-wa-blueTick"></i>';
-                }
-
-                // Add empty space in text to force time to bottom right nicely
-                const timeStr = `<span class="text-[11px] text-wa-textMuted float-right mt-1 ml-3 flex items-center h-4">${msg.time} ${statusIcon}</span>`;
+            filteredTools.forEach((tool, index) => {
+                const delay = (index % 10) * 0.05; // Staggered animation
                 
-                // Reactions
-                let reactionsHTML = '';
-                if (msg.reactions && msg.reactions.length > 0) {
-                    reactionsHTML = `<div class="absolute -bottom-3 ${msg.type === 'in' ? 'left-4' : 'right-4'} bg-[#1f2c34] rounded-full px-2 py-0.5 border border-[#0B141A] shadow-sm text-sm z-10">
-                        ${msg.reactions.join('')}
-                    </div>`;
-                }
-
-                // Bubble container
-                const bgClass = msg.type === 'in' ? 'bg-wa-msgIn' : 'bg-wa-msgOut';
-                const radiusClass = 'rounded-lg'; // Base radius
+                const card = document.createElement('div');
+                card.className = 'tool-card bg-elysian-card border border-elysian-border p-3 rounded-xl flex items-center gap-3 cursor-pointer relative overflow-hidden group';
+                card.style.animation = `fadeIn 0.3s ease-out ${delay}s both`;
                 
-                wrapper.innerHTML = `
-                    <div class="relative max-w-[85%] sm:max-w-[75%] min-w-[80px]">
-                        <div class="relative ${bgClass} ${radiusClass} shadow-sm pb-1 ${tailClass} flex flex-col cursor-pointer transition-colors message-bubble">
-                            ${contentHTML}
-                            <div class="px-2 block h-[15px] -mt-2">${timeStr}</div>
+                // Add click handler (simulate interaction)
+                card.onclick = () => handleToolClick(tool);
+
+                // Check if VVIP tool to add gradient border effect
+                const borderEffect = tool.isVvip 
+                    ? `<div class="absolute inset-0 bg-gradient-to-r from-yellow-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>` 
+                    : `<div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>`;
+
+                card.innerHTML = `
+                    ${borderEffect}
+                    <div class="w-12 h-12 rounded-lg bg-elysian-bg border border-elysian-border flex items-center justify-center shrink-0 z-10 shadow-inner group-hover:scale-105 transition-transform">
+                        <i class="${tool.icon} ${tool.iconColor} text-xl"></i>
+                    </div>
+                    <div class="flex-1 min-w-0 z-10">
+                        <div class="flex justify-between items-start mb-0.5">
+                            <h4 class="font-bold text-white text-sm truncate pr-2 group-hover:text-blue-400 transition-colors ${tool.isVvip ? 'group-hover:text-yellow-400' : ''}">${tool.name}</h4>
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ${tool.badgeColor}">${tool.badge}</span>
                         </div>
-                        ${reactionsHTML}
+                        <p class="text-[11px] text-elysian-muted truncate leading-tight">${tool.desc}</p>
                     </div>
                 `;
-
-                // Long press / click event for context menu
-                const bubble = wrapper.querySelector('.message-bubble');
-                bubble.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    showContextMenu(msg.id, e.currentTarget);
-                });
-
-                container.appendChild(wrapper);
-                lastType = msg.type;
+                container.appendChild(card);
             });
-            
-            // Scroll to bottom
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        // ==========================================
-        // RENDER EDITOR (RIGHT/BOTTOM SIDE)
-        // ==========================================
-        function renderEditorMessages() {
-            const container = document.getElementById('editor-messages-list');
-            container.innerHTML = '';
-
-            messages.forEach((msg, index) => {
-                const item = document.createElement('div');
-                item.className = 'bg-gray-800 border border-gray-700 rounded-lg p-3 flex items-center gap-3 shadow-sm group hover:border-gray-500 transition-colors cursor-move draggable-item';
-                item.dataset.id = msg.id;
-                item.draggable = true;
-                
-                const typeIcon = msg.type === 'in' ? '<i class="fas fa-arrow-right text-green-500" title="Masuk"></i>' : '<i class="fas fa-arrow-left text-blue-400" title="Keluar"></i>';
-                
-                const previewText = msg.text ? (msg.text.length > 30 ? msg.text.substring(0, 30) + '...' : msg.text) : (msg.image ? '[Gambar]' : '');
-
-                item.innerHTML = `
-                    <div class="text-gray-500 cursor-move drag-handle">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    <div class="w-6 text-center">
-                        ${typeIcon}
-                    </div>
-                    <div class="flex-1 overflow-hidden cursor-pointer" onclick="openMessageModal('${msg.id}')">
-                        <div class="text-sm font-medium text-white truncate">${escapeHTML(previewText)}</div>
-                        <div class="text-xs text-gray-400">${msg.time}</div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="openMessageModal('${msg.id}')" class="text-gray-400 hover:text-white p-1" title="Edit">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteMessage('${msg.id}')" class="text-gray-400 hover:text-red-500 p-1" title="Hapus">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
+        function filterCategory(categoryId) {
+            currentCategory = categoryId;
+            renderTabs();
+            renderTools(categoryId);
             
-            setupDragAndDrop();
-        }
-
-        function updateContact() {
-            const name = document.getElementById('edit-name').value;
-            const status = document.getElementById('edit-status').value;
-            let avatar = document.getElementById('edit-avatar').value;
-            
-            document.getElementById('preview-name').innerText = name || 'Nama Kontak';
-            document.getElementById('preview-status').innerText = status;
-            
-            if (!avatar) avatar = `https://placehold.co/100x100/374151/e9edef?text=${name.charAt(0).toUpperCase()}`;
-            document.getElementById('preview-avatar').src = avatar;
-        }
-
-        function updateSystemTime() {
-            const time = document.getElementById('edit-sys-time').value;
-            document.getElementById('sys-time').innerText = time;
-        }
-
-        // ==========================================
-        // MESSAGE ACTIONS
-        // ==========================================
-        function addNewMessage() {
-            const newId = 'm' + Date.now();
-            const now = new Date();
-            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-            
-            messages.push({
-                id: newId,
-                text: 'Pesan baru',
-                type: 'out',
-                time: timeStr,
-                status: 'read',
-                image: '',
-                reactions: []
-            });
-            
-            renderMessagesPreview();
-            renderEditorMessages();
-            openMessageModal(newId);
-        }
-
-        function deleteMessage(id) {
-            messages = messages.filter(m => m.id !== id);
-            renderMessagesPreview();
-            renderEditorMessages();
-            closeContextMenu();
-        }
-
-        // ==========================================
-        // MODAL LOGIC
-        // ==========================================
-        function openMessageModal(id) {
-            const msg = messages.find(m => m.id === id);
-            if (!msg) return;
-
-            document.getElementById('modal-msg-id').value = msg.id;
-            document.getElementById('modal-msg-text').value = msg.text;
-            document.getElementById('modal-msg-type').value = msg.type;
-            document.getElementById('modal-msg-time').value = msg.time;
-            document.getElementById('modal-msg-status').value = msg.status;
-            document.getElementById('modal-msg-image').value = msg.image || '';
-
-            document.getElementById('message-modal').classList.remove('hidden');
-        }
-
-        function closeMessageModal() {
-            document.getElementById('message-modal').classList.add('hidden');
-        }
-
-        function saveMessageFromModal() {
-            const id = document.getElementById('modal-msg-id').value;
-            const index = messages.findIndex(m => m.id === id);
-            
-            if (index !== -1) {
-                messages[index].text = document.getElementById('modal-msg-text').value;
-                messages[index].type = document.getElementById('modal-msg-type').value;
-                messages[index].time = document.getElementById('modal-msg-time').value;
-                messages[index].status = document.getElementById('modal-msg-status').value;
-                messages[index].image = document.getElementById('modal-msg-image').value;
-                
-                renderMessagesPreview();
-                renderEditorMessages();
-            }
-            closeMessageModal();
-        }
-        
-        function openContactSettings() {
-            switchTab('contact');
-            if(window.innerWidth < 768 && !isMobileEditorExpanded) {
-                toggleMobileEditor();
-            }
-        }
-
-        // ==========================================
-        // CONTEXT MENU (WHATSAPP STYLE UI)
-        // ==========================================
-        function showContextMenu(msgId, bubbleElement) {
-            selectedMessageId = msgId;
-            const overlay = document.getElementById('context-overlay');
-            const menu = document.getElementById('dynamic-context-menu');
-            
-            // Remove selection highlight from all
-            document.querySelectorAll('.message-wrapper').forEach(el => {
-                el.classList.remove('bg-[#0B141A]/50', 'z-50');
-                el.querySelector('.message-bubble').classList.remove('brightness-110');
-            });
-            
-            // Highlight selected
-            const wrapper = document.querySelector(`.message-wrapper[data-id="${msgId}"]`);
-            if (wrapper) {
-                wrapper.classList.add('z-50');
-                wrapper.querySelector('.message-bubble').classList.add('brightness-110');
-            }
-
-            // Position calculation relative to viewport
-            const rect = bubbleElement.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-            
-            // Reset styles
-            menu.style.top = 'auto';
-            menu.style.bottom = 'auto';
-            menu.style.marginTop = '0';
-            
-            // Decide if menu shows above or below bubble
-            if (rect.top > viewportHeight / 2) {
-                // Show above
-                menu.style.bottom = `${viewportHeight - rect.top + 10}px`;
-            } else {
-                // Show below
-                menu.style.top = `${rect.bottom + 10}px`;
-            }
-
-            overlay.classList.remove('hidden');
-            overlay.classList.add('flex');
-            menu.classList.remove('hidden');
-        }
-
-        function closeContextMenu() {
-            const overlay = document.getElementById('context-overlay');
-            const menu = document.getElementById('dynamic-context-menu');
-            
-            overlay.classList.add('hidden');
-            overlay.classList.remove('flex');
-            menu.classList.add('hidden');
-            
-            // Remove highlights
-            document.querySelectorAll('.message-wrapper').forEach(el => {
-                el.classList.remove('z-50');
-                el.querySelector('.message-bubble').classList.remove('brightness-110');
-            });
-            selectedMessageId = null;
-        }
-
-        function handleChatClick(e) {
-            if (e.target.closest('.message-bubble')) return; // handled by bubble click
-            closeContextMenu();
-        }
-        
-        // Hide overlay if clicked outside menu
-        document.getElementById('context-overlay').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('context-overlay')) {
-                closeContextMenu();
-            }
-        });
-
-        function addReaction(emoji) {
-            if (!selectedMessageId) return;
-            const msg = messages.find(m => m.id === selectedMessageId);
-            if (msg) {
-                // Simple toggle logic
-                if (!msg.reactions) msg.reactions = [];
-                const idx = msg.reactions.indexOf(emoji);
-                if (idx > -1) {
-                    msg.reactions.splice(idx, 1);
+            // Update bottom nav active state (Mobile)
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.dataset.target === categoryId) {
+                    btn.classList.remove('text-elysian-muted');
+                    btn.classList.add('text-blue-400');
                 } else {
-                    // limit to 3 reactions for UI sanity in this mockup
-                    if(msg.reactions.length < 3) msg.reactions.push(emoji);
+                    btn.classList.add('text-elysian-muted');
+                    btn.classList.remove('text-blue-400');
                 }
-                renderMessagesPreview();
-            }
-            closeContextMenu();
+            });
         }
 
-        function menuAction(action) {
-            if (!selectedMessageId) return;
-            
-            if (action === 'delete') {
-                deleteMessage(selectedMessageId);
+        function handleToolClick(tool) {
+            if (tool.isVvip) {
+                openModal('vvipModal');
             } else {
-                // For other actions, just open the editor modal since this is a mockup
-                // In a real app, this would do something else.
-                closeContextMenu();
-                openMessageModal(selectedMessageId);
-                // Optionally show a small toast or just switch tabs
-                switchTab('messages');
-                if(window.innerWidth < 768 && !isMobileEditorExpanded) {
-                    toggleMobileEditor();
+                // For non-VVIP tools, simulate opening the tool
+                showInfo(`Membuka tool: ${tool.name}`, `Ini adalah demo antarmuka. Pada website asli, ini akan mengarahkan Anda ke halaman ${tool.name}.`);
+            }
+        }
+
+        function handleVvipClick() {
+            closeModal('vvipModal');
+            setTimeout(() => {
+                showInfo("Redirecting", "Mengalihkan ke WhatsApp Admin untuk pembelian VVIP...");
+            }, 300);
+        }
+
+        function openModal(modalId) {
+            const overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById(modalId);
+            
+            overlay.classList.remove('hidden');
+            modal.classList.remove('hidden');
+            
+            // Trigger reflow
+            void modal.offsetWidth;
+            
+            overlay.classList.remove('opacity-0');
+            modal.classList.remove('opacity-0', 'scale-95');
+        }
+
+        function closeModal(modalId) {
+            const overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById(modalId);
+            
+            overlay.classList.add('opacity-0');
+            modal.classList.add('opacity-0', 'scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                
+                // Check if any other modal is still open before hiding overlay
+                const anyOpen = Array.from(document.querySelectorAll('.z-\\[200\\], .z-\\[250\\]'))
+                    .some(m => !m.classList.contains('hidden') && m.id !== modalId);
+                    
+                if (!anyOpen) {
+                    overlay.classList.add('hidden');
                 }
-            }
+            }, 300);
         }
 
-        // ==========================================
-        // UI HELPERS
-        // ==========================================
-        function switchTab(tab) {
-            document.getElementById('panel-messages').classList.add('hidden');
-            document.getElementById('panel-contact').classList.add('hidden');
-            
-            document.getElementById('tab-messages').classList.remove('text-wa-green', 'border-wa-green');
-            document.getElementById('tab-messages').classList.add('text-gray-400', 'border-transparent');
-            
-            document.getElementById('tab-contact').classList.remove('text-wa-green', 'border-wa-green');
-            document.getElementById('tab-contact').classList.add('text-gray-400', 'border-transparent');
-            
-            if (tab === 'messages') {
-                document.getElementById('panel-messages').classList.remove('hidden');
-                document.getElementById('tab-messages').classList.add('text-wa-green', 'border-wa-green');
-                document.getElementById('tab-messages').classList.remove('text-gray-400', 'border-transparent');
-            } else {
-                document.getElementById('panel-contact').classList.remove('hidden');
-                document.getElementById('tab-contact').classList.add('text-wa-green', 'border-wa-green');
-                document.getElementById('tab-contact').classList.remove('text-gray-400', 'border-transparent');
-            }
-        }
-
-        function toggleMobileEditor() {
-            const panel = document.getElementById('editor-panel');
-            const icon = document.getElementById('toggle-icon');
-            
-            isMobileEditorExpanded = !isMobileEditorExpanded;
-            
-            if (isMobileEditorExpanded) {
-                panel.style.transform = 'translateY(-40vh)';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            } else {
-                panel.style.transform = 'translateY(0)';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            }
-        }
-
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    "'": '&#39;',
-                    '"': '&quot;'
-                }[tag] || tag)
-            );
-        }
-
-        // DRAG AND DROP REORDERING
-        let draggedItem = null;
-
-        function setupDragAndDrop() {
-            const list = document.getElementById('editor-messages-list');
-            const items = list.querySelectorAll('.draggable-item');
-
-            items.forEach(item => {
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('drop', handleDrop);
-                item.addEventListener('dragenter', handleDragEnter);
-                item.addEventListener('dragleave', handleDragLeave);
-                item.addEventListener('dragend', handleDragEnd);
+        function closeAllModals() {
+            const modals = ['vvipModal', 'menuModal', 'infoModal'];
+            modals.forEach(id => {
+                if (!document.getElementById(id).classList.contains('hidden')) {
+                    closeModal(id);
+                }
             });
         }
 
-        function handleDragStart(e) {
-            draggedItem = this;
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', this.innerHTML);
-            this.classList.add('opacity-50');
-        }
-
-        function handleDragOver(e) {
-            if (e.preventDefault) {
-                e.preventDefault(); // Necessary. Allows us to drop.
-            }
-            e.dataTransfer.dropEffect = 'move';
-            return false;
-        }
-
-        function handleDragEnter(e) {
-            this.classList.add('border-wa-green', 'border-dashed');
-        }
-
-        function handleDragLeave(e) {
-            this.classList.remove('border-wa-green', 'border-dashed');
-        }
-
-        function handleDrop(e) {
-            if (e.stopPropagation) {
-                e.stopPropagation(); // stops the browser from redirecting.
-            }
-
-            if (draggedItem !== this) {
-                // Reorder array
-                const draggedId = draggedItem.dataset.id;
-                const targetId = this.dataset.id;
-                
-                const draggedIdx = messages.findIndex(m => m.id === draggedId);
-                const targetIdx = messages.findIndex(m => m.id === targetId);
-                
-                const [movedItem] = messages.splice(draggedIdx, 1);
-                messages.splice(targetIdx, 0, movedItem);
-                
-                renderMessagesPreview();
-                renderEditorMessages();
-            }
+        function showInfo(title, message) {
+            closeAllModals(); // Close others first
             
-            return false;
+            setTimeout(() => {
+                document.getElementById('infoTitle').innerText = title;
+                if (message) {
+                    document.getElementById('infoMessage').innerText = message;
+                } else {
+                    document.getElementById('infoMessage').innerText = `Anda mengakses menu ${title}. Fitur ini sedang dalam mode demonstrasi UI.`;
+                }
+                
+                openModal('infoModal');
+            }, 100); // small delay to allow previous modal to start closing
         }
 
-        function handleDragEnd(e) {
-            this.classList.remove('opacity-50');
-            const list = document.getElementById('editor-messages-list');
-            list.querySelectorAll('.draggable-item').forEach(item => {
-                item.classList.remove('border-wa-green', 'border-dashed');
-            });
-        }
-
-        // ==========================================
-        // EXPORT TO PNG
-        // ==========================================
-        function exportImage() {
-            closeContextMenu(); // Ensure menu is hidden
-            
-            const captureArea = document.getElementById('capture-area');
-            const originalBorder = captureArea.style.border;
-            const originalRadius = captureArea.style.borderRadius;
-            const originalShadow = captureArea.style.boxShadow;
-            
-            // Temporarily remove decorative device styles for cleaner screenshot
-            captureArea.style.border = 'none';
-            captureArea.style.borderRadius = '0';
-            captureArea.style.boxShadow = 'none';
-            // Hide scrollbar temporarily
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.style.overflowY = 'hidden';
-
-            html2canvas(captureArea, {
-                backgroundColor: '#000000',
-                scale: 2, // High resolution
-                useCORS: true, // For external images (avatars)
-                logging: false,
-                windowWidth: 375, // Force width to device width
-                windowHeight: 812
-            }).then(canvas => {
-                // Restore styles
-                captureArea.style.border = originalBorder;
-                captureArea.style.borderRadius = originalRadius;
-                captureArea.style.boxShadow = originalShadow;
-                chatContainer.style.overflowY = 'auto';
-
-                // Download
-                const link = document.createElement('a');
-                link.download = `wa-chat-mockup-${Date.now()}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }).catch(err => {
-                console.error('Error generating image', err);
-                alert('Gagal mengekspor gambar. Pastikan URL gambar yang digunakan mengizinkan akses (CORS).');
-                // Restore styles on error
-                captureArea.style.border = originalBorder;
-                captureArea.style.borderRadius = originalRadius;
-                captureArea.style.boxShadow = originalShadow;
-                chatContainer.style.overflowY = 'auto';
-            });
-        }
     </script>
 </body>
 </html>
