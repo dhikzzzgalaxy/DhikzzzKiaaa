@@ -479,14 +479,14 @@ function App() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // Parse route and match app using ID (/app/{id})
+    // Process path and extract slug
     const processRoute = (jsonData) => {
         const path = window.location.pathname;
-        const matchApp = path.match(/^\/app\/([a-z0-9-]+)\/?$/i);
-        
-        if (matchApp) {
-            const appId = matchApp[1];
-            const found = jsonData.apps.find(a => String(a.id) === String(appId));
+        const appMatch = path.match(/^\/app\/([a-zA-Z0-9_-]+)\/?$/);
+
+        if (appMatch) {
+            const slug = appMatch[1];
+            const found = jsonData.apps.find(a => String(a.id) === String(slug));
             if (found) {
                 setSelectedApp(found);
                 setCurrentView('detail');
@@ -496,7 +496,6 @@ function App() {
         } else if (path === '/all-apps' || path === '/all') {
             setCurrentView('allapps');
         } else {
-            // Check query param fallback
             const params = new URLSearchParams(window.location.search);
             const appId = params.get('app');
             if (appId) {
