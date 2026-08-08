@@ -502,23 +502,77 @@ function App() {
             });
     }, []);
 
-    const navigateToDetail = (app) => {
+    const navigateToDetail = (app, push = true) => {
         setSelectedApp(app);
         setCurrentView('detail');
         window.scrollTo(0, 0);
+        if (push) {
+            window.history.pushState({ view: 'detail', appId: app.id }, '', '');
+        }
     };
 
-    const navigateToAllApps = (category = 'All') => {
+    const navigateToAllApps = (category = 'All', push = true) => {
         setSelectedCategory(category);
         setCurrentView('allapps');
         window.scrollTo(0, 0);
+        if (push) {
+            window.history.pushState({ view: 'allapps', category }, '', '');
+        }
     };
 
-    const navigateToHome = () => {
+    const navigateToHome = (push = true) => {
         setSelectedApp(null);
         setCurrentView('home');
         window.scrollTo(0, 0);
+        if (push) {
+            window.history.pushState({ view: 'home' }, '', '');
+        }
     };
+
+    const handleBack = () => {
+        if (window.history.state && window.history.state.view !== 'home') {
+            window.history.back();
+        } else {
+            navigateToHome();
+        }
+    };
+
+    // Handle browser back/forward buttons
+    useEffect(() => {
+        const handlePopState = (event) => {
+            const state = event.state;
+            if (state) {
+                if (state.view === 'detail') {
+                    const app = data.apps.find(a => a.id === state.appId);
+                    if (app) {
+                        setSelectedApp(app);
+                        setCurrentView('detail');
+                    } else {
+                        setCurrentView('home');
+                    }
+                } else if (state.view === 'allapps') {
+                    setSelectedCategory(state.category || 'All');
+                    setCurrentView('allapps');
+                } else {
+                    setSelectedApp(null);
+                    setCurrentView('home');
+                }
+            } else {
+                setSelectedApp(null);
+                setCurrentView('home');
+            }
+            window.scrollTo(0, 0);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        
+        // Set initial state
+        if (!window.history.state) {
+            window.history.replaceState({ view: 'home' }, '', '');
+        }
+
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [data.apps]);
 
     return (
         <div className="min-h-screen bg-[#05050a] text-slate-200 font-sans selection:bg-blue-500/30 overflow-x-hidden">
@@ -556,7 +610,7 @@ function App() {
                         apps={data.apps}
                         categories={data.categories}
                         onAppSelect={navigateToDetail} 
-                        onBack={navigateToHome}
+                        onBack={handleBack}
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}
                     />
@@ -566,7 +620,7 @@ function App() {
                         app={selectedApp} 
                         allApps={data.apps}
                         onAppSelect={navigateToDetail}
-                        onBack={navigateToHome}
+                        onBack={handleBack}
                     />
                 )}
             </main>
