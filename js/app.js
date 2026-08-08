@@ -219,7 +219,7 @@ const HomeView = ({ apps, materialCategories, onAppSelect, searchQuery, setSearc
                         <LayoutGrid className="text-purple-400" size={24} /> {searchQuery ? 'Hasil Pencarian' : 'Semua Aplikasi'}
                     </h2>
                     {!searchQuery && (
-                        <button onClick={onShowAll} className="text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1 self-start md:self-auto">
+                        <button onClick={() => onShowAll("All")} className="text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1 self-start md:self-auto">
                             Lihat Semua ({apps.length}) &rarr;
                         </button>
                     )}
@@ -490,67 +490,12 @@ function App() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
 
-    // Sync URL with state
-    const updateHistory = (view, app = null, replace = false) => {
-        let path = '/';
-        if (view === 'allapps') path = '/all-apps';
-        if (view === 'detail' && app) path = `/app/${app.id}`;
-        
-        const state = { view, appId: app ? app.id : null };
-        if (replace) {
-            window.history.replaceState(state, '', path);
-        } else if (window.location.pathname !== path) {
-            window.history.pushState(state, '', path);
-        }
-    };
-
-    // Handle browser back/forward buttons
-    useEffect(() => {
-        const handlePopState = (event) => {
-            const state = event.state;
-            if (state) {
-                setCurrentView(state.view);
-                if (state.view === 'detail' && state.appId) {
-                    const app = data.apps.find(a => String(a.id) === String(state.appId));
-                    setSelectedApp(app || null);
-                } else {
-                    setSelectedApp(null);
-                }
-            } else {
-                setCurrentView('home');
-                setSelectedApp(null);
-            }
-        };
-
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-    }, [data.apps]);
-
-    // Load data and handle initial routing
+    // Load data from apps.json on mount
     useEffect(() => {
         fetch('./data/apps.json')
             .then(res => res.json())
             .then(jsonData => {
                 setData(jsonData);
-                
-                const path = window.location.pathname;
-                if (path === '/all-apps') {
-                    setCurrentView('allapps');
-                    updateHistory('allapps', null, true);
-                } else if (path.startsWith('/app/')) {
-                    const appId = path.split('/app/')[1];
-                    const app = jsonData.apps.find(a => String(a.id) === String(appId));
-                    if (app) {
-                        setSelectedApp(app);
-                        setCurrentView('detail');
-                        updateHistory('detail', app, true);
-                    } else {
-                        setCurrentView('home');
-                        updateHistory('home', null, true);
-                    }
-                } else {
-                    updateHistory('home', null, true);
-                }
             })
             .catch(err => {
                 console.error("Failed to load apps.json", err);
@@ -561,29 +506,18 @@ function App() {
         setSelectedApp(app);
         setCurrentView('detail');
         window.scrollTo(0, 0);
-        updateHistory('detail', app);
     };
 
     const navigateToAllApps = (category = 'All') => {
         setSelectedCategory(category);
         setCurrentView('allapps');
         window.scrollTo(0, 0);
-        updateHistory('allapps');
     };
 
     const navigateToHome = () => {
         setSelectedApp(null);
         setCurrentView('home');
         window.scrollTo(0, 0);
-        updateHistory('home');
-    };
-
-    const handleBack = () => {
-        if (window.history.length > 1 && window.history.state && window.history.state.view !== 'home') {
-            window.history.back();
-        } else {
-            navigateToHome();
-        }
     };
 
     return (
@@ -622,7 +556,7 @@ function App() {
                         apps={data.apps}
                         categories={data.categories}
                         onAppSelect={navigateToDetail} 
-                        onBack={handleBack}
+                        onBack={navigateToHome}
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}
                     />
@@ -632,7 +566,7 @@ function App() {
                         app={selectedApp} 
                         allApps={data.apps}
                         onAppSelect={navigateToDetail}
-                        onBack={handleBack}
+                        onBack={navigateToHome}
                     />
                 )}
             </main>
