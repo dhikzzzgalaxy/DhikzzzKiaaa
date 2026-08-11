@@ -1,2420 +1,893 @@
-<!DOCTYPE html>
-<html lang="id" class="dark">
+<!doctype html>
+<html lang="id">
+<!--
+  ============================================================
+   ROSE PETAL DREAM — Happy Birthday Surprise (single file)
+   Soft pink / lavender / ivory + champagne gold accents
+   Fonts: Cormorant Garamond, Jost, Dancing Script (Google Fonts)
+   Semua CSS & JS berada di dalam file ini — cukup buka di browser.
+   KONTEN MUDAH DIEDIT: lihat blok <script> paling bawah.
+  ============================================================
+-->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Elysian tools - Platform All Tools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        elysian: {
-                            bg: '#0f1115',
-                            card: '#1a1d24',
-                            border: '#2a2e37',
-                            accent: '#3b82f6',
-                            text: '#e2e8f0',
-                            muted: '#94a3b8'
-                        }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.3s ease-out',
-                        'slide-up': 'slideUp 0.4s ease-out forwards',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #0f1115;
-            color: #e2e8f0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday, Akira ✦</title>
+<link rel="icon" href="https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/IconKiaaa.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ==================== ROSE PETAL DREAM — theme ==================== */
+  :root {
+    --radius: 1.1rem;
+    --rose: #f2a0af;
+    --blush: #f9dfe3;
+    --lavender: #e6d4f0;
+    --ivory: #fbf6ea;
+    --gold: #c9a45c;
+    --gold-soft: #dcc08a;
+    --background: #f7eef0;
+    --foreground: #4a3539;
+    --muted-foreground: #8a6b72;
+    --primary-foreground: #fdf6ec;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --font-display: "Cormorant Garamond", Georgia, serif;
+    --font-sans: "Jost", "Outfit", system-ui, sans-serif;
+    --font-script: "Dancing Script", cursive;
+  }
 
-        .glass-panel {
-            background: rgba(26, 29, 36, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; border: none; outline: none; }
+  html { overflow-x: hidden; scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--foreground);
+    overflow-x: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 15% -10%, rgba(248, 216, 219, 0.9), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 90% 15%, rgba(228, 210, 238, 0.7), transparent 60%),
+      linear-gradient(180deg, #fbf0f1 0%, #f4e2ec 45%, #f0d8e4 100%);
+    min-height: 100vh;
+  }
+  ::selection { background: var(--gold-soft); color: #4a3539; }
+  button { cursor: pointer; font-family: inherit; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
 
-        .tool-card {
-            transition: all 0.2s ease;
-        }
-        .tool-card:active {
-            transform: scale(0.98);
-        }
-        @media (min-width: 768px) {
-            .tool-card:hover {
-                transform: translateY(-2px);
-                border-color: rgba(59, 130, 246, 0.5);
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            }
-        }
+  .container { width: 100%; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+  @media (min-width: 640px) { .container { padding-left: 1.5rem; padding-right: 1.5rem; } }
+  @media (min-width: 1024px) { .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; } }
 
-        #loader {
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
+  .font-display { font-family: var(--font-display); }
+  .font-script { font-family: var(--font-script); }
+  .text-gold { color: var(--gold); }
+  .text-muted { color: var(--muted-foreground); }
 
-        .tool-modal {
-            max-height: 90vh;
-            overflow-y: auto;
-        }
+  /* ---------- Glassmorphism ---------- */
+  .glass {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
 
-        .preview-box {
-            background: #0f1115;
-            border: 1px solid #2a2e37;
-            border-radius: 0.75rem;
-            padding: 1rem;
-        }
+  /* ---------- Gold foil text ---------- */
+  .gold-text {
+    background: linear-gradient(110deg, #b99450, #e4cd96 30%, #f5e8c4 48%, #d4b270 62%, #b99450);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-        .demo-label {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 0, 0, 0.2);
-            color: #ff6b6b;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            z-index: 10;
-        }
-    </style>
+  /* ---------- Buttons ---------- */
+  .btn-gold {
+    background: linear-gradient(135deg, #eab0b6, #c9a45c);
+    color: var(--primary-foreground);
+    border-radius: 999px;
+    font-weight: 500;
+    transition: transform 0.2s var(--ease-out), opacity 0.2s;
+    box-shadow:
+      0 10px 40px -8px rgba(201, 164, 92, 0.45),
+      0 2px 12px -2px rgba(201, 164, 92, 0.35);
+  }
+  .btn-gold:hover { transform: scale(1.05); }
+  .btn-gold:active { transform: scale(0.97); }
+
+  /* ==================== Animations ==================== */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .animate-float { animation: bd-float 6s ease-in-out infinite; }
+    .animate-twinkle { animation: bd-twinkle 2.4s ease-in-out infinite; }
+    .animate-drift { animation: bd-drift 14s ease-in-out infinite; }
+    .animate-heartbeat { animation: bd-heartbeat 1.6s ease-in-out infinite; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .animate-float, .animate-twinkle, .animate-drift, .animate-heartbeat { animation: none; }
+  }
+  @keyframes bd-float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-22px) translateX(10px); }
+  }
+  @keyframes bd-twinkle {
+    0%, 100% { opacity: 0.15; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  @keyframes bd-drift {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    33% { transform: translate3d(14px, -26px, 0) scale(1.06); }
+    66% { transform: translate3d(-10px, -46px, 0) scale(0.97); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
+  }
+  @keyframes bd-heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.12); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.08); }
+  }
+  @keyframes bd-open-gift {
+    0% { opacity: 0; transform: scale(0.92) translateY(24px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding-top: 6rem; padding-bottom: 6rem; }
+  @media (min-width: 768px) { section { padding-top: 8rem; padding-bottom: 8rem; } }
+
+  /* ---------- Layers ---------- */
+  #confetti-canvas { pointer-events: none; position: fixed; inset: 0; z-index: 40; }
+  #particles-layer { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+
+  /* ---------- Header ---------- */
+  header#main-header {
+    position: fixed; inset: 0 0 auto 0; z-index: 30; display: none;
+  }
+  @media (min-width: 768px) { header#main-header { display: block; } }
+  header#main-header .inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 3.5rem; padding-left: 2rem; padding-right: 2rem;
+  }
+  header#main-header .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 600; color: rgba(74, 53, 57, 0.85); }
+  header#main-header nav { display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--muted-foreground); }
+  header#main-header nav a:hover { color: var(--gold); }
+
+  /* ---------- Opening ---------- */
+  #opening {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; min-height: 100svh; overflow: hidden;
+  }
+  #opening .bg-img { position: absolute; inset: 0; height: 100%; width: 100%; object-fit: cover; opacity: 0.6; }
+  #opening .bg-veil {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 55%, transparent 20%, rgba(248, 238, 240, 0.75) 100%);
+  }
+  #opening .content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; padding: 0 1.5rem; text-align: center; }
+
+  /* ---------- Main section ---------- */
+  .two-col { display: grid; align-items: center; gap: 3rem; }
+  @media (min-width: 768px) { .two-col { grid-template-columns: minmax(280px, 1fr) minmax(280px, 1.15fr); } }
+  .polaroid-wrap { position: relative; margin: 0 auto; width: 100%; max-width: 26rem; perspective: 1200px; }
+  .polaroid {
+    position: relative; transform: rotate(-4deg); border-radius: 0.375rem;
+    background: #fff; padding: 0.75rem; padding-bottom: 3.5rem;
+    box-shadow: 0 24px 60px -18px rgba(160, 110, 100, 0.45);
+  }
+  .tape { position: absolute; top: -0.75rem; z-index: 10; height: 1.75rem; border-radius: 0.25rem; opacity: 0.8; }
+  .tape-left { left: 2rem; width: 6rem; transform: rotate(-6deg); background: rgba(244, 205, 200, 0.75); }
+  .tape-right { right: 1.5rem; width: 5rem; transform: rotate(6deg); background: rgba(230, 200, 230, 0.7); }
+  .polaroid img.photo { aspect-ratio: 4 / 5; width: 100%; border-radius: 0.25rem; object-fit: cover; }
+  .polaroid .cap { position: absolute; left: 0; right: 0; bottom: 0.75rem; text-align: center; font-size: 1.5rem; color: rgba(74, 53, 57, 0.7); }
+  .frame-glow {
+    position: absolute; inset: -2.5rem; z-index: -1; border-radius: 999px;
+    background: rgba(235, 200, 222, 0.55); filter: blur(60px);
+  }
+  .age { display: flex; align-items: baseline; gap: 0.75rem; }
+  .age .num { font-weight: 700; font-size: clamp(4.5rem, 13vw, 9rem); line-height: 1; user-select: none; }
+  .age .label { font-size: 1.25rem; color: var(--muted-foreground); }
+  @media (min-width: 768px) { .age .label { font-size: 1.5rem; } }
+
+  /* ---------- Memories ---------- */
+  .grid-memories { margin-top: 3.5rem; display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 640px) { .grid-memories { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .grid-memories { grid-template-columns: repeat(3, 1fr); } }
+  .polaroid-btn {
+    position: relative; display: block; width: 100%; border: none; background: #fff; border-radius: 0.25rem;
+    padding: 0.75rem; padding-bottom: 3rem; text-align: left;
+    box-shadow: 0 18px 44px -16px rgba(160, 110, 100, 0.4);
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  }
+  .polaroid-btn:hover { z-index: 10; transform: rotate(0deg) translateY(-0.5rem); box-shadow: 0 26px 56px -14px rgba(160, 110, 100, 0.55); }
+  .polaroid-btn img { aspect-ratio: 4 / 3; width: 100%; border-radius: 3px; object-fit: cover; }
+  .polaroid-btn .cap { position: absolute; left: 0; right: 0; bottom: 0.6rem; text-align: center; font-size: 1.25rem; color: rgba(74, 53, 57, 0.7); }
+
+  /* ---------- Letter ---------- */
+  .letter-card {
+    position: relative; margin: 3rem auto 0; max-width: 42rem;
+    border-radius: 1rem; padding: 2.5rem 1.75rem;
+    background: rgba(255, 255, 255, 0.68);
+    backdrop-filter: blur(16px) saturate(1.4);
+    box-shadow:
+      0 10px 40px -8px rgba(201, 164, 92, 0.45),
+      0 2px 12px -2px rgba(201, 164, 92, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+  @media (min-width: 768px) { .letter-card { padding: 3.5rem 3rem; } }
+  .letter-card .flourish { position: absolute; font-size: 1.5rem; color: rgba(201, 164, 92, 0.7); }
+  .letter-card .fl-tl { left: 1rem; top: 0.75rem; }
+  .letter-card .fl-br { right: 1rem; bottom: 0.75rem; transform: rotate(180deg); }
+  .letter-card p { margin-bottom: 1.25rem; line-height: 1.7; font-size: 1.05rem; color: rgba(74, 53, 57, 0.85); }
+  @media (min-width: 768px) { .letter-card p { font-size: 1.125rem; } }
+  .cursor-gold { display: inline-block; height: 1.1em; width: 2px; transform: translateY(2px); margin-left: 2px; background: var(--gold); vertical-align: middle; }
+
+  /* ---------- Surprise ---------- */
+  #surprise { text-align: center; }
+  .gift-art { height: 11rem; width: 11rem; margin: 0 auto; object-fit: contain; filter: drop-shadow(0 12px 24px rgba(160, 110, 100, 0.25)); }
+  @media (min-width: 768px) { .gift-art { height: 14rem; width: 14rem; } }
+
+  /* ---------- Modal ---------- */
+  #modal {
+    position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(4px); padding: 1.25rem;
+  }
+  #modal.open { display: flex; }
+  #modal .card {
+    position: relative; max-width: 32rem; text-align: center; border-radius: 1rem; padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px) saturate(1.4);
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3);
+    animation: bd-open-gift 0.55s var(--ease-out);
+  }
+  #modal .gift-top { margin: -4.5rem auto 0.5rem; height: 7rem; width: 7rem; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(160, 110, 100, 0.3)); }
+  #modal .title { font-size: 2rem; margin-top: 0.5rem; }
+  @media (min-width: 768px) { #modal .title { font-size: 2.4rem; } }
+  #modal .msg { margin-top: 1.25rem; line-height: 1.7; color: rgba(74, 53, 57, 0.85); }
+  .btn-ghost {
+    margin-top: 2rem; border-radius: 999px; padding: 0.6rem 1.75rem; font-size: 0.875rem; font-weight: 500;
+    border: 1px solid rgba(201, 164, 92, 0.6); color: rgba(74, 53, 57, 0.8); background: transparent;
+    transition: transform 0.2s var(--ease-out), border-color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); transform: scale(1.05); }
+  .btn-ghost:active { transform: scale(0.97); }
+
+  /* ---------- Lightbox ---------- */
+  #lightbox {
+    position: fixed; inset: 0; z-index: 70; display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); padding: 1rem;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox .frame { position: relative; max-width: 42rem; max-height: 85svh; background: #fff; border-radius: 0.25rem; padding: 0.75rem; padding-bottom: 3rem; overflow: hidden; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4); }
+  #lightbox img { max-height: 70svh; width: 100%; border-radius: 3px; object-fit: contain; }
+  #lightbox .cap { position: absolute; left: 0; right: 0; bottom: 0.5rem; text-align: center; font-size: 1.25rem; color: rgba(74, 53, 57, 0.7); }
+  .close-btn {
+    position: absolute; right: 1rem; top: 1rem; width: 2.75rem; height: 2.75rem; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--foreground); z-index: 71;
+    background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  /* ---------- Music control ---------- */
+  #music-btn {
+    position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 50;
+    width: 3.25rem; height: 3.25rem; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 10px 40px -8px rgba(201, 164, 92, 0.45),
+      0 2px 12px -2px rgba(201, 164, 92, 0.35);
+    transition: transform 0.2s var(--ease-out);
+  }
+  #music-btn:hover { transform: scale(1.05); }
+  #music-btn:active { transform: scale(0.95); }
+  #music-btn svg { width: 1.25rem; height: 1.25rem; color: var(--gold); }
+
+  /* ---------- Footer ---------- */
+  footer { padding-top: 1rem; padding-bottom: 2rem; text-align: center; }
+  .footer-divider { margin: 0 auto 1rem; height: 1px; width: 6rem; background: linear-gradient(90deg, transparent, #c9a45c, transparent); }
+  footer p { font-size: 0.875rem; color: var(--muted-foreground); }
+  footer .small { margin-top: 0.25rem; font-size: 0.75rem; opacity: 0.7; }
+
+  /* ---------- Loading screen ---------- */
+  #loader {
+    position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
+    background: radial-gradient(ellipse 70% 60% at 50% 45%, #fbf0f1, #f4dce3);
+    transition: opacity 0.5s;
+  }
+  #loader.hidden { opacity: 0; pointer-events: none; }
+  #loader .heart { font-size: 3rem; }
+  #loader .bar { height: 0.4rem; width: 12rem; overflow: hidden; border-radius: 999px; background: rgba(255, 255, 255, 0.7); box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.08); }
+  #loader .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #eab0b6, #c9a45c); transition: width 60ms linear; }
+  #loader .txt { font-family: var(--font-script); font-size: 1.1rem; color: var(--muted-foreground); }
+</style>
 </head>
-<body class="antialiased overflow-x-hidden selection:bg-elysian-accent selection:text-white">
+<body>
 
-    <div id="loader" class="fixed inset-0 z-[100] bg-elysian-bg flex flex-col items-center justify-center">
-        <div class="relative flex justify-center items-center mb-4">
-            <div class="absolute w-16 h-16 border-4 border-elysian-card rounded-full"></div>
-            <div class="absolute w-16 h-16 border-4 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
-            <i class="fas fa-bolt text-blue-500 text-xl animate-pulse"></i>
-        </div>
-        <h1 class="text-xl font-bold tracking-wider text-white flex items-center gap-2">
-            Elysian tools
-        </h1>
-        <p class="text-elysian-muted text-sm mt-2 animate-pulse">System Initializing...</p>
+<!-- Loading screen -->
+<div id="loader">
+  <div class="heart animate-heartbeat">💝</div>
+  <div class="bar"><div class="bar-fill" id="loader-fill"></div></div>
+  <div class="txt">Preparing your surprise...</div>
+</div>
+
+<!-- Confetti canvas (whole page) -->
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+<!-- Floating particles + sparkles (visible after opening) -->
+<div id="particles-layer" aria-hidden="true"></div>
+
+<!-- ============ OPENING PAGE ============ -->
+<section id="opening">
+  <img class="bg-img" src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663885147579/GPLGWyoaYfaZtKtI.png" alt="" aria-hidden="true" />
+  <div class="bg-veil"></div>
+  <div id="opening-particles" class="particles"></div>
+
+  <div class="content" id="opening-content">
+    <img id="opening-logo" src="https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/IconKiaaa.jpg" alt="" aria-hidden="true"
+         style="height: 5rem; width: 5rem; object-fit: cover; border-radius: 50%; margin-bottom: 1.5rem; opacity: 0;" />
+    <p id="opening-date" style="opacity: 0;">✦ <span data-field="date"></span> ✦</p>
+    <h1 id="opening-title" style="opacity: 0; font-size: clamp(2.6rem, 8vw, 5.5rem); font-weight: 600; line-height: 1.05;">
+      <span data-field="openingTitle"></span>
+      <span class="gold-text" style="display: block;" data-field="nameEmoji"></span>
+    </h1>
+    <p id="opening-subtitle" style="opacity: 0; margin-top: 1rem; font-size: 1.125rem; color: var(--muted-foreground);" data-field="subtitle"></p>
+    <button id="opening-cta" class="btn-gold" style="opacity: 0; margin-top: 2.5rem; padding: 1rem 2.25rem; font-size: 1.125rem;" data-field="ctaLabel"></button>
+  </div>
+</section>
+
+<!-- Header (desktop, after opening) -->
+<header id="main-header" class="glass">
+  <div class="inner">
+    <div class="brand">
+      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663885147579/ioTSIzkhgKiGdiRS.png" alt="" aria-hidden="true" style="height: 2rem; width: 2rem;" />
+      <span>Happy Birthday, <span data-field="name"></span></span>
     </div>
+    <nav>
+      <a href="#birthday">Birthday</a>
+      <a href="#memories">Memories</a>
+      <a href="#letter">Letter</a>
+      <a href="#surprise">Surprise</a>
+    </nav>
+  </div>
+</header>
 
-    <div id="app" class="min-h-screen flex flex-col hidden opacity-0 transition-opacity duration-500 pb-20 md:pb-0">
-        
-        <!-- Header / Navbar -->
-        <header class="sticky top-0 z-40 glass-panel border-b border-elysian-border px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <div class="bg-blue-500/20 p-1.5 rounded-lg text-blue-400">
-                    <i class="fas fa-bolt text-sm"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-white leading-tight">Elysian tools</h1>
-                    <p class="text-[10px] text-elysian-muted uppercase tracking-wider">by zizi</p>
-                </div>
+<!-- ============ MAIN PAGE ============ -->
+<main id="main-page" style="display: none; position: relative;">
+
+  <!-- Section: Birthday -->
+  <section id="birthday" class="reveal-section">
+    <div id="section-particles-1" class="particles"></div>
+    <div class="container" style="position: relative; z-index: 10;">
+      <div class="two-col">
+        <div class="reveal">
+          <div class="polaroid-wrap">
+            <div class="frame-glow" aria-hidden="true"></div>
+            <div class="polaroid" id="frame">
+              <span class="tape tape-left" aria-hidden="true"></span>
+              <span class="tape tape-right" aria-hidden="true"></span>
+              <img class="photo" id="main-photo" src="" alt="Foto yang berulang tahun" loading="lazy" />
+              <p class="cap font-script">✦ the birthday girl ✦</p>
             </div>
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1.5 bg-green-500/10 px-2 py-1 rounded-full border border-green-500/20">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse-slow"></div>
-                    <span class="text-[10px] font-medium text-green-400 uppercase">Online</span>
-                </div>
-                <button onclick="openModal('menuModal')" class="w-8 h-8 flex items-center justify-center rounded-full bg-elysian-card border border-elysian-border text-white hover:bg-gray-700 transition">
-                    <i class="fas fa-bars"></i>
-                </button>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="font-script" style="font-size: 1.35rem; margin-bottom: 0.5rem;">✦ <span data-field="date"></span> ✦</p>
+          <h2 id="greeting-title" style="font-size: clamp(2.2rem, 6vw, 3.8rem); font-weight: 600; line-height: 1.15;"></h2>
+          <p id="greeting-text" style="margin-top: 1.25rem; max-width: 32rem; font-size: 1.125rem; line-height: 1.7; color: rgba(74, 53, 57, 0.8);"></p>
+          <div class="reveal" style="margin-top: 2rem;">
+            <div class="age">
+              <span class="num gold-text" id="age-counter">0</span>
+              <span class="label font-script">years of pure magic ✦</span>
             </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="flex-1 max-w-5xl w-full mx-auto p-4 space-y-6">
-            
-            <section class="animate-slide-up" style="animation-delay: 0.1s;">
-                <div class="bg-gradient-to-br from-elysian-card to-[#12141a] border border-elysian-border rounded-2xl p-4 shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                    
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <img src="https://placehold.co/100x100/2a2e37/ffffff?text=U" alt="Profile" class="w-12 h-12 rounded-full border-2 border-elysian-border">
-                            <div>
-                                <h2 class="font-bold text-white">About Dev Profile</h2>
-                                <p class="text-xs text-elysian-muted">Toolkit · Playlist · 36 Project</p>
-                            </div>
-                        </div>
-                        <span class="px-2.5 py-1 text-[10px] font-bold bg-blue-500/20 text-blue-400 rounded border border-blue-500/30 uppercase tracking-wide">
-                            VVIP Member
-                        </span>
-                    </div>
-                    
-                    <div class="grid grid-cols-4 gap-2 text-center mt-4 pt-4 border-t border-elysian-border/50">
-                        <div class="flex flex-col items-center">
-                            <span class="text-[10px] text-elysian-muted mb-1">Negara</span>
-                            <div class="flex items-center gap-1 text-xs font-medium text-white">
-                                <span>🇺🇸</span> US
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-[10px] text-elysian-muted mb-1">Device</span>
-                            <span class="text-xs font-medium text-white"><i class="fab fa-android text-green-500 mr-1"></i> Android</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-[10px] text-elysian-muted mb-1">Browser</span>
-                            <span class="text-xs font-medium text-white"><i class="fab fa-chrome text-blue-400 mr-1"></i> Chrome</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-[10px] text-elysian-muted mb-1">Status</span>
-                            <span class="text-xs font-medium text-green-400">100%</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="animate-slide-up" style="animation-delay: 0.2s;">
-                <div class="flex overflow-x-auto no-scrollbar gap-2 pb-1" id="category-tabs">
-                </div>
-            </section>
-
-            <section class="animate-slide-up" style="animation-delay: 0.3s;">
-                <div class="flex justify-between items-end mb-3 px-1">
-                    <h3 id="category-title" class="text-lg font-bold text-white">Semua Tools</h3>
-                    <span id="tools-count" class="text-xs text-elysian-muted bg-elysian-card px-2 py-1 rounded-md border border-elysian-border">0 tools</span>
-                </div>
-                
-                <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                </div>
-            </section>
-
-        </main>
-
-        <nav class="md:hidden fixed bottom-0 w-full glass-panel border-t border-elysian-border pb-safe z-40">
-            <div class="flex justify-around items-center p-3">
-                <button onclick="filterCategory('all')" class="nav-btn flex flex-col items-center gap-1 text-blue-400" data-target="all">
-                    <i class="fas fa-home text-lg"></i>
-                    <span class="text-[10px] font-medium">Home</span>
-                </button>
-                <button onclick="filterCategory('downloader')" class="nav-btn flex flex-col items-center gap-1 text-elysian-muted hover:text-white transition" data-target="downloader">
-                    <i class="fas fa-download text-lg"></i>
-                    <span class="text-[10px] font-medium">Download</span>
-                </button>
-                <button onclick="filterCategory('maker')" class="nav-btn flex flex-col items-center gap-1 text-elysian-muted hover:text-white transition" data-target="maker">
-                    <i class="fas fa-magic text-lg"></i>
-                    <span class="text-[10px] font-medium">Maker</span>
-                </button>
-                <button onclick="openModal('vvipModal')" class="flex flex-col items-center gap-1 text-yellow-500 hover:text-yellow-400 transition">
-                    <i class="fas fa-crown text-lg"></i>
-                    <span class="text-[10px] font-medium">VVIP</span>
-                </button>
-            </div>
-        </nav>
+          </div>
+          <div class="reveal" style="margin-top: 2.25rem;">
+            <button id="celebrate-btn" class="btn-gold" style="padding: 0.875rem 2rem;">Celebrate! 🎉</button>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- Overlay -->
-    <div id="modal-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[150] hidden opacity-0 transition-opacity duration-300" onclick="closeAllModals()"></div>
-
-    <!-- Tool Modal Container -->
-    <div id="toolModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-2xl bg-elysian-card border border-elysian-border rounded-2xl shadow-2xl z-[200] hidden flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0 tool-modal">
-        <div class="flex justify-between items-center p-4 border-b border-elysian-border sticky top-0 bg-elysian-card/95">
-            <h2 id="toolTitle" class="font-bold text-white">Tool Title</h2>
-            <button onclick="closeModal('toolModal')" class="text-elysian-muted hover:text-white p-1">
-                <i class="fas fa-times text-lg"></i>
-            </button>
-        </div>
-        <div id="toolContent" class="p-5 space-y-4 overflow-y-auto">
-            <!-- Tool content will be injected here -->
-        </div>
+  <!-- Section: Memories -->
+  <section id="memories" class="reveal-section">
+    <div class="container" style="position: relative; z-index: 10;">
+      <div class="reveal" style="text-align: center;">
+        <p class="font-script" style="font-size: 1.35rem; margin-bottom: 0.25rem;">✦ scrapbook ✦</p>
+        <h2 style="font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 600; line-height: 1.15;">Our Memories</h2>
+        <p class="text-muted" style="margin: 0.75rem auto 0; max-width: 28rem;">Momen yang tak akan pernah kita lupakan</p>
+      </div>
+      <div class="grid-memories" id="memories-grid"></div>
     </div>
+  </section>
 
-    <!-- VVIP Modal -->
-    <div id="vvipModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md bg-elysian-card border border-elysian-border rounded-2xl shadow-2xl z-[200] hidden flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0">
-        <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 p-4 text-center relative">
-            <i class="fas fa-crown text-4xl text-white mb-2 drop-shadow-md"></i>
-            <h2 class="text-xl font-bold text-white tracking-wide">VVIP ACCESS</h2>
-            <p class="text-yellow-100 text-sm">Elysian tools — FULL VERSION</p>
-            <button onclick="closeModal('vvipModal')" class="absolute top-3 right-3 w-8 h-8 bg-black/20 rounded-full flex items-center justify-center text-white hover:bg-black/40">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="p-5 space-y-4">
-            <p class="text-sm text-elysian-text text-center">Upgrade ke VVIP dan buka semua fitur premium. Full update permanen, dalam bentuk APK bukan web.</p>
-            
-            <div class="bg-elysian-bg rounded-lg p-3 border border-elysian-border">
-                <h3 class="text-sm font-bold text-yellow-500 mb-2 flex items-center gap-2"><i class="fas fa-star"></i> Keunggulan VVIP</h3>
-                <ul class="text-xs text-elysian-muted space-y-2">
-                    <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-0.5"></i> <span><b>18+ tools tambahan:</b> Bedanya tambah 18 tools dan lebih banyak fitur yang work.</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-0.5"></i> <span><b>Bonus Permanen:</b> Semua update fitur masa depan gratis selamanya.</span></li>
-                    <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-0.5"></i> <span><b>APK Bukan Web:</b> Dikirim dalam bentuk APK siap pakai di Android.</span></li>
-                </ul>
-            </div>
-            
-            <div class="text-center pt-2">
-                <p class="text-sm text-elysian-muted mb-1">Harga promo khusus hari ini</p>
-                <p class="text-2xl font-bold text-white">Rp30.000</p>
-            </div>
-            
-            <button onclick="handleVvipClick()" class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-bold py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)] flex items-center justify-center gap-2">
-                <i class="fab fa-whatsapp text-xl"></i> BELI VIA WHATSAPP
-            </button>
-        </div>
+  <!-- Section: Letter -->
+  <section id="letter" class="reveal-section">
+    <div class="container" style="position: relative; z-index: 10;">
+      <div class="reveal" style="text-align: center;">
+        <p class="font-script" style="font-size: 1.35rem; margin-bottom: 0.25rem;">✦ just for you ✦</p>
+        <h2 style="font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 600; line-height: 1.15;">A Letter For You</h2>
+      </div>
+      <div id="letter-trigger" class="letter-card">
+        <span class="flourish fl-tl" aria-hidden="true">✦</span>
+        <span class="flourish fl-br" aria-hidden="true">✦</span>
+        <div id="letter-body"></div>
+      </div>
     </div>
+  </section>
 
-    <!-- Menu Modal -->
-    <div id="menuModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-elysian-card border border-elysian-border rounded-2xl shadow-2xl z-[200] hidden flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0">
-        <div class="flex justify-between items-center p-4 border-b border-elysian-border">
-            <h2 class="font-bold text-white">Menu Elysian</h2>
-            <button onclick="closeModal('menuModal')" class="text-elysian-muted hover:text-white p-1">
-                <i class="fas fa-times text-lg"></i>
-            </button>
-        </div>
-        <div class="p-2 flex flex-col">
-            <button class="flex items-center gap-3 p-3 hover:bg-elysian-bg rounded-xl text-left transition w-full" onclick="showInfo('About Dev', 'Elysian tools adalah platform toolkit all-in-one yang menyediakan berbagai fitur untuk kebutuhan sehari-hari.')">
-                <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center"><i class="fas fa-info"></i></div>
-                <div>
-                    <div class="text-sm font-bold text-white">Informasi About Dev</div>
-                    <div class="text-xs text-elysian-muted">Profile developer & project</div>
-                </div>
-            </button>
-            <button class="flex items-center gap-3 p-3 hover:bg-elysian-bg rounded-xl text-left transition w-full" onclick="showInfo('Report Bug', 'Jika menemukan bug atau error, silakan laporkan melalui WhatsApp admin.')">
-                <div class="w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center"><i class="fas fa-bug"></i></div>
-                <div>
-                    <div class="text-sm font-bold text-white">Report Bug</div>
-                    <div class="text-xs text-elysian-muted">Laporkan error pada tools</div>
-                </div>
-            </button>
-            <button class="flex items-center gap-3 p-3 hover:bg-elysian-bg rounded-xl text-left transition w-full" onclick="showInfo('Saluran WhatsApp', 'Ikuti saluran WhatsApp kami untuk mendapatkan update fitur terbaru dan promo eksklusif.')">
-                <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center"><i class="fab fa-whatsapp"></i></div>
-                <div>
-                    <div class="text-sm font-bold text-white">Saluran WhatsApp</div>
-                    <div class="text-xs text-elysian-muted">Ikuti update fitur terbaru</div>
-                </div>
-            </button>
-        </div>
+  <!-- Section: Surprise -->
+  <section id="surprise" class="reveal-section">
+    <div class="container" style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center;">
+      <div class="reveal">
+        <img class="gift-art animate-float" src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663885147579/OpDuVHHMvtUpYZkt.png" alt="Hadiah" loading="lazy" />
+        <h2 style="font-size: clamp(2rem, 5.5vw, 3.2rem); font-weight: 600; margin-top: 1.5rem; line-height: 1.15;">Ada satu hal lagi untukmu...</h2>
+        <p class="text-muted" style="margin-top: 0.75rem; max-width: 28rem;">Semua yang baik hari ini hanya setimpal dengan kebaikanmu.</p>
+      </div>
+      <div class="reveal" style="margin-top: 2rem;">
+        <button id="surprise-btn" class="btn-gold" style="padding: 1rem 2.25rem; font-size: 1.125rem;">One More Surprise 🎁</button>
+      </div>
     </div>
+  </section>
 
-    <!-- Info Modal -->
-    <div id="infoModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[85%] max-w-sm bg-elysian-card border border-elysian-border rounded-xl shadow-2xl z-[250] hidden flex-col overflow-hidden transition-all duration-300 scale-95 opacity-0">
-        <div class="p-5 text-center">
-            <div id="infoIcon" class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 mx-auto flex items-center justify-center text-xl mb-3">
-                <i class="fas fa-info-circle"></i>
-            </div>
-            <h3 id="infoTitle" class="text-lg font-bold text-white mb-2">Informasi</h3>
-            <p id="infoMessage" class="text-sm text-elysian-muted">Pesan akan tampil di sini.</p>
-        </div>
-        <div class="border-t border-elysian-border p-3">
-            <button onclick="closeModal('infoModal')" class="w-full py-2 bg-elysian-bg hover:bg-gray-800 text-white font-medium rounded-lg transition border border-elysian-border">Tutup</button>
-        </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-divider"></div>
+      <p>Made with ❤️ for <span class="font-script" style="font-size: 1.125rem; color: var(--gold);" data-field="name"></span></p>
     </div>
+  </footer>
+</main>
 
-    <script>
-        // ===== TOOL DATA =====
-        const toolsData = [
-            // DOWNLOADER
-            { id: 'dl1', name: 'Terabox Downloader', desc: 'Ambil file dari link share Terabox', category: 'downloader', badge: 'FILE', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-cloud-download-alt', iconColor: 'text-blue-500' },
-            { id: 'dl2', name: 'Instagram', desc: 'Download video & foto', category: 'downloader', badge: 'HD', badgeColor: 'bg-purple-500/20 text-purple-400', icon: 'fab fa-instagram', iconColor: 'text-purple-500' },
-            { id: 'dl3', name: 'TikTok', desc: 'Video, foto & audio', category: 'downloader', badge: 'MP4/MP3', badgeColor: 'bg-gray-700 text-white', icon: 'fab fa-tiktok', iconColor: 'text-white' },
-            { id: 'dl4', name: 'YouTube', desc: 'Video & audio', category: 'downloader', badge: 'MP4/MP3', badgeColor: 'bg-red-500/20 text-red-400', icon: 'fab fa-youtube', iconColor: 'text-red-500' },
-            { id: 'dl5', name: 'Spotify Downloader', desc: 'Cari lagu, preview audio dan unduh', category: 'downloader', badge: 'MP3', badgeColor: 'bg-green-500/20 text-green-400', icon: 'fab fa-spotify', iconColor: 'text-green-500' },
-            
-            // MAKER
-            { id: 'mk1', name: 'BRAT Generator', desc: 'Static + animated GIF', category: 'maker', badge: 'GIF', badgeColor: 'bg-green-500/20 text-green-400', icon: 'fa-font', iconColor: 'text-green-400' },
-            { id: 'mk2', name: 'IQC Generator', desc: 'Buat gambar IQC dengan style utama', category: 'maker', badge: '1 STYLE', badgeColor: 'bg-orange-500/20 text-orange-400', icon: 'fa-image', iconColor: 'text-orange-400' },
-            { id: 'mk3', name: 'Sertifikat Tolol', desc: 'Buat sertifikat parodi dari nama', category: 'maker', badge: 'API', badgeColor: 'bg-yellow-500/20 text-yellow-400', icon: 'fa-certificate', iconColor: 'text-yellow-400' },
-            { id: 'mk4', name: 'E-KTP Generator', desc: 'Full form demo', category: 'maker', badge: 'Full', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-id-card', iconColor: 'text-blue-500' },
-            { id: 'mk5', name: 'Fake Dana', desc: 'Generate saldo Dana palsu', category: 'maker', badge: 'Custom', badgeColor: 'bg-blue-600/20 text-blue-500', icon: 'fa-wallet', iconColor: 'text-blue-500' },
-            { id: 'mk6', name: 'FakeDev', desc: 'Buat profil developer dari nama & bio', category: 'maker', badge: 'API', badgeColor: 'bg-indigo-500/20 text-indigo-400', icon: 'fa-code', iconColor: 'text-indigo-400' },
-            { id: 'mk7', name: 'Fake Lobby', desc: 'FF & ML lobby palsu', category: 'maker', badge: 'Game', badgeColor: 'bg-red-500/20 text-red-400', icon: 'fa-gamepad', iconColor: 'text-red-500' },
-            { id: 'mk8', name: 'Windows Quotes', desc: 'Quote ala Windows dengan style', category: 'maker', badge: '1 STYLE', badgeColor: 'bg-blue-400/20 text-blue-300', icon: 'fab fa-windows', iconColor: 'text-blue-400' },
-            { id: 'mk9', name: 'Nokia Message', desc: 'Buat gambar SMS jadul Nokia', category: 'maker', badge: 'RETRO', badgeColor: 'bg-gray-500/20 text-gray-300', icon: 'fa-mobile-alt', iconColor: 'text-gray-400' },
-            { id: 'mk10', name: 'Tanya Ustadz', desc: 'Meme generator', category: 'maker', badge: 'Lucu', badgeColor: 'bg-teal-500/20 text-teal-400', icon: 'fa-comment-alt', iconColor: 'text-teal-400' },
-            
-            // TOOLS
-            { id: 'tl1', name: 'Prompt Generator', desc: 'Ubah gambar menjadi prompt deskriptif', category: 'tools', badge: 'LOCAL', badgeColor: 'bg-purple-500/20 text-purple-400', icon: 'fa-terminal', iconColor: 'text-purple-400' },
-            { id: 'tl2', name: 'Fake OVO', desc: 'Generator tampilan saldo OVO', category: 'tools', badge: 'CANVAS', badgeColor: 'bg-indigo-500/20 text-indigo-400', icon: 'fa-money-bill-wave', iconColor: 'text-indigo-500' },
-            { id: 'tl3', name: 'Quote Generator', desc: 'Buat gambar quote monokrom', category: 'tools', badge: 'JPG', badgeColor: 'bg-gray-500/20 text-gray-400', icon: 'fa-quote-right', iconColor: 'text-gray-300' },
-            { id: 'tl4', name: 'CariFakta', desc: 'Analisis klaim dan berita menggunakan AI', category: 'tools', badge: 'AI', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-search', iconColor: 'text-blue-400' },
-            { id: 'tl5', name: 'Virus Scan', desc: 'Scan URL, file, hash, domain & IP', category: 'tools', badge: 'SECURITY', badgeColor: 'bg-red-500/20 text-red-400', icon: 'fa-shield-virus', iconColor: 'text-red-500' },
-            { id: 'tl6', name: 'Calculator', desc: 'Hitung cepat', category: 'tools', badge: 'Math', badgeColor: 'bg-green-500/20 text-green-400', icon: 'fa-calculator', iconColor: 'text-green-500' },
-            { id: 'tl7', name: 'Password Gen', desc: 'Password aman', category: 'tools', badge: 'Secure', badgeColor: 'bg-yellow-500/20 text-yellow-400', icon: 'fa-key', iconColor: 'text-yellow-500' },
-            { id: 'tl8', name: 'Morse Code', desc: 'Konversi morse', category: 'tools', badge: 'Audio', badgeColor: 'bg-gray-500/20 text-gray-400', icon: 'fa-broadcast-tower', iconColor: 'text-gray-400' },
-            { id: 'tl9', name: 'Remove BG', desc: 'Hapus background', category: 'tools', badge: 'AI', badgeColor: 'bg-blue-500/20 text-blue-400', icon: 'fa-eraser', iconColor: 'text-blue-400' },
-            { id: 'tl10', name: 'Image Enhancer', desc: 'Tingkatkan kualitas', category: 'tools', badge: 'HD', badgeColor: 'bg-purple-500/20 text-purple-400', icon: 'fa-image', iconColor: 'text-purple-400' },
-            { id: 'tl11', name: 'QR Generator', desc: 'Buat QR langsung di sini', category: 'tools', badge: 'QR', badgeColor: 'bg-black text-white border border-gray-600', icon: 'fa-qrcode', iconColor: 'text-white' },
-            
-            // VVIP
-            { id: 'vv1', name: 'Web Encryption', desc: 'ENKRIPSI & LINDUNGI SOURCE HTML', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fa-lock', iconColor: 'text-yellow-500', isVvip: true },
-            { id: 'vv2', name: 'Telegram Spammer', desc: 'SPAMMER BOT TELEGRAM', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fab fa-telegram', iconColor: 'text-yellow-500', isVvip: true },
-            { id: 'vv3', name: 'NGL Spammer', desc: 'SPAM PESAN ANONIM', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fa-paper-plane', iconColor: 'text-yellow-500', isVvip: true },
-            { id: 'vv4', name: 'Get Source Code', desc: 'AMBIL ALL SOURCE WEB', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fa-code-branch', iconColor: 'text-yellow-500', isVvip: true },
-            { id: 'vv5', name: 'Unban WhatsApp', desc: 'TOOLS & PANDUAN UNBAN WA', category: 'vvip', badge: 'VVIP', badgeColor: 'bg-yellow-500 text-black font-bold', icon: 'fab fa-whatsapp', iconColor: 'text-yellow-500', isVvip: true }
-        ];
+<!-- Surprise modal -->
+<div id="modal" role="dialog" aria-modal="true" aria-label="Kejutan spesial">
+  <div class="card" id="modal-card">
+    <img class="gift-top animate-float" src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663885147579/OpDuVHHMvtUpYZkt.png" alt="" aria-hidden="true" />
+    <h3 class="title font-display gold-text" id="modal-title"></h3>
+    <p class="msg" id="modal-msg"></p>
+    <button class="btn-ghost" id="modal-close">Thank you 💝</button>
+  </div>
+</div>
 
-        const categories = [
-            { id: 'all', name: 'Semua Tools', icon: 'fa-border-all' },
-            { id: 'downloader', name: 'Downloader', icon: 'fa-download' },
-            { id: 'maker', name: 'Maker', icon: 'fa-magic' },
-            { id: 'tools', name: 'Tools', icon: 'fa-toolbox' },
-            { id: 'vvip', name: 'VVIP Tools', icon: 'fa-crown', color: 'text-yellow-500' }
-        ];
+<!-- Lightbox -->
+<div id="lightbox">
+  <button class="close-btn" id="lightbox-close" aria-label="Tutup">✕</button>
+  <div class="frame" id="lightbox-frame">
+    <img id="lightbox-img" src="" alt="" />
+    <p class="cap font-script" id="lightbox-cap"></p>
+  </div>
+</div>
 
-        let currentCategory = 'all';
+<!-- Music control -->
+<button id="music-btn" aria-label="Putar musik" title="Putar musik">
+  <svg id="music-icon-play" viewBox="0 0 24 24" fill="none"><path d="M8 5.5v13l11-6.5L8 5.5Z" fill="currentColor" /></svg>
+  <svg id="music-icon-pause" viewBox="0 0 24 24" fill="none" style="display: none;">
+    <rect x="5" y="4" width="4.5" height="16" rx="2" fill="currentColor" />
+    <rect x="14.5" y="4" width="4.5" height="16" rx="2" fill="currentColor" />
+  </svg>
+</button>
 
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                    const app = document.getElementById('app');
-                    app.classList.remove('hidden');
-                    setTimeout(() => {
-                        app.classList.remove('opacity-0');
-                    }, 50);
-                }, 500);
-            }, 1500);
+<script>
+/*
+ * ============================================================
+ *  KONFIGURASI — EDIT SEMUA KONTEN DI SINI ✦
+ * ============================================================
+ */
+const CONFIG = {
+  name: "Akira",                 // Nama
+  age: 17,                      // Umur
+  date: "7 Mei 2027",           // Tanggal spesial
 
-            renderTabs();
-            renderTools('all');
-        });
+  openingTitle: "Happy Birthday,",
+  subtitle: "Today is your special day ✨",
+  ctaLabel: "Open Your Surprise 💝",
 
-        // ===== UI FUNCTIONS =====
-        function renderTabs() {
-            const container = document.getElementById('category-tabs');
-            container.innerHTML = '';
-            
-            categories.forEach(cat => {
-                const isActive = currentCategory === cat.id;
-                const activeClasses = isActive 
-                    ? 'bg-blue-600/20 border-blue-500 text-blue-400' 
-                    : 'bg-elysian-card border-elysian-border text-elysian-muted hover:bg-gray-800';
-                const iconColor = cat.color ? cat.color : (isActive ? 'text-blue-400' : 'text-elysian-muted');
-                
-                const btn = document.createElement('button');
-                btn.className = `flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${activeClasses}`;
-                btn.onclick = () => filterCategory(cat.id);
-                btn.innerHTML = `<i class="fas ${cat.icon} ${iconColor}"></i> ${cat.name}`;
-                container.appendChild(btn);
-            });
-        }
+  // Foto utama (bisa diganti URL mana pun)
+  mainPhoto: "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-1.jpg",
 
-        function renderTools(categoryId) {
-            const container = document.getElementById('tools-grid');
-            container.innerHTML = '';
-            
-            let filteredTools = toolsData;
-            if (categoryId !== 'all') {
-                filteredTools = toolsData.filter(t => t.category === categoryId);
-            }
+  greetingTitle: "Happy Birthday, Akira!",
+  greetingText:
+    "Hari ini dunia merayakan kehadiranmu. Semoga setiap langkahmu penuh cahaya, tawa, dan keajaiban kecil yang tak terduga. Selamat menikmati harimu yang paling spesial!",
 
-            const catObj = categories.find(c => c.id === categoryId);
-            document.getElementById('category-title').innerText = catObj ? catObj.name : 'Semua Tools';
-            document.getElementById('tools-count').innerText = `${filteredTools.length} tools`;
+  // Foto-foto galeri — pakai foto dari GitHub Anda
+  memories: [
+    { src: "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-1.jpg", caption: "First time we met 💫" },
+    { src: "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-2.jpg", caption: "Our little adventures" },
+    { src: "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-3.jpg", caption: "That sunset we watched" },
+    { src: "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-4.jpg", caption: "Celebrating together" },
+    { src: "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-5.jpg", caption: "Silly & happy moments" },
+    { src: "https://raw.githubusercontent.com/dhikzzzgalaxy/Dhikzzz-Gallery/main/Foto/Album-6.jpg", caption: "Forever favorites" },
+  ],
 
-            filteredTools.forEach((tool, index) => {
-                const delay = (index % 10) * 0.05;
-                
-                const card = document.createElement('div');
-                card.className = 'tool-card bg-elysian-card border border-elysian-border p-3 rounded-xl flex items-center gap-3 cursor-pointer relative overflow-hidden group';
-                card.style.animation = `fadeIn 0.3s ease-out ${delay}s both`;
-                
-                card.onclick = () => handleToolClick(tool);
+  letter: [
+    "Dear Akira,",
+    "Di hari spesialmu ini, aku hanya ingin kamu tahu betapa berartinya kamu. Kamu membawa kehangatan ke dalam setiap ruangan yang kamu masuki, dan senyummu mampu mengubah hari terburuk menjadi hari terbaik.",
+    "Aku bersyukur setiap momen bersamamu — dari tawa kecil di pagi hari sampai obrolan panjang di tengah malam. Kamu bukan hanya bagian dari hidupku, kamu adalah salah satu alasan hidupku terasa lebih indah.",
+    "Semoga tahun ini membawa semua impianmu lebih dekat: kesehatan yang prima, kebahagiaan yang tak terukur, dan keberanian untuk terus menjadi dirimu yang luar biasa.",
+    "Selamat ulang tahun, sayang. Tiup lilinmu dan ingatlah — kamu dicintai lebih dari yang kamu tahu. ✦",
+    "— With all my love",
+  ],
 
-                const borderEffect = tool.isVvip 
-                    ? `<div class="absolute inset-0 bg-gradient-to-r from-yellow-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>` 
-                    : `<div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>`;
+  surpriseTitle: "You deserve the world 🌸",
+  surpriseMessage:
+    "Jika aku bisa mengabulkan satu hal untukmu hari ini, aku akan meminta agar setiap hari dalam hidupmu seindah hari ini. Kamu adalah kejutan terindah yang pernah kumiliki. Happy Birthday! ✦💝",
 
-                card.innerHTML = `
-                    ${borderEffect}
-                    <div class="w-12 h-12 rounded-lg bg-elysian-bg border border-elysian-border flex items-center justify-center shrink-0 z-10 shadow-inner group-hover:scale-105 transition-transform">
-                        <i class="${tool.icon} ${tool.iconColor} text-xl"></i>
-                    </div>
-                    <div class="flex-1 min-w-0 z-10">
-                        <div class="flex justify-between items-start mb-0.5">
-                            <h4 class="font-bold text-white text-sm truncate pr-2 group-hover:text-blue-400 transition-colors ${tool.isVvip ? 'group-hover:text-yellow-400' : ''}">${tool.name}</h4>
-                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ${tool.badgeColor}">${tool.badge}</span>
-                        </div>
-                        <p class="text-[11px] text-elysian-muted truncate leading-tight">${tool.desc}</p>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+  musicUrl: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663885147579/WufuFdIpGBnQBPpm.mp3",
+  musicVolume: 0.5,
+};
 
-        function filterCategory(categoryId) {
-            currentCategory = categoryId;
-            renderTabs();
-            renderTools(categoryId);
-            
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                if (btn.dataset.target === categoryId) {
-                    btn.classList.remove('text-elysian-muted');
-                    btn.classList.add('text-blue-400');
-                } else {
-                    btn.classList.add('text-elysian-muted');
-                    btn.classList.remove('text-blue-400');
-                }
-            });
-        }
+/* ============================================================
+ *  ENGINE (jangan perlu diubah kecuali paham JS)
+ * ============================================================ */
 
-        function handleToolClick(tool) {
-            if (tool.isVvip) {
-                openModal('vvipModal');
+/* ---------- util: fill data fields ---------- */
+document.querySelectorAll("[data-field]").forEach((el) => {
+  const f = el.dataset.field;
+  if (f === "nameEmoji") el.textContent = CONFIG.name + " 🎂";
+  else if (f === "name") el.textContent = CONFIG.name;
+  else if (f === "date") el.textContent = CONFIG.date;
+  else if (f === "openingTitle") el.textContent = CONFIG.openingTitle;
+  else if (f === "subtitle") el.textContent = CONFIG.subtitle;
+  else if (f === "ctaLabel") el.textContent = CONFIG.ctaLabel;
+});
+
+/* ---------- deterministic pseudo-random ---------- */
+function mulberry(seed) {
+  return function () {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* ---------- particles + sparkles ---------- */
+const SHAPES = ["♥", "✦", "❀", "⋆"];
+function buildParticles(host, count) {
+  const rand = mulberry(7 + count);
+  const gold = getComputedStyle(document.documentElement).getPropertyValue("--gold").trim() || "#c9a45c";
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement("span");
+    span.className = "animate-drift";
+    span.style.cssText = `
+      position: absolute; user-select: none;
+      left: ${rand() * 100}%; top: ${10 + rand() * 80}%;
+      font-size: ${12 + rand() * 18}px;
+      animation-delay: ${rand() * 6}s;
+      animation-duration: ${10 + rand() * 8}s;
+      opacity: ${0.25 + rand() * 0.45};
+      color: ${rand() > 0.5 ? "#e8a0af" : gold};
+    `;
+    span.textContent = SHAPES[i % SHAPES.length];
+    host.appendChild(span);
+  }
+}
+function buildSparkles(host, count) {
+  const rand = mulberry(42);
+  for (let i = 0; i < count; i++) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "currentColor");
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M12 0c.7 6.2 3.1 9.3 9.3 10-6.2.7-8.6 3.8-9.3 10-.7-6.2-3.1-9.3-9.3-10 6.2-.7 8.6-3.8 9.3-10Z");
+    svg.appendChild(path);
+    svg.style.cssText = `
+      position: absolute; color: ${getComputedStyle(document.documentElement).getPropertyValue("--gold").trim() || "#c9a45c"};
+      left: ${rand() * 100}%; top: ${rand() * 100}%;
+      width: ${10 + rand() * 16}px; height: ${10 + rand() * 16}px;
+      animation-delay: ${rand() * 3}s; animation-duration: ${2 + rand() * 2.5}s;
+    `;
+    svg.classList.add("animate-twinkle");
+    host.appendChild(svg);
+  }
+}
+
+/* opening layer: particles + sparkles */
+(function () {
+  const layer = document.getElementById("opening-particles");
+  layer.style.cssText = "position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1;";
+  buildParticles(layer, 20);
+  buildSparkles(layer, 16);
+})();
+
+/* ---------- confetti ---------- */
+const canvas = document.getElementById("confetti-canvas");
+const ctx = canvas.getContext("2d");
+const CONFETTI_COLORS = ["#F2A0AF", "#D8B4E2", "#F6D7DE", "#C9A45C", "#E8C79E", "#B98EC9", "#FFD9E2"];
+let confettiActive = false;
+
+function confettiBurst(count) {
+  if (confettiActive) return;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  count = reduced ? 40 : Math.min(count ?? 140, 220);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
+  ctx.scale(dpr, dpr);
+
+  const rand = mulberry(Date.now());
+  const pieces = Array.from({ length: count }, () => ({
+    x: window.innerWidth / 2, y: window.innerHeight * 0.55,
+    vx: (rand() - 0.5) * 16, vy: -8 - rand() * 12,
+    rot: rand() * 360, vr: (rand() - 0.5) * 14,
+    w: 6 + rand() * 7, h: 10 + rand() * 8,
+    color: CONFETTI_COLORS[Math.floor(rand() * CONFETTI_COLORS.length)],
+    life: 0, maxLife: 90 + rand() * 70,
+  }));
+  confettiActive = true;
+
+  requestAnimationFrame(function tick() {
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    let alive = false;
+    for (const p of pieces) {
+      if (p.life >= p.maxLife) continue;
+      alive = true;
+      p.life += 1;
+      p.x += p.vx; p.y += p.vy; p.vy += 0.32; p.vx *= 0.99; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rot * Math.PI) / 180);
+      ctx.globalAlpha = Math.max(0, 1 - p.life / p.maxLife);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    }
+    if (alive) requestAnimationFrame(tick);
+    else { ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr); confettiActive = false; }
+  });
+}
+
+/* ---------- scroll reveal (IntersectionObserver) ---------- */
+function setupReveals() {
+  const items = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) { items.forEach((e) => e.classList.add("revealed")); return; }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("revealed");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  items.forEach((e) => obs.observe(e));
+}
+
+/* staggered reveals within a section */
+document.querySelectorAll(".reveal-section").forEach((sec) => {
+  const els = sec.querySelectorAll(".reveal");
+  els.forEach((el, i) => {
+    if (i > 0) el.style.transitionDelay = (i * 80) + "ms";
+  });
+});
+
+/* ---------- loading screen ---------- */
+(function () {
+  const loader = document.getElementById("loader");
+  const fill = document.getElementById("loader-fill");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const duration = reduced ? 400 : 1400;
+  const start = performance.now();
+  (function frame(now) {
+    const p = Math.min(1, (now - start) / duration);
+    fill.style.width = Math.round(p * 100) + "%";
+    if (p < 1) requestAnimationFrame(frame);
+    else {
+      loader.classList.add("hidden");
+      setTimeout(() => loader.remove(), 600);
+      startOpening();
+    }
+  })(performance.now());
+})();
+
+/* ---------- opening entrance ---------- */
+function startOpening() {
+  const el = (id) => document.getElementById(id);
+  const logo = el("opening-logo");
+  const date = el("opening-date");
+  const title = el("opening-title");
+  const sub = el("opening-subtitle");
+  const cta = el("opening-cta");
+
+  const ease = "var(--ease-out)";
+  logo.style.transition = `opacity 1s ${ease} 0.2s`;
+  setTimeout(() => { logo.style.opacity = 1; logo.style.animation = "bd-float 6s ease-in-out infinite 0.4s"; }, 50);
+  date.style.transition = `opacity 0.9s ${ease} 0.35s`; setTimeout(() => { date.style.opacity = 1; }, 150);
+  title.style.transition = `opacity 1s ${ease} 0.55s`; setTimeout(() => { title.style.opacity = 1; }, 150);
+  sub.style.transition = `opacity 0.9s ${ease} 0.8s`; setTimeout(() => { sub.style.opacity = 1; }, 150);
+  cta.style.transition = `opacity 0.9s ${ease} 1.05s`; setTimeout(() => { cta.style.opacity = 1; }, 150);
+}
+
+/* ---------- open surprise flow ---------- */
+document.getElementById("opening-cta").addEventListener("click", function () {
+  if (this.dataset.entering) return;
+  this.dataset.entering = "1";
+  this.style.opacity = 0.6;
+  this.style.transform = "scale(0.95)";
+  confettiBurst(130);
+
+  const opening = document.getElementById("opening");
+  opening.style.transition = "opacity 0.9s var(--ease-out)";
+  opening.style.opacity = 0;
+  setTimeout(() => {
+    opening.style.display = "none";
+    document.getElementById("main-page").style.display = "block";
+    /* background particles for main page */
+    const layer = document.getElementById("particles-layer");
+    buildParticles(layer, 12);
+    buildSparkles(layer, 8);
+    setupReveals();
+    setupAgeCounter();
+    setupLetter();
+    confettiBurst(90);
+  }, 900);
+});
+
+/* ---------- age counter ---------- */
+function setupAgeCounter() {
+  const el = document.getElementById("age-counter");
+  const age = CONFIG.age;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!("IntersectionObserver" in window)) { el.textContent = age; return; }
+  let started = false;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        if (reduced) { el.textContent = age; obs.disconnect(); return; }
+        const t0 = performance.now();
+        (function tick(now) {
+          const p = Math.min(1, (now - t0) / 1600);
+          const eased = 1 - Math.pow(1 - p, 4);
+          el.textContent = Math.round(eased * age);
+          if (p < 1) requestAnimationFrame(tick);
+          else obs.disconnect();
+        })(performance.now());
+      }
+    });
+  }, { threshold: 0.4 });
+  obs.observe(el);
+}
+
+/* ---------- frame parallax ---------- */
+window.addEventListener("scroll", function () {
+  const frame = document.getElementById("frame");
+  if (!frame) return;
+  const rect = frame.getBoundingClientRect();
+  if (rect.top > window.innerHeight || rect.bottom < 0) return;
+  const offset = (rect.top / window.innerHeight - 0.3) * 24;
+  frame.style.transform = `rotate(-4deg) translateY(${offset}px)`;
+}, { passive: true });
+
+/* ---------- memories ---------- */
+const ROT = ["rotate(-3deg)", "rotate(2.5deg)", "rotate(-1.5deg)", "rotate(3deg)", "rotate(-2deg)", "rotate(1.8deg)"];
+const grid = document.getElementById("memories-grid");
+CONFIG.memories.forEach((m, i) => {
+  const btn = document.createElement("button");
+  btn.className = "polaroid-btn reveal";
+  btn.style.transform = ROT[i % ROT.length];
+  btn.innerHTML = `
+    <img src="${m.src}" alt="${m.caption}" loading="lazy" />
+    <span class="cap font-script">${m.caption}</span>
+  `;
+  btn.addEventListener("click", () => openLightbox(m.src, m.caption));
+  grid.appendChild(btn);
+});
+
+/* ---------- lightbox ---------- */
+const lightbox = document.getElementById("lightbox");
+function openLightbox(src, cap) {
+  document.getElementById("lightbox-img").src = src;
+  document.getElementById("lightbox-cap").textContent = cap;
+  lightbox.classList.add("open");
+}
+document.getElementById("lightbox-close").addEventListener("click", () => lightbox.classList.remove("open"));
+lightbox.addEventListener("click", (e) => { if (e.target === lightbox) lightbox.classList.remove("open"); });
+
+/* ---------- letter typing (state-driven, same logic as working React hook) ---------- */
+function setupLetter() {
+  const body = document.getElementById("letter-body");
+  const trigger = document.getElementById("letter-trigger");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const speed = reduced ? 0 : 32;
+
+  /* render current typing state into the DOM */
+  function render(visibleCount, charCount) {
+    let html = "";
+    for (let i = 0; i < visibleCount; i += 1) {
+      const p = CONFIG.letter[i];
+      const show = i === visibleCount - 1 ? p.slice(0, charCount) : p;
+      html += "<p>" + escapeHtml(show);
+      if (i === visibleCount - 1 && charCount < p.length) {
+        html += '<span class="cursor-gold"></span>';
+      }
+      html += "</p>";
+    }
+    body.innerHTML = html;
+  }
+
+  function escapeHtml(s) {
+    return s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    render(CONFIG.letter.length, 0);
+    return;
+  }
+  let fired = false;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !fired) {
+        fired = true;
+        obs.disconnect();
+        let cancelled = false;
+        let visibleCount = 0;
+        let charCount = 0;
+        const step = () => {
+          if (cancelled) return;
+          visibleCount += 1;
+          charCount = 0;
+          const tick = () => {
+            if (cancelled) return;
+            const fullText = CONFIG.letter[visibleCount - 1];
+            if (charCount < fullText.length) {
+              charCount += 1;
+              render(visibleCount, charCount);
+              setTimeout(tick, speed);
             } else {
-                // Route to appropriate tool handler
-                const handlers = {
-                    'dl1': openTeraboxDownloader,
-                    'dl2': openInstagramDownloader,
-                    'dl3': openTiktokDownloader,
-                    'dl4': openYoutubeDownloader,
-                    'dl5': openSpotifyDownloader,
-                    'mk1': openBratGenerator,
-                    'mk2': openIQCGenerator,
-                    'mk3': openSertifikatTolol,
-                    'mk4': openEKTPGenerator,
-                    'mk5': openFakeDana,
-                    'mk6': openFakeDev,
-                    'mk7': openFakeLobby,
-                    'mk8': openWindowsQuotes,
-                    'mk9': openNokiaMessage,
-                    'mk10': openTanyaUstadz,
-                    'tl1': openPromptGenerator,
-                    'tl2': openFakeOVO,
-                    'tl3': openQuoteGenerator,
-                    'tl4': openCariFakta,
-                    'tl5': openVirusScan,
-                    'tl6': openCalculator,
-                    'tl7': openPasswordGen,
-                    'tl8': openMorseCode,
-                    'tl9': openRemoveBG,
-                    'tl10': openImageEnhancer,
-                    'tl11': openQRGenerator,
-                    'vv1': openWebEncryption,
-                    'vv2': openTelegramSpammer,
-                    'vv3': openNGLSpammer,
-                    'vv4': openGetSourceCode,
-                    'vv5': openUnbanWhatsApp
-                };
-
-                if (handlers[tool.id]) {
-                    handlers[tool.id](tool);
-                }
+              render(visibleCount, charCount);
+              if (visibleCount < CONFIG.letter.length) {
+                setTimeout(() => { if (!cancelled) step(); }, 180);
+              }
             }
-        }
-
-        // ===== MODAL FUNCTIONS =====
-        function openModal(modalId) {
-            const overlay = document.getElementById('modal-overlay');
-            const modal = document.getElementById(modalId);
-            
-            overlay.classList.remove('hidden');
-            modal.classList.remove('hidden');
-            
-            setTimeout(() => {
-                overlay.classList.add('opacity-100');
-                modal.classList.add('scale-100', 'opacity-100');
-            }, 10);
-
-            document.addEventListener('keydown', handleEscKey);
-        }
-
-        function closeModal(modalId) {
-            const overlay = document.getElementById('modal-overlay');
-            const modal = document.getElementById(modalId);
-            
-            overlay.classList.remove('opacity-100');
-            modal.classList.remove('scale-100', 'opacity-100');
-            
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        function closeAllModals() {
-            closeModal('toolModal');
-            closeModal('vvipModal');
-            closeModal('menuModal');
-            closeModal('infoModal');
-        }
-
-        function handleEscKey(e) {
-            if (e.key === 'Escape') {
-                closeAllModals();
-            }
-        }
-
-        function showInfo(title, message) {
-            closeAllModals();
-            
-            setTimeout(() => {
-                document.getElementById('infoTitle').innerText = title;
-                document.getElementById('infoMessage').innerText = message;
-                openModal('infoModal');
-            }, 100);
-        }
-
-        function handleVvipClick() {
-            closeModal('vvipModal');
-            setTimeout(() => {
-                showInfo("Redirecting", "Mengalihkan ke WhatsApp Admin untuk pembelian VVIP...");
-            }, 300);
-        }
-
-        // ===== UTILITY FUNCTIONS =====
-        function copyToClipboard(text, callback) {
-            navigator.clipboard.writeText(text).then(() => {
-                if (callback) callback();
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                alert('Gagal menyalin ke clipboard');
-            });
-        }
-
-        function downloadImage(canvas, filename) {
-            const link = document.createElement('a');
-            link.href = canvas.toDataURL('image/png');
-            link.download = filename;
-            link.click();
-        }
-
-        function downloadText(text, filename) {
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', filename);
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        }
-
-        // ===== DOWNLOADER TOOLS =====
-        function openTeraboxDownloader(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">URL Terabox</label>
-                        <input type="text" id="teraboxUrl" placeholder="https://terabox.com/s/..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="processTerabox()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-download mr-2"></i> Proses Link
-                    </button>
-                    <div id="teraboxResult" class="hidden preview-box">
-                        <p class="text-xs text-elysian-muted mb-2">Hasil:</p>
-                        <div id="teraboxContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processTerabox() {
-            const url = document.getElementById('teraboxUrl').value.trim();
-            if (!url) {
-                alert('Masukkan URL Terabox terlebih dahulu');
-                return;
-            }
-            if (!url.includes('terabox.com')) {
-                alert('URL tidak valid. Gunakan link Terabox yang benar.');
-                return;
-            }
-            
-            document.getElementById('teraboxResult').classList.remove('hidden');
-            document.getElementById('teraboxContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Memproses link...</p>
-                <p class="text-xs text-elysian-muted">Catatan: Fitur ini memerlukan backend API untuk mengakses Terabox. Pada implementasi production, gunakan API endpoint yang sesuai.</p>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-yellow-500/30">
-                    <p class="text-xs text-yellow-400"><i class="fas fa-info-circle mr-1"></i> Untuk menggunakan fitur ini, Anda perlu mengonfigurasi API endpoint Terabox di backend.</p>
-                </div>
-            `;
-        }
-
-        function openInstagramDownloader(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">URL Instagram Post/Reel</label>
-                        <input type="text" id="igUrl" placeholder="https://instagram.com/p/..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="processInstagram()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-download mr-2"></i> Download
-                    </button>
-                    <div id="igResult" class="hidden preview-box">
-                        <div id="igContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processInstagram() {
-            const url = document.getElementById('igUrl').value.trim();
-            if (!url) {
-                alert('Masukkan URL Instagram terlebih dahulu');
-                return;
-            }
-            if (!url.includes('instagram.com')) {
-                alert('URL tidak valid. Gunakan link Instagram yang benar.');
-                return;
-            }
-            
-            document.getElementById('igResult').classList.remove('hidden');
-            document.getElementById('igContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Memproses...</p>
-                <p class="text-xs text-elysian-muted">Catatan: Instagram memiliki pembatasan CORS. Gunakan API proxy atau backend untuk mengunduh konten.</p>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-yellow-500/30">
-                    <p class="text-xs text-yellow-400"><i class="fas fa-info-circle mr-1"></i> Rekomendasi: Gunakan layanan pihak ketiga seperti IG-Downloader API atau buat backend sendiri.</p>
-                </div>
-            `;
-        }
-
-        function openTiktokDownloader(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">URL TikTok</label>
-                        <input type="text" id="ttUrl" placeholder="https://www.tiktok.com/@.../video/..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="processTiktok()" class="w-full bg-gray-700 hover:bg-gray-800 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-download mr-2"></i> Download
-                    </button>
-                    <div id="ttResult" class="hidden preview-box">
-                        <div id="ttContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processTiktok() {
-            const url = document.getElementById('ttUrl').value.trim();
-            if (!url) {
-                alert('Masukkan URL TikTok terlebih dahulu');
-                return;
-            }
-            if (!url.includes('tiktok.com')) {
-                alert('URL tidak valid. Gunakan link TikTok yang benar.');
-                return;
-            }
-            
-            document.getElementById('ttResult').classList.remove('hidden');
-            document.getElementById('ttContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Memproses...</p>
-                <p class="text-xs text-elysian-muted">TikTok memiliki proteksi ketat. Gunakan API TikTok resmi atau layanan proxy yang legal.</p>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-yellow-500/30">
-                    <p class="text-xs text-yellow-400"><i class="fas fa-info-circle mr-1"></i> Pastikan mematuhi Terms of Service TikTok saat mengunduh konten.</p>
-                </div>
-            `;
-        }
-
-        function openYoutubeDownloader(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">URL YouTube</label>
-                        <input type="text" id="ytUrl" placeholder="https://www.youtube.com/watch?v=..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Format</label>
-                        <select id="ytFormat" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                            <option value="mp4">Video (MP4)</option>
-                            <option value="mp3">Audio (MP3)</option>
-                        </select>
-                    </div>
-                    <button onclick="processYoutube()" class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-download mr-2"></i> Download
-                    </button>
-                    <div id="ytResult" class="hidden preview-box">
-                        <div id="ytContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processYoutube() {
-            const url = document.getElementById('ytUrl').value.trim();
-            const format = document.getElementById('ytFormat').value;
-            if (!url) {
-                alert('Masukkan URL YouTube terlebih dahulu');
-                return;
-            }
-            if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
-                alert('URL tidak valid. Gunakan link YouTube yang benar.');
-                return;
-            }
-            
-            document.getElementById('ytResult').classList.remove('hidden');
-            document.getElementById('ytContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Memproses...</p>
-                <p class="text-xs text-elysian-muted">Format: ${format.toUpperCase()}</p>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-yellow-500/30">
-                    <p class="text-xs text-yellow-400"><i class="fas fa-info-circle mr-1"></i> Untuk download YouTube, gunakan backend dengan yt-dlp atau API YouTube resmi.</p>
-                </div>
-            `;
-        }
-
-        function openSpotifyDownloader(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Cari Lagu atau URL Spotify</label>
-                        <input type="text" id="spotifySearch" placeholder="Nama lagu atau https://open.spotify.com/track/..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="processSpotify()" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-search mr-2"></i> Cari
-                    </button>
-                    <div id="spotifyResult" class="hidden preview-box">
-                        <div id="spotifyContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processSpotify() {
-            const search = document.getElementById('spotifySearch').value.trim();
-            if (!search) {
-                alert('Masukkan nama lagu atau URL Spotify');
-                return;
-            }
-            
-            document.getElementById('spotifyResult').classList.remove('hidden');
-            document.getElementById('spotifyContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Mencari...</p>
-                <p class="text-xs text-elysian-muted">Catatan: Spotify tidak memungkinkan download langsung melalui API publik.</p>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-yellow-500/30">
-                    <p class="text-xs text-yellow-400"><i class="fas fa-info-circle mr-1"></i> Gunakan Spotify Web Player atau aplikasi resmi untuk streaming dan download offline (Premium).</p>
-                </div>
-            `;
-        }
-
-        // ===== MAKER TOOLS =====
-        function openBratGenerator(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Teks</label>
-                        <input type="text" id="bratText" placeholder="Masukkan teks..." maxlength="50" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="generateBrat()" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="bratResult" class="hidden preview-box">
-                        <canvas id="bratCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadBrat()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateBrat() {
-            const text = document.getElementById('bratText').value.trim();
-            if (!text) {
-                alert('Masukkan teks terlebih dahulu');
-                return;
-            }
-
-            const canvas = document.getElementById('bratCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 400;
-            canvas.height = 400;
-            
-            // Background
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Text
-            ctx.fillStyle = '#00FF00';
-            ctx.font = 'bold 60px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(text.toUpperCase(), canvas.width / 2, canvas.height / 2);
-            
-            document.getElementById('bratResult').classList.remove('hidden');
-        }
-
-        function downloadBrat() {
-            const canvas = document.getElementById('bratCanvas');
-            downloadImage(canvas, 'brat-' + Date.now() + '.png');
-        }
-
-        function openIQCGenerator(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Teks IQC</label>
-                        <input type="text" id="iqcText" placeholder="Masukkan teks..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="generateIQC()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="iqcResult" class="hidden preview-box">
-                        <canvas id="iqcCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadIQC()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateIQC() {
-            const text = document.getElementById('iqcText').value.trim();
-            if (!text) {
-                alert('Masukkan teks terlebih dahulu');
-                return;
-            }
-
-            const canvas = document.getElementById('iqcCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 400;
-            canvas.height = 300;
-            
-            // Background gradient
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#FF6B6B');
-            gradient.addColorStop(1, '#FF8E72');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Border
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 3;
-            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
-            
-            // Text
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'bold 24px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('IQC', canvas.width / 2, 50);
-            
-            ctx.font = '16px Arial';
-            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-            
-            document.getElementById('iqcResult').classList.remove('hidden');
-        }
-
-        function downloadIQC() {
-            const canvas = document.getElementById('iqcCanvas');
-            downloadImage(canvas, 'iqc-' + Date.now() + '.png');
-        }
-
-        function openSertifikatTolol(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Nama</label>
-                        <input type="text" id="sertName" placeholder="Masukkan nama..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="generateSertifikat()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="sertResult" class="hidden preview-box">
-                        <canvas id="sertCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadSertifikat()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateSertifikat() {
-            const name = document.getElementById('sertName').value.trim();
-            if (!name) {
-                alert('Masukkan nama terlebih dahulu');
-                return;
-            }
-
-            const canvas = document.getElementById('sertCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 500;
-            canvas.height = 350;
-            
-            // Background
-            ctx.fillStyle = '#F4E4C1';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Border
-            ctx.strokeStyle = '#8B7355';
-            ctx.lineWidth = 5;
-            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
-            
-            // Title
-            ctx.fillStyle = '#8B0000';
-            ctx.font = 'bold 40px Georgia';
-            ctx.textAlign = 'center';
-            ctx.fillText('SERTIFIKAT TOLOL', canvas.width / 2, 80);
-            
-            // Text
-            ctx.fillStyle = '#000000';
-            ctx.font = '18px Georgia';
-            ctx.fillText('Ini adalah untuk membuktikan bahwa', canvas.width / 2, 150);
-            
-            ctx.font = 'bold 28px Georgia';
-            ctx.fillStyle = '#8B0000';
-            ctx.fillText(name, canvas.width / 2, 200);
-            
-            ctx.fillStyle = '#000000';
-            ctx.font = '16px Georgia';
-            ctx.fillText('Telah berhasil menjadi TOLOL', canvas.width / 2, 250);
-            
-            // Watermark
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
-            ctx.font = 'bold 30px Arial';
-            ctx.fillText('PARODI', canvas.width / 2, canvas.height - 50);
-            
-            document.getElementById('sertResult').classList.remove('hidden');
-        }
-
-        function downloadSertifikat() {
-            const canvas = document.getElementById('sertCanvas');
-            downloadImage(canvas, 'sertifikat-tolol-' + Date.now() + '.png');
-        }
-
-        function openEKTPGenerator(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">NIK</label>
-                            <input type="text" id="ekNik" placeholder="16 digit" maxlength="16" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Nama</label>
-                            <input type="text" id="ekNama" placeholder="Nama lengkap" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Tempat Lahir</label>
-                            <input type="text" id="ekTempat" placeholder="Kota" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Tanggal Lahir</label>
-                            <input type="date" id="ekTanggal" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-                    <button onclick="generateEKTP()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="ektpResult" class="hidden preview-box">
-                        <div class="relative" style="width: 300px; height: 200px; background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 100%); border: 2px solid #FFD700; border-radius: 8px; padding: 15px; color: white; font-family: monospace; font-size: 11px;">
-                            <div class="demo-label">DEMO/PARODI</div>
-                            <div style="text-align: center; margin-bottom: 10px; border-bottom: 1px solid #FFD700; padding-bottom: 5px;">
-                                <strong style="font-size: 14px;">KARTU TANDA PENDUDUK</strong>
-                            </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                <div>
-                                    <div>NIK: <span id="ektpNikDisplay">-</span></div>
-                                    <div>Nama: <span id="ektpNamaDisplay">-</span></div>
-                                    <div>TTL: <span id="ektpTTLDisplay">-</span></div>
-                                </div>
-                                <div style="text-align: center; border: 1px solid #FFD700; display: flex; align-items: center; justify-content: center;">
-                                    <div style="font-size: 9px;">Foto</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadEKTP()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateEKTP() {
-            const nik = document.getElementById('ekNik').value.trim();
-            const nama = document.getElementById('ekNama').value.trim();
-            const tempat = document.getElementById('ekTempat').value.trim();
-            const tanggal = document.getElementById('ekTanggal').value;
-
-            if (!nik || !nama || !tempat || !tanggal) {
-                alert('Lengkapi semua field');
-                return;
-            }
-
-            document.getElementById('ektpNikDisplay').textContent = nik;
-            document.getElementById('ektpNamaDisplay').textContent = nama;
-            document.getElementById('ektpTTLDisplay').textContent = tempat + ', ' + tanggal;
-            document.getElementById('ektpResult').classList.remove('hidden');
-        }
-
-        function downloadEKTP() {
-            alert('Fitur download E-KTP memerlukan canvas rendering yang lebih kompleks. Gunakan screenshot atau print-to-PDF untuk hasil terbaik.');
-        }
-
-        function openFakeDana(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Nominal Saldo (Rp)</label>
-                        <input type="number" id="danaAmount" placeholder="100000" min="0" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="generateFakeDana()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="danaResult" class="hidden preview-box">
-                        <div style="background: linear-gradient(135deg, #0066FF 0%, #0052CC 100%); padding: 20px; border-radius: 12px; color: white; text-align: center;">
-                            <div class="demo-label">DEMO</div>
-                            <div style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">DANA</div>
-                            <div style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">Rp <span id="danaDisplay">0</span></div>
-                            <div style="font-size: 11px; opacity: 0.7;">Saldo Anda</div>
-                        </div>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="copyDanaAmount()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-copy mr-1"></i> Copy
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateFakeDana() {
-            const amount = document.getElementById('danaAmount').value.trim();
-            if (!amount) {
-                alert('Masukkan nominal terlebih dahulu');
-                return;
-            }
-
-            const formatted = parseInt(amount).toLocaleString('id-ID');
-            document.getElementById('danaDisplay').textContent = formatted;
-            document.getElementById('danaResult').classList.remove('hidden');
-        }
-
-        function copyDanaAmount() {
-            const amount = document.getElementById('danaAmount').value;
-            copyToClipboard('Rp ' + parseInt(amount).toLocaleString('id-ID'), () => {
-                alert('Saldo disalin ke clipboard');
-            });
-        }
-
-        function openFakeDev(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Nama</label>
-                            <input type="text" id="devNama" placeholder="Nama" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Username</label>
-                            <input type="text" id="devUsername" placeholder="@username" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-white mb-1">Bio</label>
-                        <textarea id="devBio" placeholder="Bio singkat..." rows="2" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <button onclick="generateFakeDev()" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="devResult" class="hidden preview-box">
-                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; color: white; text-align: center;">
-                            <div style="width: 60px; height: 60px; background: #fff; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #667eea;">DEV</div>
-                            <div style="font-size: 16px; font-weight: bold; margin-bottom: 3px;" id="devNamaDisplay">-</div>
-                            <div style="font-size: 12px; opacity: 0.9; margin-bottom: 10px;" id="devUsernameDisplay">-</div>
-                            <div style="font-size: 12px; opacity: 0.8; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px;" id="devBioDisplay">-</div>
-                        </div>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadDevCard()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateFakeDev() {
-            const nama = document.getElementById('devNama').value.trim();
-            const username = document.getElementById('devUsername').value.trim();
-            const bio = document.getElementById('devBio').value.trim();
-
-            if (!nama || !username) {
-                alert('Masukkan nama dan username');
-                return;
-            }
-
-            document.getElementById('devNamaDisplay').textContent = nama;
-            document.getElementById('devUsernameDisplay').textContent = username;
-            document.getElementById('devBioDisplay').textContent = bio || 'Developer';
-            document.getElementById('devResult').classList.remove('hidden');
-        }
-
-        function downloadDevCard() {
-            alert('Fitur download memerlukan canvas rendering. Gunakan screenshot untuk hasil terbaik.');
-        }
-
-        function openFakeLobby(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Nama Pemain</label>
-                            <input type="text" id="lobbyName" placeholder="Nama" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Game</label>
-                            <select id="lobbyGame" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                                <option>Free Fire</option>
-                                <option>Mobile Legends</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Rank</label>
-                            <input type="text" id="lobbyRank" placeholder="Gold, Diamond..." class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-white mb-1">Level</label>
-                            <input type="number" id="lobbyLevel" placeholder="1-999" min="1" max="999" class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-                    <button onclick="generateFakeLobby()" class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="lobbyResult" class="hidden preview-box">
-                        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 15px; border-radius: 8px; color: white; border: 1px solid #e94560;">
-                            <div class="demo-label">DEMO</div>
-                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                                <div style="width: 50px; height: 50px; background: #e94560; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">AV</div>
-                                <div>
-                                    <div style="font-size: 14px; font-weight: bold;" id="lobbyNameDisplay">-</div>
-                                    <div style="font-size: 11px; color: #aaa;" id="lobbyGameDisplay">-</div>
-                                    <div style="font-size: 11px; color: #e94560;">Rank: <span id="lobbyRankDisplay">-</span> | Level <span id="lobbyLevelDisplay">-</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadLobby()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateFakeLobby() {
-            const name = document.getElementById('lobbyName').value.trim();
-            const game = document.getElementById('lobbyGame').value;
-            const rank = document.getElementById('lobbyRank').value.trim();
-            const level = document.getElementById('lobbyLevel').value;
-
-            if (!name || !rank || !level) {
-                alert('Lengkapi semua field');
-                return;
-            }
-
-            document.getElementById('lobbyNameDisplay').textContent = name;
-            document.getElementById('lobbyGameDisplay').textContent = game;
-            document.getElementById('lobbyRankDisplay').textContent = rank;
-            document.getElementById('lobbyLevelDisplay').textContent = level;
-            document.getElementById('lobbyResult').classList.remove('hidden');
-        }
-
-        function downloadLobby() {
-            alert('Fitur download memerlukan canvas rendering. Gunakan screenshot untuk hasil terbaik.');
-        }
-
-        function openWindowsQuotes(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Quote</label>
-                        <textarea id="quoteText" placeholder="Masukkan quote..." rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <button onclick="generateWindowsQuote()" class="w-full bg-blue-400 hover:bg-blue-500 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="quoteResult" class="hidden preview-box">
-                        <canvas id="quoteCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadQuote()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateWindowsQuote() {
-            const quote = document.getElementById('quoteText').value.trim();
-            if (!quote) {
-                alert('Masukkan quote terlebih dahulu');
-                return;
-            }
-
-            const canvas = document.getElementById('quoteCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 600;
-            canvas.height = 400;
-            
-            // Windows blue background
-            ctx.fillStyle = '#000080';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Text
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '18px "MS Sans Serif"';
-            ctx.textAlign = 'center';
-            
-            const words = quote.split(' ');
-            let line = '';
-            let y = 100;
-            
-            words.forEach(word => {
-                const testLine = line + word + ' ';
-                const metrics = ctx.measureText(testLine);
-                if (metrics.width > canvas.width - 40) {
-                    ctx.fillText(line, canvas.width / 2, y);
-                    line = word + ' ';
-                    y += 30;
-                } else {
-                    line = testLine;
-                }
-            });
-            ctx.fillText(line, canvas.width / 2, y);
-            
-            document.getElementById('quoteResult').classList.remove('hidden');
-        }
-
-        function downloadQuote() {
-            const canvas = document.getElementById('quoteCanvas');
-            downloadImage(canvas, 'windows-quote-' + Date.now() + '.png');
-        }
-
-        function openNokiaMessage(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Pengirim</label>
-                        <input type="text" id="nokiaSender" placeholder="Nama pengirim" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Pesan</label>
-                        <textarea id="nokiaMsg" placeholder="Pesan..." rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <button onclick="generateNokiaMessage()" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="nokiaResult" class="hidden preview-box">
-                        <canvas id="nokiaCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadNokia()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateNokiaMessage() {
-            const sender = document.getElementById('nokiaSender').value.trim();
-            const msg = document.getElementById('nokiaMsg').value.trim();
-
-            if (!sender || !msg) {
-                alert('Lengkapi pengirim dan pesan');
-                return;
-            }
-
-            const canvas = document.getElementById('nokiaCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 300;
-            canvas.height = 400;
-            
-            // Nokia phone background
-            ctx.fillStyle = '#C0C0C0';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(20, 50, 260, 250);
-            
-            // Screen
-            ctx.fillStyle = '#00FF00';
-            ctx.font = '10px monospace';
-            ctx.fillText('From: ' + sender, 30, 70);
-            ctx.fillText('---', 30, 85);
-            
-            const lines = msg.split('\n');
-            let y = 105;
-            lines.forEach(line => {
-                ctx.fillText(line, 30, y);
-                y += 15;
-            });
-            
-            // Buttons
-            ctx.fillStyle = '#C0C0C0';
-            ctx.fillRect(20, 320, 260, 60);
-            ctx.fillStyle = '#000000';
-            ctx.font = 'bold 12px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('OK', 100, 350);
-            ctx.fillText('BACK', 200, 350);
-            
-            document.getElementById('nokiaResult').classList.remove('hidden');
-        }
-
-        function downloadNokia() {
-            const canvas = document.getElementById('nokiaCanvas');
-            downloadImage(canvas, 'nokia-message-' + Date.now() + '.png');
-        }
-
-        function openTanyaUstadz(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Pertanyaan</label>
-                        <textarea id="ustadzQ" placeholder="Tanya apa?" rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <button onclick="generateTanyaUstadz()" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate Meme
-                    </button>
-                    <div id="ustadzResult" class="hidden preview-box">
-                        <canvas id="ustadzCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadUstadz()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateTanyaUstadz() {
-            const question = document.getElementById('ustadzQ').value.trim();
-            if (!question) {
-                alert('Masukkan pertanyaan terlebih dahulu');
-                return;
-            }
-
-            const canvas = document.getElementById('ustadzCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 400;
-            canvas.height = 300;
-            
-            // Background
-            ctx.fillStyle = '#2C3E50';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Title
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'bold 24px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('Tanya Ustadz', canvas.width / 2, 50);
-            
-            // Question box
-            ctx.fillStyle = '#34495E';
-            ctx.fillRect(20, 80, canvas.width - 40, 150);
-            
-            // Question text
-            ctx.fillStyle = '#ECF0F1';
-            ctx.font = '14px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(question, canvas.width / 2, canvas.height / 2);
-            
-            // Answer
-            ctx.fillStyle = '#F39C12';
-            ctx.font = 'bold 16px Arial';
-            ctx.fillText('Wallahu a\'lam bisshowab', canvas.width / 2, canvas.height - 30);
-            
-            document.getElementById('ustadzResult').classList.remove('hidden');
-        }
-
-        function downloadUstadz() {
-            const canvas = document.getElementById('ustadzCanvas');
-            downloadImage(canvas, 'tanya-ustadz-' + Date.now() + '.png');
-        }
-
-        // ===== TOOLS =====
-        function openPromptGenerator(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Upload Gambar</label>
-                        <input type="file" id="promptImg" accept="image/*" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="processPrompt()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate Prompt
-                    </button>
-                    <div id="promptResult" class="hidden preview-box">
-                        <div id="promptContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processPrompt() {
-            const file = document.getElementById('promptImg').files[0];
-            if (!file) {
-                alert('Pilih gambar terlebih dahulu');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('promptResult').classList.remove('hidden');
-                document.getElementById('promptContent').innerHTML = `
-                    <div style="margin-bottom: 10px;">
-                        <img src="${e.target.result}" style="max-width: 100%; border-radius: 8px; border: 1px solid #2a2e37;">
-                    </div>
-                    <p class="text-sm text-white mb-2"><strong>Prompt Template:</strong></p>
-                    <textarea readonly class="w-full bg-elysian-bg border border-elysian-border rounded px-2 py-2 text-white text-xs h-24" id="promptText">Deskripsi gambar: [Gambar menunjukkan objek/scene yang perlu dijelaskan secara detail untuk AI image generator]
-
-Prompt untuk AI:
-"Create an image of [detailed description based on the uploaded image]"</textarea>
-                    <button onclick="copyPromptText()" class="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                        <i class="fas fa-copy mr-1"></i> Copy Prompt
-                    </button>
-                `;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function copyPromptText() {
-            const text = document.getElementById('promptText').value;
-            copyToClipboard(text, () => alert('Prompt disalin ke clipboard'));
-        }
-
-        function openFakeOVO(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Nominal Saldo (Rp)</label>
-                        <input type="number" id="ovoAmount" placeholder="50000" min="0" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="generateFakeOVO()" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="ovoResult" class="hidden preview-box">
-                        <canvas id="ovoCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadOVO()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateFakeOVO() {
-            const amount = document.getElementById('ovoAmount').value.trim();
-            if (!amount) {
-                alert('Masukkan nominal terlebih dahulu');
-                return;
-            }
-
-            const canvas = document.getElementById('ovoCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 400;
-            canvas.height = 250;
-            
-            // Background
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#4D4DFF');
-            gradient.addColorStop(1, '#3333CC');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Watermark
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
-            ctx.font = 'bold 40px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('DEMO', canvas.width / 2, canvas.height / 2);
-            
-            // OVO text
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'bold 40px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('OVO', canvas.width / 2, 60);
-            
-            // Amount
-            ctx.font = 'bold 32px Arial';
-            ctx.fillText('Rp ' + parseInt(amount).toLocaleString('id-ID'), canvas.width / 2, 150);
-            
-            // Balance label
-            ctx.font = '14px Arial';
-            ctx.fillText('Saldo Anda', canvas.width / 2, 200);
-            
-            document.getElementById('ovoResult').classList.remove('hidden');
-        }
-
-        function downloadOVO() {
-            const canvas = document.getElementById('ovoCanvas');
-            downloadImage(canvas, 'fake-ovo-' + Date.now() + '.png');
-        }
-
-        function openQuoteGenerator(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Quote</label>
-                        <textarea id="quoteGenText" placeholder="Masukkan quote..." rows="2" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Author</label>
-                        <input type="text" id="quoteAuthor" placeholder="Nama author" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="generateQuote()" class="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate
-                    </button>
-                    <div id="quoteGenResult" class="hidden preview-box">
-                        <canvas id="quoteGenCanvas" class="w-full border border-elysian-border rounded"></canvas>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadQuoteGen()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateQuote() {
-            const quote = document.getElementById('quoteGenText').value.trim();
-            const author = document.getElementById('quoteAuthor').value.trim();
-
-            if (!quote) {
-                alert('Masukkan quote terlebih dahulu');
-                return;
-            }
-
-            const canvas = document.getElementById('quoteGenCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 500;
-            canvas.height = 300;
-            
-            // Background
-            ctx.fillStyle = '#1A1A1A';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Quote mark
-            ctx.fillStyle = '#666666';
-            ctx.font = 'bold 100px Arial';
-            ctx.fillText('"', 30, 80);
-            
-            // Quote text
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '20px Georgia';
-            ctx.textAlign = 'center';
-            const words = quote.split(' ');
-            let line = '';
-            let y = 120;
-            
-            words.forEach(word => {
-                const testLine = line + word + ' ';
-                const metrics = ctx.measureText(testLine);
-                if (metrics.width > canvas.width - 60) {
-                    ctx.fillText(line, canvas.width / 2, y);
-                    line = word + ' ';
-                    y += 30;
-                } else {
-                    line = testLine;
-                }
-            });
-            ctx.fillText(line, canvas.width / 2, y);
-            
-            // Author
-            if (author) {
-                ctx.font = 'italic 16px Georgia';
-                ctx.fillText('— ' + author, canvas.width / 2, canvas.height - 30);
-            }
-            
-            document.getElementById('quoteGenResult').classList.remove('hidden');
-        }
-
-        function downloadQuoteGen() {
-            const canvas = document.getElementById('quoteGenCanvas');
-            downloadImage(canvas, 'quote-' + Date.now() + '.png');
-        }
-
-        function openCariFakta(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Klaim/Berita</label>
-                        <textarea id="faktaInput" placeholder="Masukkan klaim atau berita yang ingin diverifikasi..." rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <button onclick="processFakta()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-search mr-2"></i> Verifikasi
-                    </button>
-                    <div id="faktaResult" class="hidden preview-box">
-                        <div id="faktaContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processFakta() {
-            const claim = document.getElementById('faktaInput').value.trim();
-            if (!claim) {
-                alert('Masukkan klaim atau berita terlebih dahulu');
-                return;
-            }
-
-            document.getElementById('faktaResult').classList.remove('hidden');
-            document.getElementById('faktaContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Klaim:</strong> ${claim}</p>
-                <div class="mt-3 p-2 bg-yellow-500/20 border border-yellow-500/50 rounded">
-                    <p class="text-xs text-yellow-300"><strong>Status:</strong> Belum Terverifikasi</p>
-                    <p class="text-xs text-yellow-300 mt-1">Catatan: Untuk verifikasi akurat, gunakan sumber terpercaya seperti Snopes, FactCheck, atau lembaga fact-checking lokal.</p>
-                </div>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-elysian-border">
-                    <p class="text-xs text-elysian-muted"><strong>Sumber Rekomendasi:</strong></p>
-                    <ul class="text-xs text-elysian-muted mt-1 space-y-1">
-                        <li>• Snopes.com</li>
-                        <li>• FactCheck.org</li>
-                        <li>• Turnbackhoax.id (Indonesia)</li>
-                        <li>• Mafindo.org (Indonesia)</li>
-                    </ul>
-                </div>
-            `;
-        }
-
-        function openVirusScan(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Input (URL, Domain, IP, atau Hash)</label>
-                        <input type="text" id="scanInput" placeholder="https://example.com atau 192.168.1.1 atau hash..." class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="processScan()" class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-shield-virus mr-2"></i> Scan
-                    </button>
-                    <div id="scanResult" class="hidden preview-box">
-                        <div id="scanContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processScan() {
-            const input = document.getElementById('scanInput').value.trim();
-            if (!input) {
-                alert('Masukkan URL, domain, IP, atau hash');
-                return;
-            }
-
-            document.getElementById('scanResult').classList.remove('hidden');
-            document.getElementById('scanContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Input:</strong> ${input}</p>
-                <div class="mt-3 p-2 bg-blue-500/20 border border-blue-500/50 rounded">
-                    <p class="text-xs text-blue-300"><strong>Status:</strong> Tidak dapat diverifikasi</p>
-                    <p class="text-xs text-blue-300 mt-1">Catatan: Untuk scan keamanan yang akurat, gunakan layanan resmi seperti VirusTotal, URLhaus, atau AbuseIPDB.</p>
-                </div>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-elysian-border">
-                    <p class="text-xs text-elysian-muted"><strong>Layanan Scan Terpercaya:</strong></p>
-                    <ul class="text-xs text-elysian-muted mt-1 space-y-1">
-                        <li>• VirusTotal.com (URL, File, IP, Domain)</li>
-                        <li>• URLhaus.abuse.ch (Malicious URLs)</li>
-                        <li>• AbuseIPDB.com (IP Reputation)</li>
-                        <li>• PhishTank.com (Phishing URLs)</li>
-                    </ul>
-                </div>
-            `;
-        }
-
-        function openCalculator(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <input type="text" id="calcDisplay" readonly class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-3 text-white text-right text-2xl focus:outline-none" value="0">
-                    <div class="grid grid-cols-4 gap-2">
-                        <button onclick="calcAppend('7')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">7</button>
-                        <button onclick="calcAppend('8')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">8</button>
-                        <button onclick="calcAppend('9')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">9</button>
-                        <button onclick="calcAppend('/')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">÷</button>
-                        
-                        <button onclick="calcAppend('4')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">4</button>
-                        <button onclick="calcAppend('5')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">5</button>
-                        <button onclick="calcAppend('6')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">6</button>
-                        <button onclick="calcAppend('*')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">×</button>
-                        
-                        <button onclick="calcAppend('1')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">1</button>
-                        <button onclick="calcAppend('2')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">2</button>
-                        <button onclick="calcAppend('3')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">3</button>
-                        <button onclick="calcAppend('-')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">−</button>
-                        
-                        <button onclick="calcAppend('0')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded col-span-2">0</button>
-                        <button onclick="calcAppend('.')" class="bg-elysian-card hover:bg-gray-700 text-white font-bold py-3 rounded">.</button>
-                        <button onclick="calcAppend('+')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">+</button>
-                        
-                        <button onclick="calcClear()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded col-span-2">Clear</button>
-                        <button onclick="calcEqual()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded col-span-2">=</button>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        let calcExpression = '';
-
-        function calcAppend(value) {
-            const display = document.getElementById('calcDisplay');
-            if (display.value === '0' && value !== '.') {
-                display.value = value;
-            } else {
-                display.value += value;
-            }
-            calcExpression = display.value;
-        }
-
-        function calcClear() {
-            document.getElementById('calcDisplay').value = '0';
-            calcExpression = '';
-        }
-
-        function calcEqual() {
-            try {
-                const result = Function('"use strict"; return (' + calcExpression + ')')();
-                document.getElementById('calcDisplay').value = result;
-                calcExpression = result;
-            } catch (e) {
-                document.getElementById('calcDisplay').value = 'Error';
-            }
-        }
-
-        function openPasswordGen(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Panjang Password</label>
-                        <input type="range" id="passLength" min="8" max="32" value="16" class="w-full" oninput="updatePassLength()">
-                        <div class="text-xs text-elysian-muted mt-1">Panjang: <span id="passLengthDisplay">16</span> karakter</div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-2 text-sm text-white cursor-pointer">
-                            <input type="checkbox" id="passUpper" checked class="w-4 h-4">
-                            <span>Huruf Besar (A-Z)</span>
-                        </label>
-                        <label class="flex items-center gap-2 text-sm text-white cursor-pointer">
-                            <input type="checkbox" id="passLower" checked class="w-4 h-4">
-                            <span>Huruf Kecil (a-z)</span>
-                        </label>
-                        <label class="flex items-center gap-2 text-sm text-white cursor-pointer">
-                            <input type="checkbox" id="passNum" checked class="w-4 h-4">
-                            <span>Angka (0-9)</span>
-                        </label>
-                        <label class="flex items-center gap-2 text-sm text-white cursor-pointer">
-                            <input type="checkbox" id="passSymbol" checked class="w-4 h-4">
-                            <span>Simbol (!@#$%)</span>
-                        </label>
-                    </div>
-                    <button onclick="generatePassword()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-key mr-2"></i> Generate
-                    </button>
-                    <div id="passResult" class="hidden preview-box">
-                        <div class="flex gap-2">
-                            <input type="text" id="passOutput" readonly class="flex-1 bg-elysian-bg border border-elysian-border rounded px-2 py-2 text-white text-sm">
-                            <button onclick="copyPassword()" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 rounded">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                        <div class="mt-2 p-2 bg-elysian-bg rounded border border-elysian-border">
-                            <p class="text-xs text-elysian-muted"><strong>Kekuatan:</strong> <span id="passStrength">-</span></p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function updatePassLength() {
-            document.getElementById('passLengthDisplay').textContent = document.getElementById('passLength').value;
-        }
-
-        function generatePassword() {
-            const length = parseInt(document.getElementById('passLength').value);
-            const useUpper = document.getElementById('passUpper').checked;
-            const useLower = document.getElementById('passLower').checked;
-            const useNum = document.getElementById('passNum').checked;
-            const useSymbol = document.getElementById('passSymbol').checked;
-
-            let chars = '';
-            if (useUpper) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (useLower) chars += 'abcdefghijklmnopqrstuvwxyz';
-            if (useNum) chars += '0123456789';
-            if (useSymbol) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-
-            if (chars === '') {
-                alert('Pilih minimal satu opsi');
-                return;
-            }
-
-            let password = '';
-            const array = new Uint32Array(length);
-            crypto.getRandomValues(array);
-
-            for (let i = 0; i < length; i++) {
-                password += chars[array[i] % chars.length];
-            }
-
-            document.getElementById('passOutput').value = password;
-            
-            let strength = 'Lemah';
-            if (length >= 12 && useUpper && useLower && useNum && useSymbol) {
-                strength = 'Sangat Kuat';
-            } else if (length >= 12 && useUpper && useLower && useNum) {
-                strength = 'Kuat';
-            } else if (length >= 10) {
-                strength = 'Sedang';
-            }
-            
-            document.getElementById('passStrength').textContent = strength;
-            document.getElementById('passResult').classList.remove('hidden');
-        }
-
-        function copyPassword() {
-            const pass = document.getElementById('passOutput').value;
-            copyToClipboard(pass, () => alert('Password disalin ke clipboard'));
-        }
-
-        function openMorseCode(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="flex gap-2 mb-4">
-                        <button onclick="switchMorseTab('encode')" id="encodeTab" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition">
-                            <i class="fas fa-arrow-right mr-1"></i> Text → Morse
-                        </button>
-                        <button onclick="switchMorseTab('decode')" id="decodeTab" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 rounded-lg transition">
-                            <i class="fas fa-arrow-left mr-1"></i> Morse → Text
-                        </button>
-                    </div>
-                    
-                    <div id="encodePanel">
-                        <div>
-                            <label class="block text-sm font-medium text-white mb-2">Teks</label>
-                            <textarea id="morseText" placeholder="Masukkan teks..." rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                        </div>
-                        <button onclick="encodeMorse()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition mt-2">
-                            <i class="fas fa-wand-magic-sparkles mr-2"></i> Encode
-                        </button>
-                    </div>
-                    
-                    <div id="decodePanel" class="hidden">
-                        <div>
-                            <label class="block text-sm font-medium text-white mb-2">Morse Code (pisahkan dengan spasi)</label>
-                            <textarea id="morseCode" placeholder=".... . .-.. .-.. ---" rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                        </div>
-                        <button onclick="decodeMorse()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition mt-2">
-                            <i class="fas fa-wand-magic-sparkles mr-2"></i> Decode
-                        </button>
-                    </div>
-                    
-                    <div id="morseResult" class="hidden preview-box">
-                        <div id="morseContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        const morseMap = {
-            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
-            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
-            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
-            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
-            'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
-            '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
-            '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..',
-            "'": '.----', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-',
-            '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.',
-            '-': '-....-', '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.'
+          };
+          setTimeout(tick, 400);
         };
+        step();
+      }
+    });
+  }, { threshold: 0.2 });
+  obs.observe(trigger);
+}
 
-        const reverseMorseMap = Object.assign({}, ...Object.entries(morseMap).map(([k, v]) => ({[v]: k})));
+/* ---------- surprise modal ---------- */
+const modal = document.getElementById("modal");
+document.getElementById("modal-title").textContent = CONFIG.surpriseTitle;
+document.getElementById("modal-msg").textContent = CONFIG.surpriseMessage;
+document.getElementById("modal-close").addEventListener("click", () => modal.classList.remove("open"));
+modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
+document.getElementById("surprise-btn").addEventListener("click", () => {
+  modal.classList.add("open");
+  confettiBurst(160);
+});
 
-        function switchMorseTab(tab) {
-            if (tab === 'encode') {
-                document.getElementById('encodePanel').classList.remove('hidden');
-                document.getElementById('decodePanel').classList.add('hidden');
-                document.getElementById('encodeTab').classList.remove('bg-gray-600', 'hover:bg-gray-700');
-                document.getElementById('encodeTab').classList.add('bg-blue-500', 'hover:bg-blue-600');
-                document.getElementById('decodeTab').classList.remove('bg-blue-500', 'hover:bg-blue-600');
-                document.getElementById('decodeTab').classList.add('bg-gray-600', 'hover:bg-gray-700');
-            } else {
-                document.getElementById('encodePanel').classList.add('hidden');
-                document.getElementById('decodePanel').classList.remove('hidden');
-                document.getElementById('decodeTab').classList.remove('bg-gray-600', 'hover:bg-gray-700');
-                document.getElementById('decodeTab').classList.add('bg-blue-500', 'hover:bg-blue-600');
-                document.getElementById('encodeTab').classList.remove('bg-blue-500', 'hover:bg-blue-600');
-                document.getElementById('encodeTab').classList.add('bg-gray-600', 'hover:bg-gray-700');
-            }
-        }
+/* ---------- celebrate ---------- */
+document.getElementById("celebrate-btn").addEventListener("click", () => confettiBurst(110));
 
-        function encodeMorse() {
-            const text = document.getElementById('morseText').value.toUpperCase();
-            if (!text) {
-                alert('Masukkan teks terlebih dahulu');
-                return;
-            }
+/* ---------- music ---------- */
+(function () {
+  const audio = new Audio(CONFIG.musicUrl);
+  audio.loop = true; audio.volume = CONFIG.musicVolume; audio.preload = "auto";
+  let playing = false;
+  const btn = document.getElementById("music-btn");
+  const iconPlay = document.getElementById("music-icon-play");
+  const iconPause = document.getElementById("music-icon-pause");
+  btn.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play().then(() => { playing = true; iconPlay.style.display = "none"; iconPause.style.display = "block"; btn.title = "Pause musik"; })
+        .catch(() => { playing = false; });
+    } else {
+      audio.pause(); playing = false; iconPlay.style.display = "block"; iconPause.style.display = "none"; btn.title = "Putar musik";
+    }
+  });
+})();
 
-            let morse = '';
-            for (let char of text) {
-                if (morseMap[char]) {
-                    morse += morseMap[char] + ' ';
-                } else if (char === ' ') {
-                    morse += '/ ';
-                }
-            }
-
-            document.getElementById('morseResult').classList.remove('hidden');
-            document.getElementById('morseContent').innerHTML = `
-                <p class="text-xs text-elysian-muted mb-2">Hasil Morse:</p>
-                <div class="flex gap-2">
-                    <textarea readonly class="flex-1 bg-elysian-bg border border-elysian-border rounded px-2 py-2 text-white text-sm h-16">${morse}</textarea>
-                    <button onclick="copyMorse('${morse}')" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 rounded">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                </div>
-            `;
-        }
-
-        function decodeMorse() {
-            const morse = document.getElementById('morseCode').value.trim();
-            if (!morse) {
-                alert('Masukkan Morse code terlebih dahulu');
-                return;
-            }
-
-            let text = '';
-            const codes = morse.split(' ');
-            for (let code of codes) {
-                if (code === '/') {
-                    text += ' ';
-                } else if (reverseMorseMap[code]) {
-                    text += reverseMorseMap[code];
-                }
-            }
-
-            document.getElementById('morseResult').classList.remove('hidden');
-            document.getElementById('morseContent').innerHTML = `
-                <p class="text-xs text-elysian-muted mb-2">Hasil Teks:</p>
-                <div class="flex gap-2">
-                    <textarea readonly class="flex-1 bg-elysian-bg border border-elysian-border rounded px-2 py-2 text-white text-sm h-16">${text}</textarea>
-                    <button onclick="copyMorse('${text}')" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 rounded">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                </div>
-            `;
-        }
-
-        function copyMorse(text) {
-            copyToClipboard(text, () => alert('Disalin ke clipboard'));
-        }
-
-        function openRemoveBG(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Upload Gambar</label>
-                        <input type="file" id="bgImg" accept="image/*" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="processRemoveBG()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-eraser mr-2"></i> Remove Background
-                    </button>
-                    <div id="bgResult" class="hidden preview-box">
-                        <div id="bgContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function processRemoveBG() {
-            const file = document.getElementById('bgImg').files[0];
-            if (!file) {
-                alert('Pilih gambar terlebih dahulu');
-                return;
-            }
-
-            document.getElementById('bgResult').classList.remove('hidden');
-            document.getElementById('bgContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Memproses...</p>
-                <div class="mt-3 p-2 bg-yellow-500/20 border border-yellow-500/50 rounded">
-                    <p class="text-xs text-yellow-300"><i class="fas fa-info-circle mr-1"></i> Fitur Remove Background memerlukan backend dengan library seperti rembg atau API seperti remove.bg</p>
-                </div>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-elysian-border">
-                    <p class="text-xs text-elysian-muted"><strong>Alternatif Online:</strong></p>
-                    <ul class="text-xs text-elysian-muted mt-1 space-y-1">
-                        <li>• remove.bg (API tersedia)</li>
-                        <li>• Photoshop Online</li>
-                        <li>• Canva</li>
-                    </ul>
-                </div>
-            `;
-        }
-
-        function openImageEnhancer(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Upload Gambar</label>
-                        <input type="file" id="enhanceImg" accept="image/*" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Tingkat Enhancement</label>
-                        <input type="range" id="enhanceLevel" min="1" max="3" value="2" class="w-full">
-                        <div class="text-xs text-elysian-muted mt-1">
-                            <span id="enhanceLevelText">Sedang</span>
-                        </div>
-                    </div>
-                    <button onclick="processEnhance()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Enhance
-                    </button>
-                    <div id="enhanceResult" class="hidden preview-box">
-                        <div id="enhanceContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-
-            document.getElementById('enhanceLevel').addEventListener('input', function() {
-                const levels = ['Ringan', 'Sedang', 'Kuat'];
-                document.getElementById('enhanceLevelText').textContent = levels[this.value - 1];
-            });
-        }
-
-        function processEnhance() {
-            const file = document.getElementById('enhanceImg').files[0];
-            if (!file) {
-                alert('Pilih gambar terlebih dahulu');
-                return;
-            }
-
-            const level = document.getElementById('enhanceLevel').value;
-            document.getElementById('enhanceResult').classList.remove('hidden');
-            document.getElementById('enhanceContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Memproses...</p>
-                <p class="text-xs text-elysian-muted">Tingkat Enhancement: Level ${level}</p>
-                <div class="mt-3 p-2 bg-yellow-500/20 border border-yellow-500/50 rounded">
-                    <p class="text-xs text-yellow-300"><i class="fas fa-info-circle mr-1"></i> Image Enhancement memerlukan backend dengan library seperti OpenCV atau PIL untuk hasil optimal.</p>
-                </div>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-elysian-border">
-                    <p class="text-xs text-elysian-muted"><strong>Catatan:</strong> Untuk enhancement lokal, gunakan Canvas API untuk sharpening sederhana atau upscaling.</p>
-                </div>
-            `;
-        }
-
-        function openQRGenerator(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Teks/URL</label>
-                        <textarea id="qrInput" placeholder="Masukkan teks atau URL..." rows="2" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Ukuran</label>
-                        <select id="qrSize" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                            <option value="100">Kecil (100px)</option>
-                            <option value="200" selected>Sedang (200px)</option>
-                            <option value="300">Besar (300px)</option>
-                            <option value="400">Sangat Besar (400px)</option>
-                        </select>
-                    </div>
-                    <button onclick="generateQR()" class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2 rounded-lg transition border border-white">
-                        <i class="fas fa-qrcode mr-2"></i> Generate QR
-                    </button>
-                    <div id="qrResult" class="hidden preview-box">
-                        <div id="qrContainer" class="flex justify-center"></div>
-                        <div class="flex gap-2 mt-3">
-                            <button onclick="downloadQR()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                                <i class="fas fa-download mr-1"></i> Download PNG
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateQR() {
-            const text = document.getElementById('qrInput').value.trim();
-            const size = parseInt(document.getElementById('qrSize').value);
-
-            if (!text) {
-                alert('Masukkan teks atau URL terlebih dahulu');
-                return;
-            }
-
-            document.getElementById('qrContainer').innerHTML = '';
-            new QRCode(document.getElementById('qrContainer'), {
-                text: text,
-                width: size,
-                height: size,
-                colorDark: '#000000',
-                colorLight: '#FFFFFF'
-            });
-
-            document.getElementById('qrResult').classList.remove('hidden');
-        }
-
-        function downloadQR() {
-            const canvas = document.querySelector('#qrContainer canvas');
-            if (canvas) {
-                downloadImage(canvas, 'qr-code-' + Date.now() + '.png');
-            } else {
-                alert('Generate QR code terlebih dahulu');
-            }
-        }
-
-        // ===== VVIP TOOLS =====
-        function openWebEncryption(tool) {
-            openModal('vvipModal');
-        }
-
-        function openTelegramSpammer(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="p-3 bg-yellow-500/20 border border-yellow-500/50 rounded">
-                        <p class="text-xs text-yellow-300"><i class="fas fa-exclamation-circle mr-1"></i> <strong>Fitur Aman:</strong> Ini adalah Telegram Message Formatter, bukan spammer. Gunakan untuk membuat dan menguji format pesan.</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Pesan</label>
-                        <textarea id="tgMsg" placeholder="Masukkan pesan..." rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Format</label>
-                        <select id="tgFormat" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                            <option value="plain">Plain Text</option>
-                            <option value="bold">**Bold**</option>
-                            <option value="italic">__Italic__</option>
-                            <option value="code">\`\`\`Code\`\`\`</option>
-                        </select>
-                    </div>
-                    <button onclick="formatTelegramMsg()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Format
-                    </button>
-                    <div id="tgResult" class="hidden preview-box">
-                        <div id="tgContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function formatTelegramMsg() {
-            const msg = document.getElementById('tgMsg').value.trim();
-            const format = document.getElementById('tgFormat').value;
-
-            if (!msg) {
-                alert('Masukkan pesan terlebih dahulu');
-                return;
-            }
-
-            let formatted = msg;
-            if (format === 'bold') formatted = `*${msg}*`;
-            else if (format === 'italic') formatted = `_${msg}_`;
-            else if (format === 'code') formatted = `\`\`\`\n${msg}\n\`\`\``;
-
-            document.getElementById('tgResult').classList.remove('hidden');
-            document.getElementById('tgContent').innerHTML = `
-                <p class="text-xs text-elysian-muted mb-2">Preview Pesan:</p>
-                <div class="bg-elysian-bg border border-elysian-border rounded px-3 py-2 text-white text-sm mb-3">
-                    ${formatted.replace(/\n/g, '<br>')}
-                </div>
-                <button onclick="copyTgMsg('${formatted.replace(/'/g, "\\'")}')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                    <i class="fas fa-copy mr-1"></i> Copy
-                </button>
-            `;
-        }
-
-        function copyTgMsg(msg) {
-            copyToClipboard(msg, () => alert('Pesan disalin ke clipboard'));
-        }
-
-        function openNGLSpammer(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="p-3 bg-yellow-500/20 border border-yellow-500/50 rounded">
-                        <p class="text-xs text-yellow-300"><i class="fas fa-exclamation-circle mr-1"></i> <strong>Fitur Aman:</strong> Ini adalah NGL Message Mockup, bukan spammer. Gunakan untuk preview pesan anonim.</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">Pesan Anonim</label>
-                        <textarea id="nglMsg" placeholder="Masukkan pesan..." rows="3" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500"></textarea>
-                    </div>
-                    <button onclick="generateNGLMockup()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Generate Mockup
-                    </button>
-                    <div id="nglResult" class="hidden preview-box">
-                        <div id="nglContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function generateNGLMockup() {
-            const msg = document.getElementById('nglMsg').value.trim();
-            if (!msg) {
-                alert('Masukkan pesan terlebih dahulu');
-                return;
-            }
-
-            document.getElementById('nglResult').classList.remove('hidden');
-            document.getElementById('nglContent').innerHTML = `
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; color: white;">
-                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">Anonymous Message</div>
-                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 10px; word-wrap: break-word;">
-                        ${msg.replace(/\n/g, '<br>')}
-                    </div>
-                    <div style="font-size: 10px; opacity: 0.7;">via ngl.link</div>
-                </div>
-                <button onclick="copyNGLMsg('${msg.replace(/'/g, "\\'")}')" class="w-full mt-3 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition text-sm">
-                    <i class="fas fa-copy mr-1"></i> Copy
-                </button>
-            `;
-        }
-
-        function copyNGLMsg(msg) {
-            copyToClipboard(msg, () => alert('Pesan disalin ke clipboard'));
-        }
-
-        function openGetSourceCode(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="p-3 bg-yellow-500/20 border border-yellow-500/50 rounded">
-                        <p class="text-xs text-yellow-300"><i class="fas fa-info-circle mr-1"></i> Fitur ini memerlukan backend dan harus mematuhi CORS serta Terms of Service website target.</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-2">URL Website</label>
-                        <input type="url" id="sourceUrl" placeholder="https://example.com" class="w-full bg-elysian-bg border border-elysian-border rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500">
-                    </div>
-                    <button onclick="fetchSourceCode()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-lg transition">
-                        <i class="fas fa-code-branch mr-2"></i> Fetch Source
-                    </button>
-                    <div id="sourceResult" class="hidden preview-box">
-                        <div id="sourceContent"></div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        function fetchSourceCode() {
-            const url = document.getElementById('sourceUrl').value.trim();
-            if (!url) {
-                alert('Masukkan URL website terlebih dahulu');
-                return;
-            }
-
-            document.getElementById('sourceResult').classList.remove('hidden');
-            document.getElementById('sourceContent').innerHTML = `
-                <p class="text-sm text-white mb-2"><strong>Status:</strong> Mencoba mengakses...</p>
-                <div class="mt-3 p-2 bg-yellow-500/20 border border-yellow-500/50 rounded">
-                    <p class="text-xs text-yellow-300"><i class="fas fa-info-circle mr-1"></i> Akses source code tergantung pada CORS policy website target. Banyak website melarang akses cross-origin.</p>
-                </div>
-                <div class="mt-3 p-2 bg-elysian-bg rounded border border-elysian-border">
-                    <p class="text-xs text-elysian-muted"><strong>Alternatif:</strong></p>
-                    <ul class="text-xs text-elysian-muted mt-1 space-y-1">
-                        <li>• Gunakan browser DevTools (F12) → Sources</li>
-                        <li>• Gunakan curl atau wget dari terminal</li>
-                        <li>• Gunakan backend proxy dengan CORS headers</li>
-                    </ul>
-                </div>
-            `;
-        }
-
-        function openUnbanWhatsApp(tool) {
-            const content = `
-                <div class="space-y-4">
-                    <div class="p-3 bg-green-500/20 border border-green-500/50 rounded">
-                        <p class="text-xs text-green-300"><i class="fas fa-info-circle mr-1"></i> <strong>Panduan Resmi:</strong> Ikuti langkah-langkah aman untuk mengatasi akun WhatsApp yang diblokir.</p>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="bg-elysian-bg rounded-lg p-3 border border-elysian-border">
-                            <h4 class="text-sm font-bold text-white mb-2">1. Periksa Status Akun</h4>
-                            <p class="text-xs text-elysian-muted">Buka WhatsApp dan lihat pesan error yang muncul. Catat kode error jika ada.</p>
-                        </div>
-                        <div class="bg-elysian-bg rounded-lg p-3 border border-elysian-border">
-                            <h4 class="text-sm font-bold text-white mb-2">2. Hubungi Support WhatsApp</h4>
-                            <p class="text-xs text-elysian-muted">Kunjungi <strong>faq.whatsapp.com</strong> atau gunakan form support resmi.</p>
-                        </div>
-                        <div class="bg-elysian-bg rounded-lg p-3 border border-elysian-border">
-                            <h4 class="text-sm font-bold text-white mb-2">3. Tips Mencegah Ban</h4>
-                            <ul class="text-xs text-elysian-muted space-y-1">
-                                <li>• Jangan gunakan bot atau automation yang melanggar ToS</li>
-                                <li>• Jangan kirim pesan massal/spam</li>
-                                <li>• Jangan bagikan link phishing atau malware</li>
-                                <li>• Gunakan WhatsApp Official saja</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-            openToolModal(tool, content);
-        }
-
-        // ===== TOOL MODAL OPENER =====
-        function openToolModal(tool, content) {
-            document.getElementById('toolTitle').textContent = tool.name;
-            document.getElementById('toolContent').innerHTML = content;
-            openModal('toolModal');
-        }
-
-        // ===== KEYBOARD SUPPORT =====
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeAllModals();
-            }
-        });
-    </script>
+/* ---------- main photo ---------- */
+document.getElementById("main-photo").src = CONFIG.mainPhoto;
+</script>
 </body>
 </html>
